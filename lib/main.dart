@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:solo_play_application/src/app.dart';
+import 'package:solo_play_application/src/views/profile_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,8 +10,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const App(),
+    return const MaterialApp(
+      home: ProfileView(),
       debugShowCheckedModeBanner: false,
     );
   }
