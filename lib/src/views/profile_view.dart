@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:solo_play_application/src/widgets/course_widget.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -46,7 +47,7 @@ class ProfileView extends StatelessWidget {
               child: Container(
                 width: 68,
                 height: 68,
-                color: const Color(0xffEDEDED),
+                color: Colors.grey,
               ),
             ),
           ),
@@ -113,6 +114,13 @@ class ProfileView extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+          const SizedBox(height: 23),
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: 2,
+            itemBuilder: (context, index) => const CourseWidget(),
           ),
         ],
       ),
