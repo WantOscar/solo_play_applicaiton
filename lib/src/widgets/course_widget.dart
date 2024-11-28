@@ -24,7 +24,6 @@ class CourseWidget extends StatelessWidget {
         /// 코스 태그, 위치, 별점 영역
         Container(
           width: double.infinity,
-          height: 88,
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.vertical(
               top: Radius.zero,
@@ -91,31 +90,59 @@ class CourseWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-                    // Stack(
-                    //   children: [
-                    //     Positioned(
-                    //       left: 0,
-                    //       child: CircleAvatar(
-                    //         radius: 10,
-                    //         backgroundColor: Colors.grey.shade300,
-                    //       ),
-                    //     ),
-                    //     Positioned(
-                    //       left: 8,
-                    //       child: CircleAvatar(
-                    //         radius: 10,
-                    //         backgroundColor: Colors.grey.shade400,
-                    //       ),
-                    //     ),
-                    //     Positioned(
-                    //       left: 16,
-                    //       child: CircleAvatar(
-                    //         radius: 10,
-                    //         backgroundColor: Colors.grey.shade500,
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
+                    SizedBox(
+                      width: 150,
+                      height: 70,
+                      child: Stack(
+                        alignment: Alignment.centerLeft,
+                        children: [
+                          Positioned(
+                            right: 50,
+                            child: SizedBox(
+                              width: 50,
+                              height: 50,
+                              child: CircleAvatar(
+                                radius: 10,
+                                backgroundColor: Colors.grey.shade300,
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            right: 60,
+                            child: SizedBox(
+                              width: 50,
+                              height: 50,
+                              child: CircleAvatar(
+                                radius: 10,
+                                backgroundColor: Colors.grey.shade400,
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            right: 70,
+                            child: SizedBox(
+                              width: 50,
+                              height: 50,
+                              child: CircleAvatar(
+                                radius: 10,
+                                backgroundColor: Colors.grey.shade500,
+                              ),
+                            ),
+                          ),
+                          const Positioned(
+                            left: 110,
+                            child: Text(
+                              '+5',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black87,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ],
