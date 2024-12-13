@@ -10,6 +10,10 @@ class ProfileView extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(65),
         child: AppBar(
+          leading: GestureDetector(
+            onTap: () {},
+            child: const Icon(Icons.arrow_back_ios),
+          ),
           elevation: 0.0,
           title: const Text(
             'wlsdk_b님의 프로필',
