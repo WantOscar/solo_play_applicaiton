@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:solo_play_application/src/main/view/main_view.dart';
 import 'package:solo_play_application/src/views/profile_view.dart';
 
 void main() {
@@ -11,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: ProfileView(),
+      home: MainView(),
       debugShowCheckedModeBanner: false,
     );
   }
