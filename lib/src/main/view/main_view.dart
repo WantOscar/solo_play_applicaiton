@@ -9,7 +9,14 @@ class MainView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Center(child: _map()),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              _recommend(),
+              _map(),
+            ],
+          ),
+        ),
       ),
     );
   }
