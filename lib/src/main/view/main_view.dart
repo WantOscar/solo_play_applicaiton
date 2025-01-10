@@ -21,13 +21,13 @@ class MainView extends StatelessWidget {
     );
   }
 
-  Widget _recommend() => const RecommendView(
-        key: Key("main view recommend"),
-        title: "오늘은 카페투어 어떠세요?",
+  Widget _recommend() => const Padding(
+        padding: EdgeInsets.symmetric(vertical: 20.0),
+        child: RecommendView(
+          key: Key("main view recommend"),
+          title: "오늘은 카페투어 어떠세요?",
+        ),
       );
 
-  Widget _map() => const Padding(
-        padding: EdgeInsets.symmetric(vertical: 20.0),
-        child: MapView(),
-      );
+  Widget _map() => const MapView();
 }

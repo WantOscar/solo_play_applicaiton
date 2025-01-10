@@ -6,53 +6,68 @@ class MapView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        _overRiver(),
-        _underRiver(),
-      ],
+    final List<HexagonPosition> gangbuk = [
+      const HexagonPosition(x: 4, y: 0),
+      const HexagonPosition(x: 5, y: 0),
+      const HexagonPosition(x: 6, y: 0),
+      const HexagonPosition(x: 5, y: 1),
+    ];
+
+    final List<HexagonPosition> dosim = [
+      const HexagonPosition(x: 3, y: 3),
+      const HexagonPosition(x: 4, y: 1),
+      const HexagonPosition(x: 4, y: 2),
+      const HexagonPosition(x: 4, y: 3),
+      const HexagonPosition(x: 5, y: 2),
+      const HexagonPosition(x: 5, y: 3),
+    ];
+    final List<HexagonPosition> dongseoul = [
+      const HexagonPosition(x: 6, y: 1),
+      const HexagonPosition(x: 6, y: 2),
+      const HexagonPosition(x: 7, y: 2),
+      const HexagonPosition(x: 7, y: 3),
+    ];
+    final List<HexagonPosition> seonam = [
+      const HexagonPosition(x: 1, y: 3, type: HexagonSectionType.bottom),
+      const HexagonPosition(x: 2, y: 3, type: HexagonSectionType.bottom),
+    ];
+    final List<HexagonPosition> namseoul = [
+      const HexagonPosition(x: 2, y: 4, type: HexagonSectionType.bottom),
+      const HexagonPosition(x: 2, y: 5, type: HexagonSectionType.bottom),
+      const HexagonPosition(x: 3, y: 4, type: HexagonSectionType.bottom),
+      const HexagonPosition(x: 3, y: 5, type: HexagonSectionType.bottom),
+      const HexagonPosition(x: 4, y: 4, type: HexagonSectionType.bottom),
+    ];
+    final List<HexagonPosition> gangnam = [
+      const HexagonPosition(x: 5, y: 4, type: HexagonSectionType.bottom),
+      const HexagonPosition(x: 6, y: 3, type: HexagonSectionType.bottom),
+    ];
+    final List<HexagonPosition> dongnam = [
+      const HexagonPosition(x: 7, y: 4, type: HexagonSectionType.bottom),
+      const HexagonPosition(x: 8, y: 3, type: HexagonSectionType.bottom),
+    ];
+
+    return Center(
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: InteractiveViewer(
+          boundaryMargin: const EdgeInsets.all(20.0),
+          minScale: 0.1,
+          maxScale: 4.0,
+          child: HexagonGrid(
+            space: 4.0,
+            offsets: [
+              ...dosim,
+              ...gangbuk,
+              ...dongseoul,
+              ...seonam,
+              ...namseoul,
+              ...gangnam,
+              ...dongnam,
+            ],
+          ),
+        ),
+      ),
     );
   }
-
-  Widget _overRiver() => HexagonGrid(
-        space: 4.0,
-        offsets: [
-          HexagonPosition(
-            x: 2,
-            y: 0,
-            color: const Color(0xffd9d9d9).withOpacity(0.3),
-          ),
-          HexagonPosition(
-            x: 0,
-            y: 1,
-            color: const Color(0xffd9d9d9).withOpacity(0.3),
-          ),
-          const HexagonPosition(x: 1, y: 1, color: Color(0xffd9d9d9)),
-          const HexagonPosition(x: 2, y: 1, color: Color(0xffd9d9d9)),
-          HexagonPosition(
-            x: 3,
-            y: 1,
-            color: const Color(0xffd9d9d9).withOpacity(0.3),
-          ),
-          const HexagonPosition(x: 1, y: 2, color: Color(0xffd9d9d9)),
-        ],
-      );
-
-  Widget _underRiver() => Positioned(
-        top: 270,
-        bottom: 1.0,
-        child: HexagonGrid(
-          space: 4.0,
-          offsets: [
-            const HexagonPosition(x: 0, y: 0, color: Color(0xffd9d9d9)),
-            const HexagonPosition(x: 2, y: 0, color: Color(0xffd9d9d9)),
-            const HexagonPosition(x: 3, y: 0, color: Color(0xffd9d9d9)),
-            HexagonPosition(
-                x: 0, y: 1, color: const Color(0xffd9d9d9).withOpacity(0.3)),
-            const HexagonPosition(x: 1, y: 1, color: Color(0xffd9d9d9)),
-            HexagonPosition(
-                x: 2, y: 1, color: const Color(0xffd9d9d9).withOpacity(0.3)),
-          ],
-        ),
-      );
 }
