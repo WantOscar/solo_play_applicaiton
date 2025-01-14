@@ -13,6 +13,7 @@ class MapDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<MapDetailViewCubit>(
       create: (context) => MapDetailViewCubit(mapModel),
+      child: MapDetailView(mapModel: mapModel),
     );
   }
 }

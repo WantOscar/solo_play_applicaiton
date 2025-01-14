@@ -16,8 +16,8 @@ class HexagonGrid extends StatelessWidget {
       this.distance = 30});
 
   Offset getCanvasOffset() {
-    var x = 0;
-    var y = 0;
+    var x = 0.0;
+    var y = 0.0;
     for (HexagonPosition pos in offsets) {
       final nx = pos.x;
       final ny = pos.y;
@@ -61,42 +61,18 @@ class HexagonPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final thOffset = Offset(radius, sqrt(3.0) * radius);
-    final Map<HexagonSectionType, double> vector = {
-      HexagonSectionType.top: 0,
-      HexagonSectionType.bottom: distance,
-    };
     for (HexagonPosition postion in positions) {
       final x = postion.x;
       final y = postion.y;
-      final center = Offset(
-          3 * x / 2 * radius + thOffset.dx,
-          (sqrt(3.0) * radius * y) -
-              ((sqrt(3.0) * radius / 2) * (x % 2)) +
-              thOffset.dy +
-              vector[postion.type]!);
-      const angle = (pi * 2) / 6;
+      final center = postion.center(x, y, radius, distance);
       Paint paint = Paint()
         ..color = postion.color!
         ..style = PaintingStyle.fill;
-      final paddingRadius = radius - space;
-      final firstOffset = Offset(paddingRadius * cos(0.0) + center.dx,
-          paddingRadius * sin(0.0) + center.dy);
-      final path = Path();
-      path.moveTo(firstOffset.dx, firstOffset.dy);
-      for (int i = 1; i < 7; i++) {
-        // 첫번째 각도와 두번째 각도 계산
-        final currAngle = angle * i;
-        final currX = paddingRadius * cos(currAngle) + center.dx;
-        final currY = paddingRadius * sin(currAngle) + center.dy;
-
-        final r = borderRadius;
-        final d = 2 * sqrt(3.0) * r / 3;
-        final dx = d * cos(currAngle + pi) + currX;
-        final dy = d * sin(currAngle + pi) + currY;
-        final oval = Rect.fromCircle(center: Offset(dx, dy), radius: r);
-        path.arcTo(oval, currAngle - pi / 6, pi / 3, false);
-      }
+      final path = postion.getHexagonPath(
+          radius: radius,
+          space: space,
+          center: center,
+          borderRadius: borderRadius);
       canvas.drawPath(path, paint);
     }
   }
@@ -111,8 +87,8 @@ enum HexagonSectionType {
 }
 
 class HexagonPosition {
-  final int x;
-  final int y;
+  final double x;
+  final double y;
   final Color? color;
   final HexagonSectionType type;
 
@@ -124,8 +100,8 @@ class HexagonPosition {
   });
 
   HexagonPosition copy({
-    int? x,
-    int? y,
+    double? x,
+    double? y,
     Color? color,
     HexagonSectionType? type,
   }) {
@@ -134,5 +110,47 @@ class HexagonPosition {
         y: y ?? this.y,
         color: color ?? this.color,
         type: type ?? this.type);
+  }
+
+  Offset center(double x, double y, double radius, double distance) {
+    final thOffset = Offset(radius, sqrt(3.0) * radius);
+    final Map<HexagonSectionType, double> vector = {
+      HexagonSectionType.top: 0,
+      HexagonSectionType.bottom: distance,
+    };
+    return Offset(
+        3 * x / 2 * radius + thOffset.dx,
+        (sqrt(3.0) * radius * y) -
+            ((sqrt(3.0) * radius / 2) * (x % 2)) +
+            thOffset.dy +
+            vector[type]!);
+  }
+
+  Path getHexagonPath({
+    required double radius,
+    required double space,
+    required Offset center,
+    required double borderRadius,
+  }) {
+    const angle = (pi * 2) / 6;
+    final paddingRadius = radius - space;
+    final firstOffset = Offset(paddingRadius * cos(0.0) + center.dx,
+        paddingRadius * sin(0.0) + center.dy);
+    final path = Path();
+    path.moveTo(firstOffset.dx, firstOffset.dy);
+    for (int i = 1; i < 7; i++) {
+      // 첫번째 각도와 두번째 각도 계산
+      final currAngle = angle * i;
+      final currX = paddingRadius * cos(currAngle) + center.dx;
+      final currY = paddingRadius * sin(currAngle) + center.dy;
+
+      final r = borderRadius;
+      final d = 2 * sqrt(3.0) * r / 3;
+      final dx = d * cos(currAngle + pi) + currX;
+      final dy = d * sin(currAngle + pi) + currY;
+      final oval = Rect.fromCircle(center: Offset(dx, dy), radius: r);
+      path.arcTo(oval, currAngle - pi / 6, pi / 3, false);
+    }
+    return path;
   }
 }

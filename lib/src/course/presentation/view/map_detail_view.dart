@@ -14,33 +14,65 @@ class MapDetailView extends StatefulWidget {
 }
 
 class _MapDetailViewState extends State<MapDetailView> {
-  late String label;
-  late ScrollController _vertController;
-  late ScrollController _horizController;
+  late TransformationController _controller;
+  final GlobalKey _childKey = GlobalKey();
+  final GlobalKey _parentsKey = GlobalKey();
+  final double _initialScale = 1.0;
+
+  void _centerContent() {
+    // 전체 지도 제약 조건
+    final RenderBox renderBox =
+        _childKey.currentContext!.findRenderObject() as RenderBox;
+    final Size contentSize = renderBox.size;
+
+    final RenderBox viewportBox =
+        _parentsKey.currentContext!.findRenderObject() as RenderBox;
+    final Size viewportSize = viewportBox.size;
+
+    // 가운데 좌표 계산
+    final double dx =
+        -(contentSize.width - viewportSize.width) * _initialScale / 2;
+    final double dy =
+        -(contentSize.height - viewportSize.height) * _initialScale / 2;
+    // 이동
+    print((dx, dy));
+    _controller.value = Matrix4.identity()
+      ..translate(dx, dy)
+      ..scale(_initialScale);
+  }
 
   @override
   void initState() {
-    label = widget.mapModel.label;
-    _vertController = ScrollController();
-    _horizController = ScrollController();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final horizMid = _horizController.position.maxScrollExtent / 2;
-      final vertMid = _vertController.position.maxScrollExtent / 2;
-      _horizController.jumpTo(horizMid);
-      _vertController.jumpTo(vertMid);
-    });
-
+    _controller = TransformationController();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _centerContent());
     super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant MapDetailView oldWidget) {
+    if (oldWidget.mapModel != widget.mapModel) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _centerContent());
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "$label권",
-          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 24),
-        ),
+        title: BlocBuilder<MapDetailViewCubit, MapModel>(
+            builder: (context, state) {
+          return Text(
+            "${state.label}권",
+            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 24),
+          );
+        }),
         centerTitle: true,
         actions: const [
           Padding(
@@ -92,20 +124,46 @@ class _MapDetailViewState extends State<MapDetailView> {
       );
 
   Widget _map() {
-    final mapDetailViewCubit = MapDetailViewCubit(widget.mapModel);
-    return SingleChildScrollView(
-      controller: _vertController,
-      child: SingleChildScrollView(
-        controller: _horizController,
-        scrollDirection: Axis.horizontal,
+    return Expanded(
+      child: GestureDetector(
+        onDoubleTapDown: (details) {
+          final currOffset = _controller.toScene(details.localPosition);
+          final cubit = context.read<MapDetailViewCubit>();
+          final nearMap = cubit.nearArea;
+          for (var entry in nearMap.entries) {
+            for (var local in entry.value) {
+              final x = local.x;
+              final y = local.y;
+              const radius = 71.5;
+              const space = 4.0;
+              final center = local.center(x, y, radius, 30);
+              final path = local.getHexagonPath(
+                  radius: radius,
+                  space: space,
+                  center: center,
+                  borderRadius: 10.0);
+              if (path.contains(currOffset)) {
+                final dest = entry.key;
+                cubit.moveTo(dest);
+              }
+            }
+          }
+        },
         child: InteractiveViewer(
+            key: _parentsKey,
+            constrained: false,
+            transformationController: _controller,
             minScale: 0.7,
-            maxScale: 4.0,
+            maxScale: 2.0,
             child: BlocBuilder<MapDetailViewCubit, MapModel>(
-                bloc: mapDetailViewCubit,
                 builder: (context, state) {
-                  return HexagonGrid(space: 4.0, offsets: context.read());
-                })),
+              final cubit = context.read<MapDetailViewCubit>();
+              return HexagonGrid(key: _childKey, space: 4.0, offsets: [
+                ...cubit.map,
+                for (List<HexagonPosition> near in cubit.nearArea.values)
+                  ...near.map((n) => n.copy(color: const Color(0xffdbdbdb)))
+              ]);
+            })),
       ),
     );
   }
