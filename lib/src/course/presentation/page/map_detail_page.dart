@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:solo_play_application/src/course/domain/models/map_model.dart';
-import 'package:solo_play_application/src/course/presentation/bloc/map_detail_view_cubit.dart';
+import 'package:solo_play_application/src/course/presentation/cubit/map_detail_view_cubit.dart';
 import 'package:solo_play_application/src/course/presentation/view/map_detail_view.dart';
 import 'package:solo_play_application/src/course/presentation/view/map_view.dart';
 

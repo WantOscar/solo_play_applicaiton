@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:solo_play_application/src/course/presentation/bloc/main_view_cubit.dart';
+import 'package:solo_play_application/src/course/presentation/cubit/main_view_cubit.dart';
 import 'package:solo_play_application/src/course/presentation/page/map_page.dart';
 import 'package:solo_play_application/src/course/presentation/view/recommend_view.dart';
 
