@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:solo_play_application/src/main/view/recommend_view.dart';
+import 'package:solo_play_application/src/course/presentation/view/recommend_view.dart';
 
 void main() {
   late Widget widget;

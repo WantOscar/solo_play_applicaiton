@@ -122,4 +122,17 @@ class HexagonPosition {
     this.type = HexagonSectionType.top,
     this.color = const Color(0xffafafaf),
   });
+
+  HexagonPosition copy({
+    int? x,
+    int? y,
+    Color? color,
+    HexagonSectionType? type,
+  }) {
+    return HexagonPosition(
+        x: x ?? this.x,
+        y: y ?? this.y,
+        color: color ?? this.color,
+        type: type ?? this.type);
+  }
 }
