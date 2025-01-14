@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'dart:ui';
+
 import 'package:solo_play_application/src/course/presentation/widget/hexagon_grid.dart';
 
 enum MapModel {
@@ -68,5 +69,26 @@ enum MapModel {
           const HexagonPosition(x: 8, y: 3, type: HexagonSectionType.bottom),
         ];
     }
+  }
+
+  List<Path> getPaths(
+    MapModel type, {
+    required double radius,
+    required double borderRadius,
+    required double distance,
+    required double space,
+  }) {
+    final positions = getMap(type);
+    return positions.map((pos) {
+      final x = pos.x;
+      final y = pos.y;
+      final center = pos.center(x, y, radius, distance);
+      final path = pos.getHexagonPath(
+          radius: radius,
+          space: space,
+          center: center,
+          borderRadius: borderRadius);
+      return path;
+    }).toList();
   }
 }
