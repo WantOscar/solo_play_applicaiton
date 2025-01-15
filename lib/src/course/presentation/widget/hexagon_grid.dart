@@ -34,6 +34,7 @@ class HexagonGrid extends StatelessWidget {
     final width = (3 * maxOffset.dx + 4) / 2 * radius;
     final height = (2 * maxOffset.dy + 3) / 2 * radius * sqrt(3.0);
     return CustomPaint(
+      key: const Key("Hexagon_Grid_Key"),
       size: Size(width, height + distance!),
       painter: HexagonPainter(
           radius: radius,
