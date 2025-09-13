@@ -72,5 +72,19 @@ void main() {
       final textFinder = find.text('');
       expect(textFinder, findsOneWidget);
     });
+
+    testWidgets('matches golden file', (tester) async {
+      const testText = '#커피향 가득';
+      await tester.pumpWidget(MaterialApp(
+        home: Scaffold(
+          body: Center(
+            child: PrimaryTagWidget(text: testText),
+          ),
+        ),
+      ));
+
+      expect(find.byType(PrimaryTagWidget),
+          matchesGoldenFile("goldens/primary-tag-widget-default.png"));
+    });
   });
 }
