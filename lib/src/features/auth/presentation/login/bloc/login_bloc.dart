@@ -40,7 +40,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     if (result is Failure) {
       emit(state.copyWith(errorMessage: result.message));
-      emit(state.copyWith(errorMessage: ""));
     }
   }
 }

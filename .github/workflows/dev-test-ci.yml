@@ -21,7 +21,13 @@ jobs:
         with:
           flutter-version: '3.32.5' # 원하는 Flutter 버전 지정 (예: stable 최신)
 
-      # 3. 패키지 의존성 설치
+      # 3. .env 파일 생성 (GitHub Secrets 사용)
+      - name: Create .env file
+        run: echo "${{ secrets.DOTENV_CONTENT }}" > .env
+        env:
+          DOTENV_CONTENT: ${{ secrets.DOTENV_CONTENT }}
+
+      # 4. 패키지 의존성 설치
       - name: Install dependencies
         run: flutter pub get
 

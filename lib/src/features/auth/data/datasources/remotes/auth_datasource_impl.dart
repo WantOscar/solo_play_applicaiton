@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:solo_play_application/src/core/utils/networks/result.dart';
 import 'package:solo_play_application/src/core/utils/typedefs/json_map.dart';
@@ -47,7 +49,9 @@ class AuthDatasourceImpl extends AuthDatasource {
   @override
   Future<Result<String>> checkEmailDuplicate(
       CheckEmailDuplicateRequest request) {
-    return _dio.post(AuthApiPath.checkEmailDuplicate).then((response) {
+    return _dio
+        .post(AuthApiPath.checkEmailDuplicate, data: request.toJson())
+        .then((response) {
       if (response.statusCode == 200) {
         // 서버가 정상 응답을 반환 → 사용 가능한 이메일
         return Success(response.data["data"] as String);
@@ -81,7 +85,9 @@ class AuthDatasourceImpl extends AuthDatasource {
   ///
   @override
   Future<Result<Jwt>> login(LoginRequest request) {
-    return _dio.post(AuthApiPath.login).then((response) {
+    return _dio
+        .post(AuthApiPath.login, data: request.toJson())
+        .then((response) {
       if (response.statusCode == 200) {
         return Success(Jwt.fromJson(response.data['data'] as JsonMap));
       } else if (response.statusCode == 401) {

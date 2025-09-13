@@ -4,15 +4,16 @@ class PrimaryButton extends StatelessWidget {
   final Widget? activeChild;
   final Widget? child;
   final void Function()? onTap;
-  const PrimaryButton({super.key, this.activeChild, this.child, this.onTap});
+  final double height; // Added height property
+  const PrimaryButton({super.key, this.activeChild, this.child, this.onTap, this.height = 57}); // Added height to constructor with default
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: double.infinity,
-        height: 57,
+        // width: double.infinity, // Removed this line
+        height: height, // Use the height property
         decoration: BoxDecoration(
             color: onTap != null ? Color(0xff266FF7) : Color(0xffEEEEEE),
             borderRadius: BorderRadius.circular(10)),

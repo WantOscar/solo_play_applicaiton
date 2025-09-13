@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:solo_play_application/src/core/router/router_path.dart';
 
 import '../bloc/bloc.dart';
 import '../cubits/password_visibility_cubit.dart';
@@ -22,6 +24,7 @@ class LoginUI extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   LoginUiTitleSection(),
                   const SizedBox(

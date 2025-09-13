@@ -31,17 +31,15 @@ class LoginTextFieldsSection extends StatelessWidget {
         SizedBox(
           height: 6,
         ),
-        SizedBox(
-            height: 50,
-            child: PrimaryTextField(
-              onChanged: onEmailChanged,
-              key: Key("email-fields"),
-              hintText: "abc@test.com",
-              hintStyle: TextStyle(
-                  color: Color(0xffC3C3C3),
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400),
-            )),
+        PrimaryTextField(
+          onChanged: onEmailChanged,
+          key: Key("email-fields"),
+          hintText: "abc@test.com",
+          hintStyle: TextStyle(
+              color: Color(0xffC3C3C3),
+              fontSize: 16,
+              fontWeight: FontWeight.w400),
+        ),
         SizedBox(
           height: 8,
         ),
@@ -55,25 +53,23 @@ class LoginTextFieldsSection extends StatelessWidget {
         SizedBox(
           height: 6,
         ),
-        SizedBox(
-            height: 50,
-            child: PrimaryTextField(
-              suffixIcon: GestureDetector(
-                key: Key('obscure-toggle'),
-                onTap: onObscureToggle,
-                child: Icon(isObscureOn
-                    ? Icons.remove_red_eye_outlined
-                    : Icons.remove_red_eye),
-              ),
-              obscureText: isObscureOn,
-              onChanged: onPasswordChanged,
-              key: Key("password-fields"),
-              hintText: "8자 이상의 비밀번호",
-              hintStyle: TextStyle(
-                  color: Color(0xffC3C3C3),
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400),
-            )),
+        PrimaryTextField(
+          suffixIcon: GestureDetector(
+            key: Key('obscure-toggle'),
+            onTap: onObscureToggle,
+            child: Icon(isObscureOn
+                ? Icons.remove_red_eye_outlined
+                : Icons.remove_red_eye),
+          ),
+          obscureText: isObscureOn,
+          onChanged: onPasswordChanged,
+          key: Key("password-fields"),
+          hintText: "8자 이상의 비밀번호",
+          hintStyle: TextStyle(
+              color: Color(0xffC3C3C3),
+              fontSize: 16,
+              fontWeight: FontWeight.w400),
+        ),
       ],
     );
   }

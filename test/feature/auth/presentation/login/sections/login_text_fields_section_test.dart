@@ -70,13 +70,6 @@ void main() {
       expect(target.hintStyle?.fontWeight, FontWeight.w400);
     });
 
-    testWidgets('should render email text fields height 50', (tester) async {
-      await tester.pumpWidget(widget);
-      final textFieldFinder = find.byKey(Key("email-fields"));
-
-      expect(tester.getSize(textFieldFinder).height, 50);
-    });
-
     testWidgets("should render password text field hintlabel = 8자 이상의 비밀번호",
         (tester) async {
       await tester.pumpWidget(widget);
@@ -88,13 +81,6 @@ void main() {
       expect(target.hintStyle?.fontSize, 16);
       expect(target.hintStyle?.fontWeight, FontWeight.w400);
       expect(target.obscureText, true);
-    });
-
-    testWidgets('should render password text fields height 50', (tester) async {
-      await tester.pumpWidget(widget);
-      final textFieldFinder = find.byKey(Key("password-fields"));
-
-      expect(tester.getSize(textFieldFinder).height, 50);
     });
 
     testWidgets('LoginTextFieldsSection has correct spacing', (tester) async {

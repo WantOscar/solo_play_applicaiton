@@ -25,8 +25,8 @@ void main() {
         expect(backgroundFinder, findsOneWidget);
 
         final backgroundsize = tester.getSize(backgroundFinder);
-        expect(backgroundsize.width, 20.0);
-        expect(backgroundsize.height, 20.0);
+        expect(backgroundsize.width, 19.0);
+        expect(backgroundsize.height, 19.0);
 
         final background = tester.widget<Container>(backgroundFinder);
         final decoration = background.decoration as BoxDecoration;
@@ -72,8 +72,8 @@ void main() {
         expect(backgroundFinder, findsOneWidget);
 
         final backgroundsize = tester.getSize(backgroundFinder);
-        expect(backgroundsize.width, 20.0);
-        expect(backgroundsize.height, 20.0);
+        expect(backgroundsize.width, 19.0);
+        expect(backgroundsize.height, 19.0);
 
         final background = tester.widget<Container>(backgroundFinder);
         final decoration = background.decoration as BoxDecoration;

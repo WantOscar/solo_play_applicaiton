@@ -5,6 +5,7 @@ class PrimaryTextField extends TextField {
   final TextStyle? hintStyle;
   final Widget? suffixIcon;
   final Widget? suffix;
+  final bool isError;
   PrimaryTextField({
     super.key,
     this.hintText,
@@ -13,6 +14,8 @@ class PrimaryTextField extends TextField {
     super.obscureText,
     this.suffixIcon,
     this.suffix,
+    this.isError = false,
+    super.keyboardType, // Added keyboardType
   }) : super(
             decoration: InputDecoration(
                 hintText: hintText,
@@ -28,8 +31,10 @@ class PrimaryTextField extends TextField {
                 ),
                 enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
-                    borderSide:
-                        const BorderSide(width: 1.0, color: Color(0xffcacaca))),
+                    borderSide: BorderSide(
+                        width: 1.0,
+                        color:
+                            !isError ? Color(0xffcacaca) : Color(0xffff0000))),
                 suffixIcon: suffixIcon,
                 suffix: suffix));
 }

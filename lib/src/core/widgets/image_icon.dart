@@ -14,5 +14,6 @@ class ImageIconWidget extends StatelessWidget {
 }
 
 class ImageIconPath {
-  static String get eyeOff => "assets/images/eye_off_icon.png";
+  static String get eyeOff => "assets/images/eye_off.png";
+  static String get eyeOn => "assets/images/eye_on.png";
 }

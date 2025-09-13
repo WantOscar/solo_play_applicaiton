@@ -61,5 +61,22 @@ void main() {
         verify(() => userloginUsecase.call(any(), any())).called(1);
       },
     );
+
+    blocTest(
+      'should emit errorMessage when onLoginButtonTaped is added and return failure',
+      build: () => loginBloc,
+      act: (bloc) {
+        // given
+        when(() => userloginUsecase.call(any(), any()))
+            .thenAnswer((_) async => const Failure("some error occured!"));
+
+        // when
+        loginBloc.add(LoginButtonTap());
+      },
+      expect: () => [LoginState(errorMessage: "some error occured!")],
+      verify: (_) {
+        verify(() => userloginUsecase.call(any(), any())).called(1);
+      },
+    );
   });
 }

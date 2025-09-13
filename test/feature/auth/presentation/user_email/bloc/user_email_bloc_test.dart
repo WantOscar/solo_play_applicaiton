@@ -11,6 +11,7 @@ class MockCheckEmailDuplicateUsecase extends Mock
 void main() {
   group(UserEmailBloc, () {
     final email = "test@test.com";
+    final invalidEmail = "testcom";
 
     late MockCheckEmailDuplicateUsecase checkEmailDuplicateUsecase;
 
@@ -24,13 +25,23 @@ void main() {
     test('should return initial state correctly', () {
       expect(userEmailBloc.state.email.isEmpty, true);
       expect(userEmailBloc.state.errorMessage.isEmpty, true);
-      expect(userEmailBloc.state.isAvail, false);
+      expect(userEmailBloc.state.status, UserEmailStatus.empty);
     });
 
-    blocTest('emits with new email when UserEmailChanged added',
+    blocTest(
+        'emits with new email and valid status when UserEmailChanged added',
         build: () => userEmailBloc,
         act: (bloc) => bloc.add(UserEmailChanged(email: email)),
-        expect: () => [UserEmailState(email: email)]);
+        expect: () =>
+            [UserEmailState(email: email, status: UserEmailStatus.valid)]);
+
+    blocTest('emits with new email and invalid when UserEmailChanged added',
+        build: () => userEmailBloc,
+        act: (bloc) => bloc.add(UserEmailChanged(email: invalidEmail)),
+        expect: () => [
+              UserEmailState(
+                  email: invalidEmail, status: UserEmailStatus.invalid)
+            ]);
 
     blocTest(
         'emits state with email and success message when UserEmailCheckDuplicate is added and usecase succeeds',
@@ -43,7 +54,7 @@ void main() {
         act: (bloc) {
           bloc.add(UserEmailCheckDuplicate(email: email));
         },
-        expect: () => [UserEmailState(isAvail: true)],
+        expect: () => [UserEmailState(status: UserEmailStatus.avail)],
         verify: (_) {
           verify(
             () => checkEmailDuplicateUsecase.call(email),
@@ -59,8 +70,10 @@ void main() {
         return userEmailBloc;
       },
       act: (bloc) => bloc.add(UserEmailCheckDuplicate(email: email)),
-      expect: () =>
-          [UserEmailState(isAvail: false, errorMessage: "이미 있는 아이디에요.")],
+      expect: () => [
+        UserEmailState(
+            status: UserEmailStatus.conflict, errorMessage: "이미 있는 아이디에요.")
+      ],
       verify: (_) {
         verify(
           () => checkEmailDuplicateUsecase.call(email),

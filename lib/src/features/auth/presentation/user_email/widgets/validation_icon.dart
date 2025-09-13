@@ -8,8 +8,8 @@ class ValidationIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       constraints: BoxConstraints(
-        maxWidth: 20,
-        maxHeight: 20,
+        maxWidth: 19,
+        maxHeight: 19,
       ),
       decoration: BoxDecoration(
           color: isValid ? Color(0xff008C15) : Color(0xffff0000),
@@ -17,10 +17,9 @@ class ValidationIcon extends StatelessWidget {
       alignment: Alignment.center,
       child: Icon(
         isValid ? Icons.check_rounded : Icons.close_rounded,
-        size: 10,
+        size: 15.0,
         color: Color(0xffffffff),
       ),
     );
   }
 }
-

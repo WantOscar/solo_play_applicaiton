@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:solo_play_application/src/core/router/router_path.dart';
 
 import '../bloc/bloc.dart';
 import '../sections/sections.dart';
@@ -21,35 +23,41 @@ class UserAgreementUI extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             // 상단 타이틀 섹션영역
-            UserAgreementUiTitleSection(),
-            SizedBox(
-              height: 37,
-            ),
-            //
-            BlocBuilder<UserAgreementBloc, UserAgreementState>(
-              builder: (context, state) {
-                final bloc = context.read<UserAgreementBloc>();
-                final agreement = state.agreement;
-                return UserAgreementUiTermsSection(
-                  isAllAgree: agreement.isAllAgree,
-                  isOver14: agreement.isOver14,
-                  isAgreedToTerms: agreement.isAgreedToTerms,
-                  isAgreedToMarketing: agreement.isAgreedToMarketing,
-                  isConsentedToAds: agreement.isConsentedToAds,
-                  onIsAllagreeTap: () => bloc.add(UserAgreementAllAgree()),
-                  onIsOver14Tap: () => bloc.add(UserAgreementIsOver14Toggled(
-                      isAgree: !agreement.isOver14)),
-                  onIsAgreedToTermsTap: () => bloc.add(
-                      UserAgreementIsAgreedToTermsTogged(
-                          isAgree: !agreement.isAgreedToTerms)),
-                  onIsAgreedToMarketingTap: () => bloc.add(
-                      UserAgreementIsAgreedToMarketingToggled(
-                          isAgree: !agreement.isAgreedToMarketing)),
-                  onisConsentedToAdsTap: () => bloc.add(
-                      UserAgreementIsConsentedToAdsToggled(
-                          isAgree: !agreement.isConsentedToAds)),
-                );
-              },
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                UserAgreementUiTitleSection(),
+                SizedBox(
+                  height: 37,
+                ),
+                //
+                BlocBuilder<UserAgreementBloc, UserAgreementState>(
+                  builder: (context, state) {
+                    final bloc = context.read<UserAgreementBloc>();
+                    final agreement = state.agreement;
+                    return UserAgreementUiTermsSection(
+                      isAllAgree: agreement.isAllAgree,
+                      isOver14: agreement.isOver14,
+                      isAgreedToTerms: agreement.isAgreedToTerms,
+                      isAgreedToMarketing: agreement.isAgreedToMarketing,
+                      isConsentedToAds: agreement.isConsentedToAds,
+                      onIsAllagreeTap: () => bloc.add(UserAgreementAllAgree()),
+                      onIsOver14Tap: () => bloc.add(
+                          UserAgreementIsOver14Toggled(
+                              isAgree: !agreement.isOver14)),
+                      onIsAgreedToTermsTap: () => bloc.add(
+                          UserAgreementIsAgreedToTermsTogged(
+                              isAgree: !agreement.isAgreedToTerms)),
+                      onIsAgreedToMarketingTap: () => bloc.add(
+                          UserAgreementIsAgreedToMarketingToggled(
+                              isAgree: !agreement.isAgreedToMarketing)),
+                      onisConsentedToAdsTap: () => bloc.add(
+                          UserAgreementIsConsentedToAdsToggled(
+                              isAgree: !agreement.isConsentedToAds)),
+                    );
+                  },
+                ),
+              ],
             ),
 
             Column(
@@ -61,7 +69,11 @@ class UserAgreementUI extends StatelessWidget {
                 BlocBuilder<UserAgreementBloc, UserAgreementState>(
                   builder: (context, state) {
                     return UserAgreementUiButtonSection(
-                      onTap: state.agreement.isUserAgree ? () {} : null,
+                      onTap: state.agreement.isUserAgree
+                          ? () {
+                              context.push(RouterPath.registerEmail);
+                            }
+                          : null,
                     );
                   },
                 ),
