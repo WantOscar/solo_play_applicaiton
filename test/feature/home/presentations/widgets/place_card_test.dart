@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:solo_play_application/src/core/widgets/primary_badge_widget.dart';
 import 'package:solo_play_application/src/features/home/presentation/widgets/place_card.dart';
-import 'package:solo_play_application/src/features/rank/presentation/widget/tag_widget.dart';
+import 'package:solo_play_application/src/features/rank/presentation/widget/primary_tag_widget.dart';
 
 void main() {
   group(PlaceCard, () {
@@ -56,7 +56,7 @@ void main() {
       expect(primaryBadgeWidgetFinder, findsOneWidget);
 
       /// tag widget 존재 검증
-      final tagWidgetFinder = find.byType(TagWidget);
+      final tagWidgetFinder = find.byType(PrimaryTagWidget);
       expect(tagWidgetFinder, findsWidgets);
     });
   });

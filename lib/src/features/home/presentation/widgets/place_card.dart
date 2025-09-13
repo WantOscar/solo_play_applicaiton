@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:solo_play_application/src/core/widgets/primary_badge_widget.dart';
-import 'package:solo_play_application/src/features/rank/presentation/widget/tag_widget.dart';
+import 'package:solo_play_application/src/features/rank/presentation/widget/primary_tag_widget.dart';
 
 class PlaceCard extends StatelessWidget {
   final Widget? thumNail;
@@ -58,9 +58,9 @@ class PlaceCard extends StatelessWidget {
                 children: [
                   PrimaryBadgeWidget(text: "용산구", horizontal: 8, vertical: 3),
                   SizedBox(width: 4),
-                  TagWidget(text: '#커피향 가득'),
+                  PrimaryTagWidget(text: '#커피향 가득'),
                   SizedBox(width: 4),
-                  TagWidget(text: '#스웨덴커피'),
+                  PrimaryTagWidget(text: '#스웨덴커피'),
                 ],
               ),
             ],
