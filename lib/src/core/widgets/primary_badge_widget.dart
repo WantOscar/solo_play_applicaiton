@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 
 class PrimaryBadgeWidget extends StatelessWidget {
-  final String? text;
+  final String text;
   final double? horizontal;
   final double? vertical;
-  const PrimaryBadgeWidget(
-      {super.key, this.text, this.horizontal, this.vertical});
+  const PrimaryBadgeWidget({
+    super.key,
+    required this.text,
+    this.horizontal,
+    this.vertical,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +22,7 @@ class PrimaryBadgeWidget extends StatelessWidget {
         padding: EdgeInsets.symmetric(
             horizontal: horizontal ?? 0.0, vertical: vertical ?? 0.0),
         child: Text(
-          text ?? "",
+          text,
           style: TextStyle(
             fontSize: 10,
             fontStyle: FontStyle.normal,
