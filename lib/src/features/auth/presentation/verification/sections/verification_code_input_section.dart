@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:solo_play_application/src/core/widgets/primary_text_field.dart';
 import 'package:solo_play_application/src/features/auth/presentation/verification/cubits/verification_code_cubit.dart';
@@ -23,10 +24,15 @@ class VerificationCodeInputSection extends StatelessWidget {
         const SizedBox(height: 6),
         PrimaryTextField(
           hintText: '123456',
-          keyboardType: TextInputType.numberWithOptions(),
+          keyboardType: const TextInputType.numberWithOptions(),
+          maxLength: 6,
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           onChanged: (code) {
             // 사용자의 입력에 따라서 입력 인증 코드 갱신
             context.read<VerificationCodeCubit>().updateCode(code);
+            if (code.length == 6) {
+              FocusScope.of(context).unfocus();
+            }
           },
         ),
         const SizedBox(height: 6),

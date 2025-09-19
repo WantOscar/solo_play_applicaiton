@@ -101,5 +101,54 @@ void main() {
         matchesGoldenFile('goldens/verification_code_input_section.png'),
       );
     });
+
+    testWidgets('should unfocus when code length reaches 6',
+        (WidgetTester tester) async {
+      // Arrange
+      whenListen(mockVerificationCodeCubit, Stream.fromIterable(['']),
+          initialState: '');
+      whenListen(mockTimerBloc, Stream.fromIterable([const TimerInitial(600)]),
+          initialState: const TimerInitial(600));
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: MultiBlocProvider(
+              providers: [
+                BlocProvider<VerificationCodeCubit>.value(
+                  value: mockVerificationCodeCubit,
+                ),
+                BlocProvider<TimerBloc>.value(
+                  value: mockTimerBloc,
+                ),
+              ],
+              child: const VerificationCodeInputSection(),
+            ),
+          ),
+        ),
+      );
+
+      final textFieldFinder = find.byType(PrimaryTextField);
+      expect(textFieldFinder, findsOneWidget);
+
+      // Give focus to the text field
+      await tester.tap(textFieldFinder);
+      await tester.pump();
+
+      // Get the focus node of the text field
+      final focusNode = FocusManager.instance.primaryFocus;
+      expect(focusNode, isNotNull);
+      expect(focusNode?.hasFocus, isTrue);
+
+      // Act: Enter 6 characters
+      await tester.enterText(textFieldFinder, '123456');
+      await tester.pump();
+
+      // Assert: Cubit is updated
+      verify(() => mockVerificationCodeCubit.updateCode('123456')).called(1);
+
+      // Assert: The text field should have lost focus
+      expect(focusNode?.hasFocus, isFalse);
+    });
   });
 }

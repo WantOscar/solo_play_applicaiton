@@ -83,6 +83,21 @@ void main() {
       expect(hintFinder, findsOneWidget);
     });
 
+    testWidgets('should handle controller property', (tester) async {
+      final controller = TextEditingController(text: 'initial text');
+      final widget = MaterialApp(
+        home: Scaffold(
+          body: PrimaryTextField(
+            controller: controller,
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(widget);
+
+      expect(find.text('initial text'), findsOneWidget);
+    });
+
     testWidgets('should render correctly when isError true', (tester) async {
       final widget = MaterialApp(
         home: Scaffold(

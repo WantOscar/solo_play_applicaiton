@@ -7,7 +7,7 @@ import 'package:solo_play_application/src/features/auth/data/repositories/auth_r
 import 'package:solo_play_application/src/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:solo_play_application/src/features/auth/presentation/bloc/auth_event.dart';
 import 'package:solo_play_application/src/features/auth/presentation/login/page/login_page.dart';
-import 'package:solo_play_application/src/features/auth/presentation/register/views/register_flow.dart';
+import 'package:solo_play_application/src/features/auth/presentation/register/pages/register_flow.dart';
 import 'package:solo_play_application/src/features/auth/presentation/register_complete/views/register_complete_ui.dart';
 import 'package:solo_play_application/src/features/auth/presentation/register_password/page/register_password_page.dart';
 import 'package:solo_play_application/src/features/auth/presentation/user_agreement/page/user_agreement_page.dart';

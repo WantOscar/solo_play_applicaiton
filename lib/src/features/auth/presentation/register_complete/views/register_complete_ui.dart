@@ -7,15 +7,17 @@ class RegisterCompleteUi extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 62.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
-          RegisterCompleteHeader(),
-          RegisterCompleteButtonSection(),
-        ],
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 62.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            RegisterCompleteHeader(),
+            RegisterCompleteButtonSection(),
+          ],
+        ),
       ),
     );
   }

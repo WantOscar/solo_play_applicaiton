@@ -5,17 +5,25 @@ import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:solo_play_application/src/core/router/router_path.dart';
 import 'package:solo_play_application/src/core/widgets/next_step_button.dart';
+import 'package:solo_play_application/src/features/auth/presentation/register/bloc/register_bloc.dart';
+import 'package:solo_play_application/src/features/auth/presentation/register/bloc/register_event.dart';
+import 'package:solo_play_application/src/features/auth/presentation/register/bloc/register_state.dart';
 import 'package:solo_play_application/src/features/auth/presentation/user_email/blocs/bloc.dart';
 import 'package:solo_play_application/src/features/auth/presentation/user_email/sections/sections.dart';
+import 'package:bloc_test/bloc_test.dart';
 
 import 'register_email_validate_text_view_test.dart';
 
 class MockGoRouter extends Mock implements GoRouter {}
 
+class MockRegisterBloc extends MockBloc<RegisterEvent, RegisterState>
+    implements RegisterBloc {}
+
 void main() {
   setUpAll(() {
     registerFallbackValue(const UserEmailChanged(email: ''));
     registerFallbackValue(const UserEmailCheckDuplicate(email: ''));
+    registerFallbackValue(const UpdateEmail(email: ''));
   });
   group(RegisterEmailButtonView, () {
     late MockUserEmailBloc mockUserEmailBloc;
@@ -100,6 +108,7 @@ void main() {
       // Given
       mockUserEmailBloc = MockUserEmailBloc();
       final mockGoRouter = MockGoRouter();
+      final mockRegisterBloc = MockRegisterBloc();
 
       when(() => mockUserEmailBloc.stream).thenAnswer(
         (_) => Stream.fromIterable([
@@ -111,12 +120,26 @@ void main() {
         status: UserEmailStatus.valid,
       ));
       when(() => mockGoRouter.push(any())).thenAnswer((_) async => null);
+      when(() => mockRegisterBloc.add(any())).thenReturn(null);
+
+      whenListen(
+        mockRegisterBloc,
+        Stream.fromIterable([const RegisterState()]),
+        initialState: const RegisterState(),
+      );
 
       widget = MaterialApp(
         home: InheritedGoRouter(
           goRouter: mockGoRouter,
-          child: BlocProvider<UserEmailBloc>.value(
-            value: mockUserEmailBloc,
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider<UserEmailBloc>.value(
+                value: mockUserEmailBloc,
+              ),
+              BlocProvider<RegisterBloc>.value(
+                value: mockRegisterBloc,
+              ),
+            ],
             child: const Scaffold(
               body: Center(
                 child: RegisterEmailButtonView(),
@@ -130,6 +153,7 @@ void main() {
 
       // Then
       verify(() => mockGoRouter.push(RouterPath.registerPassword)).called(1);
+      verify(() => mockRegisterBloc.add(any(that: isA<UpdateEmail>())));
     });
   });
 }

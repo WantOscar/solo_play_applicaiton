@@ -12,7 +12,9 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: ResendEmailSection(),
+            body: ResendEmailSection(
+              email: 'test@test.com',
+            ),
           ),
         ),
       );
