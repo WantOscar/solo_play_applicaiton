@@ -66,7 +66,7 @@ void main() {
     testWidgets('matches golden file', (tester) async {
       await tester.pumpWidget(widget);
       expect(find.byType(PrimaryBadgeWidget),
-          matchesGoldenFile("goldens/primary-badge-widget-defalut.png"));
+          matchesGoldenFile("goldens/primary-badge-widget-default.png"));
     });
   });
 }

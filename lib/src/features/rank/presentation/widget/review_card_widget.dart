@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:solo_play_application/src/core/widgets/profile_image_widget.dart';
-import 'package:solo_play_application/src/features/rank/presentation/widget/tag_widget.dart';
+import 'package:solo_play_application/src/features/rank/presentation/widget/primary_tag_widget.dart';
 
 class ReviewCardWidget extends StatelessWidget {
   const ReviewCardWidget({super.key});
@@ -83,7 +83,7 @@ class ReviewCardWidget extends StatelessWidget {
                       (index) {
                         return const Padding(
                           padding: EdgeInsets.only(right: 4.0),
-                          child: TagWidget(text: '#커피향 가득'),
+                          child: PrimaryTagWidget(text: '#커피향 가득'),
                         );
                       },
                     ),

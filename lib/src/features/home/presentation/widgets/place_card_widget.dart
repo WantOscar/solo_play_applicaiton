@@ -1,11 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:solo_play_application/src/core/widgets/primary_badge_widget.dart';
-import 'package:solo_play_application/src/features/rank/presentation/widget/tag_widget.dart';
+import 'package:solo_play_application/src/features/rank/presentation/widget/primary_tag_widget.dart';
 
-class PlaceCard extends StatelessWidget {
-  final Widget? thumNail;
+class PlaceCardWidget extends StatelessWidget {
+  final Widget thumNail;
+  final String title;
+  final String content;
+  final String badgeText;
+  final List<String>? tags;
 
-  const PlaceCard({super.key, this.thumNail});
+  const PlaceCardWidget({
+    super.key,
+    required this.thumNail,
+    required this.title,
+    required this.content,
+    required this.badgeText,
+    this.tags,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +24,7 @@ class PlaceCard extends StatelessWidget {
       children: [
         /// card의 이미지 영역
         Container(
-          key: Key('place_thumbnail_container'),
+          // key: Key('place_thumbnail_container'),
           height: 131,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
@@ -35,7 +46,8 @@ class PlaceCard extends StatelessWidget {
             children: [
               /// card의 title 영역
               Text(
-                '도심 속 조용한 로스터리 카페',
+                // '도심 속 조용한 로스터리 카페',
+                title,
                 style: TextStyle(
                     fontSize: 14,
                     fontStyle: FontStyle.normal,
@@ -45,7 +57,8 @@ class PlaceCard extends StatelessWidget {
 
               /// card의 content 영역
               Text(
-                '머큐리에스프레소바',
+                // '머큐리에스프레소바',
+                content,
                 style: TextStyle(
                     fontSize: 12,
                     fontStyle: FontStyle.normal,
@@ -56,11 +69,21 @@ class PlaceCard extends StatelessWidget {
               /// card의 label text 영역(위치 구, # 태그)
               Row(
                 children: [
-                  PrimaryBadgeWidget(text: "용산구", horizontal: 8, vertical: 3),
+                  PrimaryBadgeWidget(
+                    // text: "용산구",
+                    text: badgeText,
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
                   SizedBox(width: 4),
-                  TagWidget(text: '#커피향 가득'),
-                  SizedBox(width: 4),
-                  TagWidget(text: '#스웨덴커피'),
+                  ...(tags ?? []).map(
+                    (t) => Padding(
+                      padding: const EdgeInsets.only(right: 4.0),
+                      child: PrimaryTagWidget(
+                        text: t,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ],
