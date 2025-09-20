@@ -9,6 +9,8 @@ abstract class AuthRepository {
 
   Future<Result<void>> login(LoginInfo login);
 
+  Future<Result<String>> sendVerificationEmail(String email);
+
   Future<void> logout();
 
   Future<String?> getAccessToken();

@@ -5,6 +5,7 @@ import 'package:solo_play_application/src/core/utils/networks/result.dart';
 import 'package:solo_play_application/src/features/auth/data/datasources/locals/jwt_storage.dart';
 import 'package:solo_play_application/src/features/auth/data/datasources/remotes/auth_datasource.dart';
 import 'package:solo_play_application/src/features/auth/data/models/check_email_duplicate.dart';
+import 'package:solo_play_application/src/features/auth/data/models/email_verification_request.dart';
 import 'package:solo_play_application/src/features/auth/data/models/jwt.dart';
 import 'package:solo_play_application/src/features/auth/data/models/login.dart';
 import 'package:solo_play_application/src/features/auth/data/repositories/auth_repository_impl.dart';
@@ -200,6 +201,40 @@ void main() {
         ).called(1);
 
         expect(accessToken, isNull);
+      });
+    });
+
+    group('when called sendVerificationEmail', () {
+      test('should return correctly when success', () async {
+        final email = "test@test.com";
+        final request = EmailVerificationRequest(email: email);
+        when(
+          () => mockAuthDatasource.sendVerificationEmail(request),
+        ).thenAnswer((_) async => Success('message'));
+
+        final result = await authRepository.sendVerificationEmail(email);
+
+        verify(
+          () => mockAuthDatasource.sendVerificationEmail(request),
+        ).called(1);
+
+        expect(result, isA<Success>());
+      });
+
+      test('should return correctly when failure', () async {
+        final email = "test@test.com";
+        final request = EmailVerificationRequest(email: email);
+        when(
+          () => mockAuthDatasource.sendVerificationEmail(request),
+        ).thenAnswer((_) async => Failure('error'));
+
+        final result = await authRepository.sendVerificationEmail(email);
+
+        verify(
+          () => mockAuthDatasource.sendVerificationEmail(request),
+        ).called(1);
+
+        expect(result, isA<Failure>());
       });
     });
   });
