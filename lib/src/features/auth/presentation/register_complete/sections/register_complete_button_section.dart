@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:solo_play_application/src/core/widgets/primary_button.dart';
 
 class RegisterCompleteButtonSection extends StatelessWidget {
@@ -8,7 +9,8 @@ class RegisterCompleteButtonSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return PrimaryButton(
       onTap: () {
-        // TODO: Implement navigation or action for "시작하기" button
+        // 회원가입 API
+        context.pop();
       },
       child: Text(
         '시작하기',

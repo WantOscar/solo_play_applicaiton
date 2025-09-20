@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:solo_play_application/src/core/router/router.dart';
+import 'package:solo_play_application/src/core/style/app_theme.dart';
 import 'package:solo_play_application/src/core/utils/networks/logging_interceptor.dart';
 import 'package:solo_play_application/src/core/utils/observers/bloc_observer.dart';
 import 'package:solo_play_application/src/features/auth/data/datasources/locals/jwt_storage.dart';
@@ -65,13 +66,7 @@ class MyApp extends StatelessWidget {
         child: Builder(builder: (context) {
           return MaterialApp.router(
             debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-                useMaterial3: false,
-                scaffoldBackgroundColor: Color(0xffffffff),
-                appBarTheme: AppBarTheme(
-                    foregroundColor: Color(0xff000000),
-                    backgroundColor: Color(0xffffffff),
-                    elevation: 0.0)),
+            theme: appTheme,
             routerConfig: router(context.read<AuthBloc>()),
           );
         }));

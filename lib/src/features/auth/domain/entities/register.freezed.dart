@@ -15,6 +15,7 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$Register {
+  bool get termsAgreed;
   String get email;
   String get password;
   UserAgreement get userAgreement;
@@ -31,6 +32,8 @@ mixin _$Register {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is Register &&
+            (identical(other.termsAgreed, termsAgreed) ||
+                other.termsAgreed == termsAgreed) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.password, password) ||
                 other.password == password) &&
@@ -39,11 +42,12 @@ mixin _$Register {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, email, password, userAgreement);
+  int get hashCode =>
+      Object.hash(runtimeType, termsAgreed, email, password, userAgreement);
 
   @override
   String toString() {
-    return 'Register(email: $email, password: $password, userAgreement: $userAgreement)';
+    return 'Register(termsAgreed: $termsAgreed, email: $email, password: $password, userAgreement: $userAgreement)';
   }
 }
 
@@ -52,7 +56,11 @@ abstract mixin class $RegisterCopyWith<$Res> {
   factory $RegisterCopyWith(Register value, $Res Function(Register) _then) =
       _$RegisterCopyWithImpl;
   @useResult
-  $Res call({String email, String password, UserAgreement userAgreement});
+  $Res call(
+      {bool termsAgreed,
+      String email,
+      String password,
+      UserAgreement userAgreement});
 
   $UserAgreementCopyWith<$Res> get userAgreement;
 }
@@ -69,11 +77,16 @@ class _$RegisterCopyWithImpl<$Res> implements $RegisterCopyWith<$Res> {
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? termsAgreed = null,
     Object? email = null,
     Object? password = null,
     Object? userAgreement = null,
   }) {
     return _then(_self.copyWith(
+      termsAgreed: null == termsAgreed
+          ? _self.termsAgreed
+          : termsAgreed // ignore: cast_nullable_to_non_nullable
+              as bool,
       email: null == email
           ? _self.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -104,10 +117,14 @@ class _$RegisterCopyWithImpl<$Res> implements $RegisterCopyWith<$Res> {
 
 class _Register implements Register {
   const _Register(
-      {this.email = "",
+      {this.termsAgreed = false,
+      this.email = "",
       this.password = "",
       this.userAgreement = const UserAgreement()});
 
+  @override
+  @JsonKey()
+  final bool termsAgreed;
   @override
   @JsonKey()
   final String email;
@@ -131,6 +148,8 @@ class _Register implements Register {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Register &&
+            (identical(other.termsAgreed, termsAgreed) ||
+                other.termsAgreed == termsAgreed) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.password, password) ||
                 other.password == password) &&
@@ -139,11 +158,12 @@ class _Register implements Register {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, email, password, userAgreement);
+  int get hashCode =>
+      Object.hash(runtimeType, termsAgreed, email, password, userAgreement);
 
   @override
   String toString() {
-    return 'Register(email: $email, password: $password, userAgreement: $userAgreement)';
+    return 'Register(termsAgreed: $termsAgreed, email: $email, password: $password, userAgreement: $userAgreement)';
   }
 }
 
@@ -154,7 +174,11 @@ abstract mixin class _$RegisterCopyWith<$Res>
       __$RegisterCopyWithImpl;
   @override
   @useResult
-  $Res call({String email, String password, UserAgreement userAgreement});
+  $Res call(
+      {bool termsAgreed,
+      String email,
+      String password,
+      UserAgreement userAgreement});
 
   @override
   $UserAgreementCopyWith<$Res> get userAgreement;
@@ -172,11 +196,16 @@ class __$RegisterCopyWithImpl<$Res> implements _$RegisterCopyWith<$Res> {
   @override
   @pragma('vm:prefer-inline')
   $Res call({
+    Object? termsAgreed = null,
     Object? email = null,
     Object? password = null,
     Object? userAgreement = null,
   }) {
     return _then(_Register(
+      termsAgreed: null == termsAgreed
+          ? _self.termsAgreed
+          : termsAgreed // ignore: cast_nullable_to_non_nullable
+              as bool,
       email: null == email
           ? _self.email
           : email // ignore: cast_nullable_to_non_nullable

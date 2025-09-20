@@ -17,7 +17,8 @@ class VerificationEmailPage extends StatelessWidget {
           create: (context) => VerificationCodeCubit(),
         ),
         BlocProvider<TimerBloc>(
-          create: (context) => TimerBloc(ticker: Ticker()),
+          create: (context) =>
+              TimerBloc(ticker: Ticker())..add(TimerStarted(duration: 600)),
         ),
       ],
       child: const VerificationEmailUi(), // Use the new view widget

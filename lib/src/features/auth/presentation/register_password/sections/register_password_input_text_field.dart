@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:solo_play_application/src/core/widgets/image_icon.dart';
 import 'package:solo_play_application/src/core/widgets/primary_text_field.dart';
 import 'package:solo_play_application/src/features/auth/presentation/register_password/blocs/bloc.dart';
+import 'package:solo_play_application/src/features/auth/presentation/register_password/widgets/password_check_validate_text.dart';
 import 'package:solo_play_application/src/features/auth/presentation/register_password/widgets/password_validate_text.dart';
 
 class RegisterPasswordInputTextField extends StatelessWidget {
@@ -86,7 +87,7 @@ class RegisterPasswordInputTextField extends StatelessWidget {
             return state.isAvail;
           },
           builder: (context, isAvail) {
-            return PasswordValidateText(
+            return PasswordCheckValidateText(
               isValid: isAvail,
             );
           },

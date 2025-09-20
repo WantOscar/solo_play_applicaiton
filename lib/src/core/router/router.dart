@@ -7,10 +7,13 @@ import 'package:solo_play_application/src/features/auth/data/repositories/auth_r
 import 'package:solo_play_application/src/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:solo_play_application/src/features/auth/presentation/bloc/auth_event.dart';
 import 'package:solo_play_application/src/features/auth/presentation/login/page/login_page.dart';
-import 'package:solo_play_application/src/features/auth/presentation/register/views/register_flow.dart';
+import 'package:solo_play_application/src/features/auth/presentation/register/pages/register_flow.dart';
+import 'package:solo_play_application/src/features/auth/presentation/register_complete/views/register_complete_ui.dart';
 import 'package:solo_play_application/src/features/auth/presentation/register_password/page/register_password_page.dart';
 import 'package:solo_play_application/src/features/auth/presentation/user_agreement/page/user_agreement_page.dart';
 import 'package:solo_play_application/src/features/auth/presentation/user_email/page/register_email_page.dart';
+import 'package:solo_play_application/src/features/auth/presentation/verification/pages/verification_email_page.dart';
+import 'package:solo_play_application/src/features/auth/presentation/verification/views/verification_intro_ui.dart';
 
 GoRouter router(AuthBloc authBloc) {
   final GlobalKey<NavigatorState> rootNavigatorKey =
@@ -82,6 +85,21 @@ GoRouter router(AuthBloc authBloc) {
               name: RouterPath.registerPassword,
               path: RouterPath.registerPassword,
               builder: (context, state) => RegisterPasswordPage(),
+            ),
+            GoRoute(
+              name: RouterPath.verificationIntro,
+              path: RouterPath.verificationIntro,
+              builder: (context, state) => VerificationIntroUI(),
+            ),
+            GoRoute(
+              name: RouterPath.verficationEmail,
+              path: RouterPath.verficationEmail,
+              builder: (context, state) => VerificationEmailPage(),
+            ),
+            GoRoute(
+              name: RouterPath.verificationComplete,
+              path: RouterPath.verificationComplete,
+              builder: (context, state) => RegisterCompleteUi(),
             ),
           ]),
     ],

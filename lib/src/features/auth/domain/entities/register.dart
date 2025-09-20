@@ -5,8 +5,10 @@ part 'register.freezed.dart';
 
 @freezed
 abstract class Register with _$Register {
-  const factory Register(
-      {@Default("") String email,
-      @Default("") String password,
-      @Default(UserAgreement()) UserAgreement userAgreement}) = _Register;
+  const factory Register({
+    @Default(false) bool termsAgreed,
+    @Default("") String email,
+    @Default("") String password,
+    @Default(UserAgreement()) UserAgreement userAgreement,
+  }) = _Register;
 }

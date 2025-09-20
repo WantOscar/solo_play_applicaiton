@@ -15,13 +15,17 @@ class PrimaryTextField extends TextField {
     this.suffixIcon,
     this.suffix,
     this.isError = false,
-    super.keyboardType, // Added keyboardType
+    super.keyboardType,
+    super.maxLength,
+    super.inputFormatters,
+    super.controller,
   }) : super(
             decoration: InputDecoration(
+                counterText: '',
                 hintText: hintText,
                 hintStyle: hintStyle,
                 contentPadding:
-                    EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+                    const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
                 isDense: true,
                 isCollapsed: true,
                 focusedBorder: OutlineInputBorder(
@@ -33,8 +37,9 @@ class PrimaryTextField extends TextField {
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide(
                         width: 1.0,
-                        color:
-                            !isError ? Color(0xffcacaca) : Color(0xffff0000))),
+                        color: !isError
+                            ? const Color(0xffcacaca)
+                            : const Color(0xffff0000))),
                 suffixIcon: suffixIcon,
                 suffix: suffix));
 }

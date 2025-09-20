@@ -5,4 +5,7 @@ class RouterPath {
   static String get registerTerms => "/register/terms";
   static String get registerEmail => "/register/email";
   static String get registerPassword => "/register/password";
+  static String get verificationIntro => "/register/verification-intro";
+  static String get verficationEmail => "/register/verification-email";
+  static String get verificationComplete => "/register/verification-complete";
 }

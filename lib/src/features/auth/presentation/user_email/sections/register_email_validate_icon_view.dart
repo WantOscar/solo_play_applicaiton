@@ -20,7 +20,10 @@ class RegisterEmailValidateIconView extends StatelessWidget {
 
         // 이메일이 입력되어 있으면 ValidationIcon 보여줌
         return ValidationIcon(
-          isValid: status == UserEmailStatus.valid ? true : false,
+          isValid:
+              status == UserEmailStatus.valid || status == UserEmailStatus.avail
+                  ? true
+                  : false,
         );
       },
     );

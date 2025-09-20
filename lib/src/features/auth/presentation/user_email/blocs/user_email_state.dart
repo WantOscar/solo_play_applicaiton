@@ -16,7 +16,6 @@ class UserEmailState extends Equatable {
   UserEmailState copyWith({
     String? email,
     String? errorMessage,
-    bool? isAvail,
     UserEmailStatus? status,
   }) {
     return UserEmailState(
@@ -26,8 +25,5 @@ class UserEmailState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [
-        email,
-        errorMessage,
-      ];
+  List<Object?> get props => [email, errorMessage, status];
 }

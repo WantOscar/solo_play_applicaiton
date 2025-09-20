@@ -6,6 +6,7 @@ import 'package:solo_play_application/src/core/widgets/image_icon.dart';
 import 'package:solo_play_application/src/core/widgets/primary_text_field.dart';
 import 'package:solo_play_application/src/features/auth/presentation/register_password/blocs/bloc.dart';
 import 'package:solo_play_application/src/features/auth/presentation/register_password/sections/sections.dart';
+import 'package:solo_play_application/src/features/auth/presentation/register_password/widgets/password_check_validate_text.dart';
 import 'package:solo_play_application/src/features/auth/presentation/register_password/widgets/password_validate_text.dart';
 
 import '../mocks/mock_register_password_bloc.dart';
@@ -43,8 +44,14 @@ void main() {
           reason: '힌트 텍스트가 두 개 모두 표시되어야 함');
       expect(find.byType(ImageIconWidget), findsNWidgets(2),
           reason: '각 텍스트 필드마다 eye 아이콘이 존재해야 함');
-      expect(find.byType(PasswordValidateText), findsNWidgets(2),
-          reason: 'PasswordValidateText가 두 번 렌더링 되어야 함');
+      expect(
+        find.byType(PasswordValidateText),
+        findsOneWidget,
+      );
+      expect(
+        find.byType(PasswordCheckValidateText),
+        findsOneWidget,
+      );
     });
 
     testWidgets('obscure toggle button is tappable', (tester) async {

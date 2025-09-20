@@ -9,7 +9,7 @@ import 'package:solo_play_application/src/features/auth/presentation/register_pa
 import '../mocks/mock_register_password_bloc.dart';
 
 void main() {
-  group('ResisterPasswordUI', () {
+  group(RegisterPasswordUI, () {
     late MockRegisterPasswordBloc mockBloc;
     late Widget widget;
 
@@ -20,7 +20,7 @@ void main() {
       widget = MaterialApp(
         home: BlocProvider<RegisterPasswordBloc>.value(
           value: mockBloc,
-          child: RegisterPasswordUI(),
+          child: Scaffold(body: RegisterPasswordUI()),
         ),
       );
     });

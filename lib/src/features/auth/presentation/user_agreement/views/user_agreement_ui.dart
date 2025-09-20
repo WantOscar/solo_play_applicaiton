@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:solo_play_application/src/core/router/router_path.dart';
+import 'package:solo_play_application/src/features/auth/presentation/register/bloc/register_bloc.dart';
+import 'package:solo_play_application/src/features/auth/presentation/register/bloc/register_event.dart';
 
 import '../bloc/bloc.dart';
 import '../sections/sections.dart';
@@ -71,6 +73,14 @@ class UserAgreementUI extends StatelessWidget {
                     return UserAgreementUiButtonSection(
                       onTap: state.agreement.isUserAgree
                           ? () {
+                              context.read<RegisterBloc>().add(
+                                    UpdateTermsAgreement(
+                                      userAgreement: context
+                                          .read<UserAgreementBloc>()
+                                          .state
+                                          .agreement,
+                                    ),
+                                  );
                               context.push(RouterPath.registerEmail);
                             }
                           : null,

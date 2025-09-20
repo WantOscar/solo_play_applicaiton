@@ -10,7 +10,7 @@ final class CheckEmailDuplicateUsecaseImpl
   }) : _authRepository = authRepository;
   @override
   Future<Result<String>> call(String email) async {
-    return _authRepository.checkEmailDuplicate(email);
+    return await _authRepository.checkEmailDuplicate(email);
   }
 }
 
