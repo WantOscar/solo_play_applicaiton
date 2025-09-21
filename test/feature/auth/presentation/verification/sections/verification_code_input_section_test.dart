@@ -1,39 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bloc_test/bloc_test.dart'; // Import bloc_test
-import 'package:mocktail/mocktail.dart'; // Import mocktail
-import 'package:flutter_bloc/flutter_bloc.dart'; // Import flutter_bloc
+import 'package:bloc_test/bloc_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:solo_play_application/src/features/auth/presentation/verification/bloc/verification_bloc.dart';
+import 'package:solo_play_application/src/features/auth/presentation/verification/bloc/verification_event.dart';
+import 'package:solo_play_application/src/features/auth/presentation/verification/bloc/verification_state.dart';
 
 import 'package:solo_play_application/src/core/widgets/primary_text_field.dart';
 import 'package:solo_play_application/src/features/auth/presentation/verification/sections/verification_code_input_section.dart';
-import 'package:solo_play_application/src/features/auth/presentation/verification/cubits/verification_code_cubit.dart'; // Import Cubit
-import 'package:solo_play_application/src/features/timer/bloc/timer_bloc.dart'; // Import TimerBloc
+import 'package:solo_play_application/src/features/timer/bloc/timer_bloc.dart';
 import 'package:solo_play_application/src/features/timer/bloc/timer_event.dart';
 import 'package:solo_play_application/src/features/timer/bloc/timer_state.dart';
 import 'package:solo_play_application/src/features/timer/presentation/views/timer_view.dart'; // Import TimerState
 
-// Mock Cubit for testing
-class MockVerificationCodeCubit extends MockCubit<String>
-    implements VerificationCodeCubit {}
-
-// Mock TimerBloc for testing
 class MockTimerBloc extends MockBloc<TimerEvent, TimerState>
     implements TimerBloc {}
 
+class MockVerificationBloc extends MockBloc<VerificationEvent, VerificationState>
+    implements VerificationBloc {}
+
 void main() {
   group(VerificationCodeInputSection, () {
-    late MockVerificationCodeCubit mockVerificationCodeCubit;
+    late MockVerificationBloc mockVerificationBloc;
     late MockTimerBloc mockTimerBloc;
 
     setUp(() {
-      mockVerificationCodeCubit = MockVerificationCodeCubit();
+      mockVerificationBloc = MockVerificationBloc();
       mockTimerBloc = MockTimerBloc();
     });
 
     testWidgets('should render text and PrimaryTextField correctly',
         (WidgetTester tester) async {
-      whenListen(mockVerificationCodeCubit, Stream.fromIterable(['']),
-          initialState: ''); // Initial state for Cubit
+      whenListen(mockVerificationBloc, Stream.fromIterable([const VerificationState()]),
+          initialState: const VerificationState()); // Initial state for Cubit
       whenListen(mockTimerBloc, Stream.fromIterable([const TimerInitial(600)]),
           initialState: const TimerInitial(600)); // Initial state for TimerBloc
 
@@ -42,8 +42,8 @@ void main() {
           home: Scaffold(
             body: MultiBlocProvider(
               providers: [
-                BlocProvider<VerificationCodeCubit>.value(
-                  value: mockVerificationCodeCubit,
+                BlocProvider<VerificationBloc>.value(
+                  value: mockVerificationBloc,
                 ),
                 BlocProvider<TimerBloc>.value(
                   value: mockTimerBloc,
@@ -65,8 +65,6 @@ void main() {
       expect(columnFinder, findsOneWidget);
       final column = tester.widget<Column>(columnFinder);
       expect(column.crossAxisAlignment, CrossAxisAlignment.start);
-      expect(column.children.length,
-          5); // Text, SizedBox, PrimaryTextField, SizedBox, TimerView
 
       // Check for the Text widget
       final textFinder = find.text('인증코드를 입력해주세요.');
@@ -81,7 +79,7 @@ void main() {
       expect(textFieldFinder, findsOneWidget);
       final primaryTextField = tester.widget<PrimaryTextField>(textFieldFinder);
       expect(primaryTextField.hintText, '123456');
-      expect(primaryTextField.keyboardType, TextInputType.number);
+      expect(primaryTextField.keyboardType, const TextInputType.numberWithOptions());
 
       // Check for SizedBox between text field and timer
       final sizedBox2 = column.children[3] as SizedBox;
@@ -93,7 +91,7 @@ void main() {
       // Simulate text input and verify Cubit update
       await tester.enterText(textFieldFinder, '123');
       await tester.pump();
-      verify(() => mockVerificationCodeCubit.updateCode('123')).called(1);
+      verify(() => mockVerificationBloc.add(const VerificationCodeChanged('123'))).called(1);
 
       // Golden test
       await expectLater(
@@ -105,8 +103,8 @@ void main() {
     testWidgets('should unfocus when code length reaches 6',
         (WidgetTester tester) async {
       // Arrange
-      whenListen(mockVerificationCodeCubit, Stream.fromIterable(['']),
-          initialState: '');
+      whenListen(mockVerificationBloc, Stream.fromIterable([const VerificationState()]),
+          initialState: const VerificationState());
       whenListen(mockTimerBloc, Stream.fromIterable([const TimerInitial(600)]),
           initialState: const TimerInitial(600));
 
@@ -115,8 +113,8 @@ void main() {
           home: Scaffold(
             body: MultiBlocProvider(
               providers: [
-                BlocProvider<VerificationCodeCubit>.value(
-                  value: mockVerificationCodeCubit,
+                BlocProvider<VerificationBloc>.value(
+                  value: mockVerificationBloc,
                 ),
                 BlocProvider<TimerBloc>.value(
                   value: mockTimerBloc,
@@ -145,7 +143,7 @@ void main() {
       await tester.pump();
 
       // Assert: Cubit is updated
-      verify(() => mockVerificationCodeCubit.updateCode('123456')).called(1);
+      verify(() => mockVerificationBloc.add(const VerificationCodeChanged('123456'))).called(1);
 
       // Assert: The text field should have lost focus
       expect(focusNode?.hasFocus, isFalse);

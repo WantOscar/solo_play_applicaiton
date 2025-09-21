@@ -1,32 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:solo_play_application/src/core/widgets/primary_button.dart';
-import 'package:solo_play_application/src/features/auth/presentation/verification/cubits/verification_code_cubit.dart'; // Updated Cubit import
-import 'package:solo_play_application/src/features/auth/presentation/verification/sections/verification_confirm_button_section.dart'; // This file doesn't exist yet
+import 'package:solo_play_application/src/features/auth/presentation/verification/bloc/verification_bloc.dart';
+import 'package:solo_play_application/src/features/auth/presentation/verification/bloc/verification_event.dart';
+import 'package:solo_play_application/src/features/auth/presentation/verification/bloc/verification_state.dart';
+import 'package:solo_play_application/src/features/auth/presentation/verification/sections/verification_confirm_button_section.dart';
 
-// Mock Cubit for testing
-class MockVerificationCodeCubit extends MockCubit<String> implements VerificationCodeCubit {}
+// Mock Bloc for testing
+class MockVerificationBloc
+    extends MockBloc<VerificationEvent, VerificationState>
+    implements VerificationBloc {}
 
 void main() {
   group('VerificationConfirmButtonSection', () {
-    late MockVerificationCodeCubit mockCubit;
+    late MockVerificationBloc mockBloc;
 
     setUp(() {
-      mockCubit = MockVerificationCodeCubit();
+      mockBloc = MockVerificationBloc();
     });
 
-    testWidgets('displays disabled button when input is less than 6 characters', (WidgetTester tester) async {
-      whenListen(mockCubit, Stream.fromIterable(['12345']), initialState: '12345'); // Simulate code input
+    testWidgets('displays disabled button when input is less than 6 characters',
+        (WidgetTester tester) async {
+      whenListen(mockBloc,
+          Stream.fromIterable([const VerificationState(code: '12345')]),
+          initialState:
+              const VerificationState(code: '12345')); // Simulate code input
 
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: BlocProvider<VerificationCodeCubit>.value(
-              value: mockCubit,
+            body: BlocProvider<VerificationBloc>.value(
+              value: mockBloc,
               child: const VerificationConfirmButtonSection(),
             ),
           ),
@@ -45,7 +51,8 @@ void main() {
       expect(button.onTap, isNull);
 
       // Assert the style of the button's text when disabled
-      final Text buttonText = tester.widget(find.descendant(of: buttonFinder, matching: find.byType(Text)));
+      final Text buttonText = tester.widget(
+          find.descendant(of: buttonFinder, matching: find.byType(Text)));
       expect(buttonText.style!.color, const Color(0xff8e8e8e));
       expect(buttonText.style!.fontSize, 16);
       expect(buttonText.style!.fontWeight, FontWeight.w700);
@@ -53,18 +60,23 @@ void main() {
       // Golden test for disabled state
       await expectLater(
         find.byType(VerificationConfirmButtonSection),
-        matchesGoldenFile('goldens/verification_confirm_button_section_disabled.png'),
+        matchesGoldenFile(
+            'goldens/verification_confirm_button_section_disabled.png'),
       );
     });
 
-    testWidgets('displays enabled button when input is 6 characters', (WidgetTester tester) async {
-      whenListen(mockCubit, Stream.fromIterable(['123456']), initialState: '123456'); // Simulate code input
+    testWidgets('displays enabled button when input is 6 characters',
+        (WidgetTester tester) async {
+      whenListen(mockBloc,
+          Stream.fromIterable([const VerificationState(code: '123456')]),
+          initialState:
+              const VerificationState(code: '123456')); // Simulate code input
 
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: BlocProvider<VerificationCodeCubit>.value(
-              value: mockCubit,
+            body: BlocProvider<VerificationBloc>.value(
+              value: mockBloc,
               child: const VerificationConfirmButtonSection(),
             ),
           ),
@@ -83,7 +95,8 @@ void main() {
       expect(button.onTap, isNotNull);
 
       // Assert the style of the button's text when enabled
-      final Text buttonText = tester.widget(find.descendant(of: buttonFinder, matching: find.byType(Text)));
+      final Text buttonText = tester.widget(
+          find.descendant(of: buttonFinder, matching: find.byType(Text)));
       expect(buttonText.style!.color, const Color(0xffffffff));
       expect(buttonText.style!.fontSize, 16);
       expect(buttonText.style!.fontWeight, FontWeight.w700);
@@ -91,7 +104,8 @@ void main() {
       // Golden test for enabled state
       await expectLater(
         find.byType(VerificationConfirmButtonSection),
-        matchesGoldenFile('goldens/verification_confirm_button_section_enabled.png'),
+        matchesGoldenFile(
+            'goldens/verification_confirm_button_section_enabled.png'),
       );
     });
   });

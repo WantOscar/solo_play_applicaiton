@@ -5,19 +5,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:solo_play_application/src/features/auth/presentation/register/bloc/register_bloc.dart';
 import 'package:solo_play_application/src/features/auth/presentation/register/bloc/register_event.dart';
 import 'package:solo_play_application/src/features/auth/presentation/register/bloc/register_state.dart';
+import 'package:solo_play_application/src/features/auth/presentation/verification/bloc/verification_bloc.dart';
+import 'package:solo_play_application/src/features/auth/presentation/verification/bloc/verification_event.dart';
+import 'package:solo_play_application/src/features/auth/presentation/verification/bloc/verification_state.dart';
 
 import 'package:solo_play_application/src/features/auth/presentation/verification/views/verification_email_ui.dart';
 import 'package:solo_play_application/src/features/auth/presentation/verification/sections/verification_email_header.dart';
 import 'package:solo_play_application/src/features/auth/presentation/verification/sections/verification_code_input_section.dart';
 import 'package:solo_play_application/src/features/auth/presentation/verification/sections/resend_email_section.dart';
 import 'package:solo_play_application/src/features/auth/presentation/verification/sections/verification_confirm_button_section.dart';
-import 'package:solo_play_application/src/features/auth/presentation/verification/cubits/verification_code_cubit.dart';
 import 'package:solo_play_application/src/features/timer/bloc/timer_bloc.dart';
 import 'package:solo_play_application/src/features/timer/bloc/timer_event.dart';
 import 'package:solo_play_application/src/features/timer/bloc/timer_state.dart';
 
-class MockVerificationCodeCubit extends MockCubit<String>
-    implements VerificationCodeCubit {}
+class MockVerificationBloc extends MockBloc<VerificationEvent, VerificationState>
+    implements VerificationBloc {}
 
 class MockTimerBloc extends MockBloc<TimerEvent, TimerState>
     implements TimerBloc {}
@@ -27,20 +29,20 @@ class MockRegisterBloc extends MockBloc<RegisterEvent, RegisterState>
 
 void main() {
   group(VerificationEmailUi, () {
-    late MockVerificationCodeCubit mockVerificationCodeCubit;
+    late MockVerificationBloc mockVerificationBloc;
     late MockTimerBloc mockTimerBloc;
     late MockRegisterBloc mockRegisterBloc;
 
     setUp(() {
-      mockVerificationCodeCubit = MockVerificationCodeCubit();
+      mockVerificationBloc = MockVerificationBloc();
       mockTimerBloc = MockTimerBloc();
       mockRegisterBloc = MockRegisterBloc();
     });
 
     testWidgets('displays all sections with correct layout and padding',
         (WidgetTester tester) async {
-      whenListen(mockVerificationCodeCubit, Stream.fromIterable(['']),
-          initialState: '');
+      whenListen(mockVerificationBloc, Stream.fromIterable([const VerificationState()]),
+          initialState: const VerificationState());
       whenListen(mockTimerBloc, Stream.fromIterable([const TimerInitial(600)]),
           initialState: const TimerInitial(600));
       whenListen(mockRegisterBloc, Stream.fromIterable([const RegisterState()]),
@@ -50,8 +52,8 @@ void main() {
         MaterialApp(
           home: MultiBlocProvider(
             providers: [
-              BlocProvider<VerificationCodeCubit>.value(
-                value: mockVerificationCodeCubit,
+              BlocProvider<VerificationBloc>.value(
+                value: mockVerificationBloc,
               ),
               BlocProvider<TimerBloc>.value(
                 value: mockTimerBloc,
