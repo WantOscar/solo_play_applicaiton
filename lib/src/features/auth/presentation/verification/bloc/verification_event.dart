@@ -8,4 +8,6 @@ sealed class VerificationEvent with _$VerificationEvent {
       VerificationCodeChanged;
   const factory VerificationEvent.verificationEmailSent(String email) =
       VerificationEmailSent;
+  const factory VerificationEvent.verificationSubmitted(String email, String code) =
+      VerificationSubmitted;
 }

@@ -2,7 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'verification_state.freezed.dart';
 
-enum VerificationStatus { initial, sending, sent, error }
+enum VerificationStatus { initial, sending, sent, error, verifying, verified }
 
 @freezed
 abstract class VerificationState with _$VerificationState {

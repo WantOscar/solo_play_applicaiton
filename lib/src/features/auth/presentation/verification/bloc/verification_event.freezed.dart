@@ -166,4 +166,76 @@ class _$VerificationEmailSentCopyWithImpl<$Res>
   }
 }
 
+/// @nodoc
+
+class VerificationSubmitted implements VerificationEvent {
+  const VerificationSubmitted(this.email, this.code);
+
+  final String email;
+  final String code;
+
+  /// Create a copy of VerificationEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $VerificationSubmittedCopyWith<VerificationSubmitted> get copyWith =>
+      _$VerificationSubmittedCopyWithImpl<VerificationSubmitted>(
+          this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is VerificationSubmitted &&
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.code, code) || other.code == code));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, email, code);
+
+  @override
+  String toString() {
+    return 'VerificationEvent.verificationSubmitted(email: $email, code: $code)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $VerificationSubmittedCopyWith<$Res>
+    implements $VerificationEventCopyWith<$Res> {
+  factory $VerificationSubmittedCopyWith(VerificationSubmitted value,
+          $Res Function(VerificationSubmitted) _then) =
+      _$VerificationSubmittedCopyWithImpl;
+  @useResult
+  $Res call({String email, String code});
+}
+
+/// @nodoc
+class _$VerificationSubmittedCopyWithImpl<$Res>
+    implements $VerificationSubmittedCopyWith<$Res> {
+  _$VerificationSubmittedCopyWithImpl(this._self, this._then);
+
+  final VerificationSubmitted _self;
+  final $Res Function(VerificationSubmitted) _then;
+
+  /// Create a copy of VerificationEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? email = null,
+    Object? code = null,
+  }) {
+    return _then(VerificationSubmitted(
+      null == email
+          ? _self.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String,
+      null == code
+          ? _self.code
+          : code // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
 // dart format on
