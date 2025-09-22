@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:solo_play_application/src/features/course/core/course_api_services_provider.dart';
 import 'package:solo_play_application/src/features/course/core/course_repository_provider.dart';
 import 'package:solo_play_application/src/features/course/domain/repositories/course_repository.dart';
-import 'package:solo_play_application/src/features/course/blocs/course_ranking_bloc.dart';
-import 'package:solo_play_application/src/features/course/blocs/courses_ranking_event.dart';
-import 'package:solo_play_application/src/features/course/views/course_ranking_view.dart';
+import 'package:solo_play_application/src/features/course/presentation/blocs/course_ranking_bloc.dart';
+import 'package:solo_play_application/src/features/course/presentation/blocs/courses_ranking_event.dart';
+import 'package:solo_play_application/src/features/course/presentation/views/course_ranking_view.dart';
 
 class CourseRankingPage extends StatelessWidget {
   const CourseRankingPage({super.key});

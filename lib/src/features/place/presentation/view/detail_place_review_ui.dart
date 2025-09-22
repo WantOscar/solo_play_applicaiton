@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:solo_play_application/src/features/place/view/show_review_view.dart';
-import 'package:solo_play_application/src/features/place/view/write_place_review_view.dart';
+import 'package:solo_play_application/src/features/place/presentation/view/show_review_view.dart';
+import 'package:solo_play_application/src/features/place/presentation/view/write_place_review_view.dart';
 
 class DetailPlaceReviewUI extends StatelessWidget {
   const DetailPlaceReviewUI({super.key});

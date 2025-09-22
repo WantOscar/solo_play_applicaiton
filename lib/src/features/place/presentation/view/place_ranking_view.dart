@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:solo_play_application/src/features/place/blocs/place_ranking_state.dart';
-import 'package:solo_play_application/src/features/place/widgets/best_place_card_widget.dart';
-import 'package:solo_play_application/src/features/place/blocs/place_ranking_bloc.dart';
-import 'package:solo_play_application/src/features/place/blocs/place_ranking_event.dart';
-import 'package:solo_play_application/src/features/place/widgets/show_tip_place_widget.dart';
+import 'package:solo_play_application/src/features/place/presentation/blocs/place_ranking_state.dart';
+import 'package:solo_play_application/src/features/place/presentation/widgets/best_place_card_widget.dart';
+import 'package:solo_play_application/src/features/place/presentation/blocs/place_ranking_bloc.dart';
+import 'package:solo_play_application/src/features/place/presentation/blocs/place_ranking_event.dart';
+import 'package:solo_play_application/src/features/place/presentation/widgets/show_tip_place_widget.dart';
 
 class PlaceRankingView extends HookWidget {
   const PlaceRankingView({super.key});

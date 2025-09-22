@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:solo_play_application/src/features/course/data/models/course_model.dart';
 import 'package:solo_play_application/src/core/widgets/bookmark_icon.dart';
-import 'package:solo_play_application/src/features/course/widgets/best_course_card_widget.dart';
-import 'package:solo_play_application/src/features/course/widgets/start_course_button_widget.dart';
-import 'package:solo_play_application/src/features/place/view/place_visit_review_view.dart';
-import 'package:solo_play_application/src/features/place/view/similar_cafe_photo_view.dart';
+import 'package:solo_play_application/src/features/course/presentation/widgets/best_course_card_widget.dart';
+import 'package:solo_play_application/src/features/course/presentation/widgets/start_course_button_widget.dart';
+import 'package:solo_play_application/src/features/place/presentation/view/place_visit_review_view.dart';
+import 'package:solo_play_application/src/features/place/presentation/view/similar_cafe_photo_view.dart';
 import 'package:solo_play_application/src/features/rank/presentation/widget/rank_number_widget.dart';
 import 'package:solo_play_application/src/features/rank/presentation/widget/routine_widget.dart';
 
