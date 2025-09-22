@@ -2,9 +2,12 @@ import 'package:solo_play_application/src/core/utils/networks/result.dart';
 import 'package:solo_play_application/src/features/auth/data/datasources/locals/jwt_storage.dart';
 import 'package:solo_play_application/src/features/auth/data/datasources/remotes/auth_datasource.dart';
 import 'package:solo_play_application/src/features/auth/data/models/check_email_duplicate.dart';
+import 'package:solo_play_application/src/features/auth/data/models/email_verification_request.dart';
 import 'package:solo_play_application/src/features/auth/data/models/jwt.dart';
 import 'package:solo_play_application/src/features/auth/data/models/login.dart';
+import 'package:solo_play_application/src/features/auth/data/models/verify_code_request.dart';
 import 'package:solo_play_application/src/features/auth/domain/entities/login_info.dart';
+import 'package:solo_play_application/src/features/auth/domain/entities/verify_code_info.dart';
 import 'package:solo_play_application/src/features/auth/domain/repositories/auth_repository.dart';
 
 enum AuthenticateStatus { unknown, authenticated, unauthenticated }
@@ -55,6 +58,18 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<Result<String>> checkEmailDuplicate(String email) {
     return _authDatasource
         .checkEmailDuplicate(CheckEmailDuplicateRequest(email: email));
+  }
+
+  @override
+  Future<Result<String>> sendVerificationEmail(String email) {
+    return _authDatasource
+        .sendVerificationEmail(EmailVerificationRequest(email: email));
+  }
+
+  @override
+  Future<Result<String>> verifyCode(VerifyCodeInfo request) {
+    return _authDatasource.verifyCode(
+        VerifyCodeRequest(email: request.email, code: request.code));
   }
 
   /// 로그인을 수행합니다.

@@ -8,6 +8,7 @@ import 'package:solo_play_application/src/features/auth/data/utils/api_path.dart
 import 'package:solo_play_application/src/features/auth/data/datasources/remotes/auth_datasource.dart';
 import 'package:solo_play_application/src/features/auth/data/models/check_email_duplicate.dart';
 import 'package:solo_play_application/src/features/auth/data/models/login.dart';
+import 'package:solo_play_application/src/features/auth/data/models/verify_code_request.dart';
 
 /// [AuthDatasource]의 구현체
 ///
@@ -151,6 +152,35 @@ class AuthDatasourceImpl extends AuthDatasource {
       final response = await _dio.post(
         AuthApiPath.sendVerificationEmail,
         data: request.toJson(), // request.toJson() 사용
+      );
+      if (response.statusCode == 200) {
+        return Success(response.data["message"] as String);
+      } else {
+        return Failure(response.data['message'] as String? ?? "알 수 없는 오류가 발생했습니다.");
+      }
+    } on DioException catch (e) {
+      if (e.response != null) {
+        final dynamic errorData = e.response!.data;
+        if (errorData is Map<String, dynamic> &&
+            errorData.containsKey('message')) {
+          return Failure(errorData['message'] as String);
+        } else {
+          return Failure("알 수 없는 서버 응답 형식입니다.");
+        }
+      } else {
+        return Failure("네트워크 연결을 확인해주세요.");
+      }
+    } catch (e) {
+      return Failure("예상치 못한 오류가 발생했습니다: ${e.toString()}");
+    }
+  }
+
+  @override
+  Future<Result<String>> verifyCode(VerifyCodeRequest request) async {
+    try {
+      final response = await _dio.post(
+        AuthApiPath.checkVerifyCode,
+        data: request.toJson(),
       );
       if (response.statusCode == 200) {
         return Success(response.data["message"] as String);
