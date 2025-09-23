@@ -120,19 +120,16 @@ class _$RegisterRequestCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
+@JsonSerializable(explicitToJson: true)
 class _RegisterRequest implements RegisterRequest {
   const _RegisterRequest(
       {required this.userAgreement,
       required this.email,
       required this.password,
       required this.code});
-  factory _RegisterRequest.fromJson(
-    Map<String, dynamic> json,
-  ) =>
-      _$RegisterRequestFromJson(
-        json,
-      );
+  factory _RegisterRequest.fromJson(Map<String, dynamic> json) =>
+      _$RegisterRequestFromJson(json);
 
   @override
   final UserAgreement userAgreement;

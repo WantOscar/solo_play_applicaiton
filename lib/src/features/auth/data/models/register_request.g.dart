@@ -17,7 +17,7 @@ _RegisterRequest _$RegisterRequestFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$RegisterRequestToJson(_RegisterRequest instance) =>
     <String, dynamic>{
-      'userAgreement': instance.userAgreement,
+      'userAgreement': instance.userAgreement.toJson(),
       'email': instance.email,
       'password': instance.password,
       'code': instance.code,

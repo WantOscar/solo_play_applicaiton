@@ -5,8 +5,9 @@ import 'package:solo_play_application/src/features/auth/data/models/user_agreeme
 part 'register_request.freezed.dart';
 part 'register_request.g.dart';
 
-@Freezed(genericArgumentFactories: true)
+@freezed
 abstract class RegisterRequest with _$RegisterRequest {
+  @JsonSerializable(explicitToJson: true)
   const factory RegisterRequest({
     required UserAgreement userAgreement,
     required String email,
