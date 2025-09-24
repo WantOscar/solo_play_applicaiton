@@ -1,13 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:solo_play_application/src/features/auth/data/models/user_agreement.dart';
+import 'package:solo_play_application/src/features/auth/data/models/register_request.dart';
+import 'package:solo_play_application/src/features/auth/domain/entities/user_agreement.dart';
 
 void main() {
-  group('UserAgreement', () {
+  group(UserAgreementDto, () {
     const tIsOver14 = true;
     const tIsAgreedToTerms = true;
     const tIsAgreedToMarketing = false;
     const tIsConsentedToAds = false;
-    final tUserAgreement = UserAgreement(
+    final tUserAgreement = UserAgreementDto(
       isOver14: tIsOver14,
       isAgreedToTerms: tIsAgreedToTerms,
       isAgreedToMarketing: tIsAgreedToMarketing,
@@ -21,11 +22,11 @@ void main() {
     };
 
     test('should be a subclass of UserAgreement', () {
-      expect(tUserAgreement, isA<UserAgreement>());
+      expect(tUserAgreement, isA<UserAgreementDto>());
     });
 
     test('should correctly parse from JSON', () {
-      final result = UserAgreement.fromJson(tJsonMap);
+      final result = UserAgreementDto.fromJson(tJsonMap);
       expect(result, tUserAgreement);
     });
 
@@ -35,19 +36,19 @@ void main() {
     });
 
     test('should support value equality', () {
-      final instance1 = UserAgreement(
+      final instance1 = UserAgreementDto(
         isOver14: tIsOver14,
         isAgreedToTerms: tIsAgreedToTerms,
         isAgreedToMarketing: tIsAgreedToMarketing,
         isConsentedToAds: tIsConsentedToAds,
       );
-      final instance2 = UserAgreement(
+      final instance2 = UserAgreementDto(
         isOver14: tIsOver14,
         isAgreedToTerms: tIsAgreedToTerms,
         isAgreedToMarketing: tIsAgreedToMarketing,
         isConsentedToAds: tIsConsentedToAds,
       );
-      final instance3 = UserAgreement(
+      final instance3 = UserAgreementDto(
         isOver14: false,
         isAgreedToTerms: false,
         isAgreedToMarketing: true,
@@ -60,7 +61,8 @@ void main() {
 
     test('should support copyWith', () {
       final updatedIsAgreedToMarketing = true;
-      final updatedInstance = tUserAgreement.copyWith(isAgreedToMarketing: updatedIsAgreedToMarketing);
+      final updatedInstance = tUserAgreement.copyWith(
+          isAgreedToMarketing: updatedIsAgreedToMarketing);
 
       expect(updatedInstance.isAgreedToMarketing, updatedIsAgreedToMarketing);
       expect(updatedInstance, isNot(equals(tUserAgreement)));

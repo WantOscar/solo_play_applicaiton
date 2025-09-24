@@ -1,9 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:solo_play_application/src/features/auth/data/models/register_request.dart';
-import 'package:solo_play_application/src/features/auth/data/models/user_agreement.dart';
 
 void main() {
-  group('RegisterRequest', () {
+  group(RegisterRequest, () {
     const String tEmail = 'test@example.com';
     const String tPassword = 'password123';
     const String tProofToken = 't-proof-token';
@@ -12,7 +11,7 @@ void main() {
         email: tEmail,
         password: tPassword,
         proofToken: tProofToken,
-        userAgreement: UserAgreement(
+        userAgreement: UserAgreementDto(
             isOver14: true,
             isAgreedToTerms: true,
             isAgreedToMarketing: true,

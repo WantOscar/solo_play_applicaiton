@@ -10,11 +10,11 @@ import 'package:solo_play_application/src/features/auth/data/models/email_verifi
 import 'package:solo_play_application/src/features/auth/data/models/jwt.dart';
 import 'package:solo_play_application/src/features/auth/data/models/login.dart';
 import 'package:solo_play_application/src/features/auth/data/models/register_request.dart';
-import 'package:solo_play_application/src/features/auth/data/models/user_agreement.dart';
 import 'package:solo_play_application/src/features/auth/data/models/verify_code_request.dart';
 import 'package:solo_play_application/src/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:solo_play_application/src/features/auth/domain/entities/login_info.dart';
-import 'package:solo_play_application/src/features/auth/domain/entities/register_info.dart';
+import 'package:solo_play_application/src/features/auth/domain/entities/register.dart';
+import 'package:solo_play_application/src/features/auth/domain/entities/user_agreement.dart';
 import 'package:solo_play_application/src/features/auth/domain/entities/verify_code_info.dart';
 import 'package:solo_play_application/src/features/auth/domain/repositories/auth_repository.dart';
 import 'package:test/test.dart';
@@ -39,7 +39,15 @@ void main() {
       mockProofTokenStorage = MockProofTokenStorage();
       tokenController = StreamController<String?>.broadcast();
       registerFallbackValue(VerifyCodeRequest(email: '', code: ''));
-      registerFallbackValue(RegisterRequest(userAgreement: UserAgreement(isOver14: false, isAgreedToTerms: false, isAgreedToMarketing: false, isConsentedToAds: false), email: '', password: '', proofToken: ''));
+      registerFallbackValue(RegisterRequest(
+          userAgreement: UserAgreementDto(
+              isOver14: false,
+              isAgreedToTerms: false,
+              isAgreedToMarketing: false,
+              isConsentedToAds: false),
+          email: '',
+          password: '',
+          proofToken: ''));
 
       // Mock the tokenStream getter
       when(() => mockJwtStorage.tokenStream)
@@ -254,8 +262,10 @@ void main() {
     });
 
     group('when called verifyCode', () {
-      final verifyCodeInfo = VerifyCodeInfo(email: 'test@test.com', code: '123456');
-      final verifyCodeRequest = VerifyCodeRequest(email: 'test@test.com', code: '123456');
+      final verifyCodeInfo =
+          VerifyCodeInfo(email: 'test@test.com', code: '123456');
+      final verifyCodeRequest =
+          VerifyCodeRequest(email: 'test@test.com', code: '123456');
 
       test('should save proof token when verification is successful', () async {
         const proofToken = 'test_proof_token';
@@ -267,8 +277,10 @@ void main() {
         final result = await authRepository.verifyCode(verifyCodeInfo);
 
         expect(result, isA<Success>());
-        verify(() => mockAuthDatasource.verifyCode(verifyCodeRequest)).called(1);
-        verify(() => mockProofTokenStorage.saveProofToken(proofToken)).called(1);
+        verify(() => mockAuthDatasource.verifyCode(verifyCodeRequest))
+            .called(1);
+        verify(() => mockProofTokenStorage.saveProofToken(proofToken))
+            .called(1);
         verifyNoMoreInteractions(mockProofTokenStorage);
       });
 
@@ -281,7 +293,8 @@ void main() {
 
         final result = await authRepository.verifyCode(verifyCodeInfo);
 
-        verify(() => mockAuthDatasource.verifyCode(verifyCodeRequest)).called(1);
+        verify(() => mockAuthDatasource.verifyCode(verifyCodeRequest))
+            .called(1);
 
         expect(result, isA<Success>());
       });
@@ -292,7 +305,8 @@ void main() {
 
         final result = await authRepository.verifyCode(verifyCodeInfo);
 
-        verify(() => mockAuthDatasource.verifyCode(verifyCodeRequest)).called(1);
+        verify(() => mockAuthDatasource.verifyCode(verifyCodeRequest))
+            .called(1);
 
         expect(result, isA<Failure>());
       });
@@ -305,7 +319,7 @@ void main() {
         isAgreedToMarketing: false,
         isConsentedToAds: false,
       );
-      final registerInfo = RegisterInfo(
+      final registerInfo = Register(
         email: 'test@test.com',
         password: 'password',
         userAgreement: userAgreement,
@@ -314,20 +328,19 @@ void main() {
       final registerRequest = RegisterRequest(
         email: registerInfo.email,
         password: registerInfo.password,
-        userAgreement: registerInfo.userAgreement,
+        userAgreement: UserAgreementDto.fromEntity(registerInfo.userAgreement),
         proofToken: proofToken,
       );
-      final jwt = Jwt(
-        grantType: 'Bearer',
-        accessToken: 'access-token',
-        refreshToken: 'refresh-token',
-      );
 
-      test('should delete proof token when registration is successful', () async {
+      test('should delete proof token when registration is successful',
+          () async {
         // Arrange
-        when(() => mockProofTokenStorage.readProofToken()).thenAnswer((_) async => proofToken);
-        when(() => mockAuthDatasource.register(registerRequest)).thenAnswer((_) async => Success('회원가입 성공'));
-        when(() => mockProofTokenStorage.deleteProofToken()).thenAnswer((_) async => Future.value());
+        when(() => mockProofTokenStorage.readProofToken())
+            .thenAnswer((_) async => proofToken);
+        when(() => mockAuthDatasource.register(registerRequest))
+            .thenAnswer((_) async => Success('회원가입 성공'));
+        when(() => mockProofTokenStorage.deleteProofToken())
+            .thenAnswer((_) async => Future.value());
 
         // Act
         final result = await authRepository.register(registerInfo);
@@ -343,7 +356,8 @@ void main() {
 
       test('should return Failure when proof token is null', () async {
         // Arrange
-        when(() => mockProofTokenStorage.readProofToken()).thenAnswer((_) async => null);
+        when(() => mockProofTokenStorage.readProofToken())
+            .thenAnswer((_) async => null);
 
         // Act
         final result = await authRepository.register(registerInfo);
@@ -357,7 +371,8 @@ void main() {
 
       test('should return Failure when datasource fails', () async {
         // Arrange
-        when(() => mockProofTokenStorage.readProofToken()).thenAnswer((_) async => proofToken);
+        when(() => mockProofTokenStorage.readProofToken())
+            .thenAnswer((_) async => proofToken);
         when(() => mockAuthDatasource.register(registerRequest))
             .thenAnswer((_) async => Failure('이미 가입된 이메일입니다.'));
 
@@ -374,10 +389,13 @@ void main() {
     });
 
     group('when called logout', () {
-      test('should call deleteAccessToken and deleteRefreshToken on jwtStorage', () async {
+      test('should call deleteAccessToken and deleteRefreshToken on jwtStorage',
+          () async {
         // Arrange
-        when(() => mockJwtStorage.deleteAccessToken()).thenAnswer((_) async => Future.value());
-        when(() => mockJwtStorage.deleteRefreshToken()).thenAnswer((_) async => Future.value());
+        when(() => mockJwtStorage.deleteAccessToken())
+            .thenAnswer((_) async => Future.value());
+        when(() => mockJwtStorage.deleteRefreshToken())
+            .thenAnswer((_) async => Future.value());
 
         // Act
         await authRepository.logout();

@@ -9,7 +9,7 @@ import 'package:solo_play_application/src/features/auth/data/models/login.dart';
 import 'package:solo_play_application/src/features/auth/data/models/register_request.dart';
 import 'package:solo_play_application/src/features/auth/data/models/verify_code_request.dart';
 import 'package:solo_play_application/src/features/auth/domain/entities/login_info.dart';
-import 'package:solo_play_application/src/features/auth/domain/entities/register_info.dart';
+import 'package:solo_play_application/src/features/auth/domain/entities/register.dart';
 import 'package:solo_play_application/src/features/auth/domain/entities/verify_code_info.dart';
 import 'package:solo_play_application/src/features/auth/domain/repositories/auth_repository.dart';
 
@@ -117,7 +117,7 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<Result<void>> register(RegisterInfo registerInfo) async {
+  Future<Result<void>> register(Register register) async {
     // 1. Read proof token
     final proofToken = await _proofTokenStorage.readProofToken();
 
@@ -128,9 +128,9 @@ class AuthRepositoryImpl extends AuthRepository {
 
     // 3. Create request DTO
     final request = RegisterRequest(
-      email: registerInfo.email,
-      password: registerInfo.password,
-      userAgreement: registerInfo.userAgreement,
+      email: register.email,
+      password: register.password,
+      userAgreement: UserAgreementDto.fromEntity(register.userAgreement),
       proofToken: proofToken,
     );
 

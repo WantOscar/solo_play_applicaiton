@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:solo_play_application/src/core/utils/networks/result.dart';
-import 'package:solo_play_application/src/features/auth/data/models/user_agreement.dart';
-import 'package:solo_play_application/src/features/auth/domain/entities/register_info.dart';
+import 'package:solo_play_application/src/features/auth/domain/entities/register.dart';
+import 'package:solo_play_application/src/features/auth/domain/entities/user_agreement.dart';
 import 'package:solo_play_application/src/features/auth/domain/repositories/auth_repository.dart';
 import 'package:solo_play_application/src/features/auth/domain/usecases/user_register_usecase.dart';
 
@@ -14,7 +14,7 @@ void main() {
 
   setUp(() {
     mockAuthRepository = MockAuthRepository();
-    usecase = UserRegisterUsecase(repository: mockAuthRepository);
+    usecase = UserRegisterUsecaseImpl(authRepository: mockAuthRepository);
   });
 
   final userAgreement = UserAgreement(
@@ -24,7 +24,7 @@ void main() {
     isConsentedToAds: false,
   );
 
-  final registerInfo = RegisterInfo(
+  final registerInfo = Register(
     email: 'test@test.com',
     password: 'password',
     userAgreement: userAgreement,

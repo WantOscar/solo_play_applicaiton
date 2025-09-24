@@ -7,7 +7,6 @@ import 'package:solo_play_application/src/features/auth/data/models/email_verifi
 import 'package:solo_play_application/src/features/auth/data/models/jwt.dart';
 import 'package:solo_play_application/src/features/auth/data/models/login.dart';
 import 'package:solo_play_application/src/features/auth/data/models/register_request.dart';
-import 'package:solo_play_application/src/features/auth/data/models/user_agreement.dart';
 import 'package:solo_play_application/src/features/auth/data/models/verify_code_request.dart';
 import 'package:solo_play_application/src/features/auth/data/utils/api_path.dart';
 import 'package:test/test.dart';
@@ -27,7 +26,7 @@ class FakeEmailVerificationRequest extends Fake
 class FakeVerifyCodeRequest extends Fake implements VerifyCodeRequest {}
 
 void main() {
-  final defaultUserAgreement = UserAgreement(
+  final defaultUserAgreement = UserAgreementDto(
     isOver14: true,
     isAgreedToTerms: true,
     isAgreedToMarketing: true,
@@ -282,7 +281,8 @@ void main() {
         authDatasourceImpl = AuthDatasourceImpl(dio: mockDio);
       });
 
-      test('should return success with message when statusCode == 200', () async {
+      test('should return success with message when statusCode == 200',
+          () async {
         final request = RegisterRequest(
             userAgreement: defaultUserAgreement,
             email: 'test@test.com',
@@ -502,9 +502,12 @@ void main() {
         authDatasourceImpl = AuthDatasourceImpl(dio: mockDio);
       });
 
-      test('should return success with message when statusCode == 200', () async {
-        final request = VerifyCodeRequest(email: 'test@test.com', code: '123456');
-        when(() => mockDio.post(AuthApiPath.checkVerifyCode, data: request.toJson()))
+      test('should return success with message when statusCode == 200',
+          () async {
+        final request =
+            VerifyCodeRequest(email: 'test@test.com', code: '123456');
+        when(() => mockDio
+                .post(AuthApiPath.checkVerifyCode, data: request.toJson()))
             .thenAnswer((_) async => Response(
                   requestOptions: RequestOptions(path: ""),
                   data: {
@@ -517,17 +520,18 @@ void main() {
 
         final result = await authDatasourceImpl.verifyCode(request);
 
-        verify(() => mockDio.post(AuthApiPath.checkVerifyCode, data: request.toJson()))
-            .called(1);
+        verify(() => mockDio.post(AuthApiPath.checkVerifyCode,
+            data: request.toJson())).called(1);
 
         expect(result, isA<Success>());
         expect((result as Success<String>).value, "인증에 성공했습니다.");
       });
 
       test('should return failure with message for DioException', () async {
-        final request = VerifyCodeRequest(email: 'test@test.com', code: '123456');
-        when(() => mockDio.post(AuthApiPath.checkVerifyCode, data: request.toJson()))
-            .thenThrow(DioException(
+        final request =
+            VerifyCodeRequest(email: 'test@test.com', code: '123456');
+        when(() => mockDio.post(AuthApiPath.checkVerifyCode,
+            data: request.toJson())).thenThrow(DioException(
           requestOptions: RequestOptions(path: ''),
           response: Response(
             requestOptions: RequestOptions(path: ''),
@@ -543,9 +547,13 @@ void main() {
       });
 
       test('should return failure for network error', () async {
-        final request = VerifyCodeRequest(email: 'test@test.com', code: '123456');
-        when(() => mockDio.post(AuthApiPath.checkVerifyCode, data: request.toJson()))
-            .thenThrow(DioException(requestOptions: RequestOptions(path: ''), type: DioExceptionType.connectionError));
+        final request =
+            VerifyCodeRequest(email: 'test@test.com', code: '123456');
+        when(() => mockDio.post(AuthApiPath.checkVerifyCode,
+                data: request.toJson()))
+            .thenThrow(DioException(
+                requestOptions: RequestOptions(path: ''),
+                type: DioExceptionType.connectionError));
 
         final result = await authDatasourceImpl.verifyCode(request);
 
@@ -554,14 +562,16 @@ void main() {
       });
 
       test('should return failure for unexpected error', () async {
-        final request = VerifyCodeRequest(email: 'test@test.com', code: '123456');
-        when(() => mockDio.post(AuthApiPath.checkVerifyCode, data: request.toJson()))
-            .thenThrow(Exception('Unexpected error'));
+        final request =
+            VerifyCodeRequest(email: 'test@test.com', code: '123456');
+        when(() => mockDio.post(AuthApiPath.checkVerifyCode,
+            data: request.toJson())).thenThrow(Exception('Unexpected error'));
 
         final result = await authDatasourceImpl.verifyCode(request);
 
         expect(result, isA<Failure>());
-        expect((result as Failure).message, '예상치 못한 오류가 발생했습니다: Exception: Unexpected error');
+        expect((result as Failure).message,
+            '예상치 못한 오류가 발생했습니다: Exception: Unexpected error');
       });
     });
   });
