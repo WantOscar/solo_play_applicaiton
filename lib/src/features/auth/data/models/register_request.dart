@@ -12,7 +12,7 @@ abstract class RegisterRequest with _$RegisterRequest {
     required UserAgreement userAgreement,
     required String email,
     required String password,
-    required String code,
+    required String proofToken,
   }) = _RegisterRequest;
 
   factory RegisterRequest.fromJson(JsonMap json) =>

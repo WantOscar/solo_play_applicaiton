@@ -121,13 +121,30 @@ class AuthDatasourceImpl extends AuthDatasource {
     }
   }
 
+  /// 회원가입 요청 API 호출
+  ///
+  /// [RegisterRequest] DTO를 요청 본문으로 서버에 전달하여,
+  /// 새로운 사용자를 등록합니다.
+  ///
+  /// - 요청 경로: [AuthApiPath.signup]
+  /// - 요청 방식: `POST`
+  ///
+  /// ### 반환
+  /// - [Success]<Jwt> : 서버가 200 OK 응답을 반환한 경우
+  ///   → `response.data["data"]` 필드에 담긴 토큰 정보를 반환
+  ///
+  /// - [Failure]<String> : 서버가 400 Bad Request 응답을 반환한 경우
+  ///   → `response.data["message"]` 필드의 에러 메시지를 반환
+  ///
+  /// - [Failure]<String> : 기타 상태 코드이거나 예외 발생 시
+  ///   → 기본 메시지 `"서버와의 연결이 원할하지 않습니다"` 반환
   @override
-  Future<Result<Jwt>> register(RegisterRequest request) async {
+  Future<Result<String>> register(RegisterRequest request) async {
     try {
       final response =
           await _dio.post(AuthApiPath.signup, data: request.toJson());
       if (response.statusCode == 200) {
-        return Success(Jwt.fromJson(response.data['data'] as JsonMap));
+        return Success(response.data['message'] as String);
       } else {
         return Failure(response.data['message'] as String);
       }
@@ -146,6 +163,20 @@ class AuthDatasourceImpl extends AuthDatasource {
     }
   }
 
+  /// 이메일 인증 코드 발송 API 호출
+  ///
+  /// [EmailVerificationRequest] DTO를 요청 본문으로 서버에 전달하여,
+  /// 입력된 이메일로 인증 코드를 발송합니다.
+  ///
+  /// - 요청 경로: [AuthApiPath.sendVerificationEmail]
+  /// - 요청 방식: `POST`
+  ///
+  /// ### 반환
+  /// - [Success]<String> : 서버가 200 OK 응답을 반환한 경우
+  ///   → `response.data["message"]` 필드에 담긴 성공 메시지를 반환
+  ///
+  /// - [Failure]<String> : 예외 발생 시
+  ///   → 에러 메시지를 담아 반환
   @override
   Future<Result<String>> sendVerificationEmail(EmailVerificationRequest request) async {
     try {
@@ -175,6 +206,20 @@ class AuthDatasourceImpl extends AuthDatasource {
     }
   }
 
+  /// 인증 코드 검증 API 호출
+  ///
+  /// [VerifyCodeRequest] DTO를 요청 본문으로 서버에 전달하여,
+  /// 이메일로 발송된 인증 코드의 유효성을 검사합니다.
+  ///
+  /// - 요청 경로: [AuthApiPath.checkVerifyCode]
+  /// - 요청 방식: `POST`
+  ///
+  /// ### 반환
+  /// - [Success]<String> : 서버가 200 OK 응답을 반환한 경우
+  ///   → `response.data["message"]` 필드에 담긴 성공 메시지를 반환
+  ///
+  /// - [Failure]<String> : 예외 발생 시
+  ///   → 에러 메시지를 담아 반환
   @override
   Future<Result<String>> verifyCode(VerifyCodeRequest request) async {
     try {

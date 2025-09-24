@@ -3,14 +3,18 @@ import 'dart:async';
 import 'package:mocktail/mocktail.dart';
 import 'package:solo_play_application/src/core/utils/networks/result.dart';
 import 'package:solo_play_application/src/features/auth/data/datasources/locals/jwt_storage.dart';
+import 'package:solo_play_application/src/features/auth/data/datasources/locals/proof_token_storage.dart';
 import 'package:solo_play_application/src/features/auth/data/datasources/remotes/auth_datasource.dart';
 import 'package:solo_play_application/src/features/auth/data/models/check_email_duplicate.dart';
 import 'package:solo_play_application/src/features/auth/data/models/email_verification_request.dart';
 import 'package:solo_play_application/src/features/auth/data/models/jwt.dart';
 import 'package:solo_play_application/src/features/auth/data/models/login.dart';
+import 'package:solo_play_application/src/features/auth/data/models/register_request.dart';
+import 'package:solo_play_application/src/features/auth/data/models/user_agreement.dart';
 import 'package:solo_play_application/src/features/auth/data/models/verify_code_request.dart';
 import 'package:solo_play_application/src/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:solo_play_application/src/features/auth/domain/entities/login_info.dart';
+import 'package:solo_play_application/src/features/auth/domain/entities/register_info.dart';
 import 'package:solo_play_application/src/features/auth/domain/entities/verify_code_info.dart';
 import 'package:solo_play_application/src/features/auth/domain/repositories/auth_repository.dart';
 import 'package:test/test.dart';
@@ -19,25 +23,33 @@ class MockAuthDatasource extends Mock implements AuthDatasource {}
 
 class MockJwtStorage extends Mock implements JwtStorage {}
 
+class MockProofTokenStorage extends Mock implements ProofTokenStorage {}
+
 void main() {
   group(AuthRepository, () {
     late MockAuthDatasource mockAuthDatasource;
     late MockJwtStorage mockJwtStorage;
+    late MockProofTokenStorage mockProofTokenStorage;
     late AuthRepository authRepository;
     late StreamController<String?> tokenController;
 
     setUp(() {
       mockAuthDatasource = MockAuthDatasource();
       mockJwtStorage = MockJwtStorage();
+      mockProofTokenStorage = MockProofTokenStorage();
       tokenController = StreamController<String?>.broadcast();
       registerFallbackValue(VerifyCodeRequest(email: '', code: ''));
+      registerFallbackValue(RegisterRequest(userAgreement: UserAgreement(isOver14: false, isAgreedToTerms: false, isAgreedToMarketing: false, isConsentedToAds: false), email: '', password: '', proofToken: ''));
 
       // Mock the tokenStream getter
       when(() => mockJwtStorage.tokenStream)
           .thenAnswer((_) => tokenController.stream);
 
       authRepository = AuthRepositoryImpl(
-          authDatasource: mockAuthDatasource, jwtStorage: mockJwtStorage);
+        authDatasource: mockAuthDatasource,
+        jwtStorage: mockJwtStorage,
+        proofTokenStorage: mockProofTokenStorage,
+      );
     });
 
     tearDown(() {
@@ -245,32 +257,134 @@ void main() {
       final verifyCodeInfo = VerifyCodeInfo(email: 'test@test.com', code: '123456');
       final verifyCodeRequest = VerifyCodeRequest(email: 'test@test.com', code: '123456');
 
-      test('should return correctly when success', () async {
-        when(
-          () => mockAuthDatasource.verifyCode(any()),
-        ).thenAnswer((_) async => Success('message'));
+      test('should save proof token when verification is successful', () async {
+        const proofToken = 'test_proof_token';
+        when(() => mockAuthDatasource.verifyCode(any()))
+            .thenAnswer((_) async => Success(proofToken));
+        when(() => mockProofTokenStorage.saveProofToken(proofToken))
+            .thenAnswer((_) async => Future.value());
 
         final result = await authRepository.verifyCode(verifyCodeInfo);
 
-        verify(
-          () => mockAuthDatasource.verifyCode(verifyCodeRequest),
-        ).called(1);
+        expect(result, isA<Success>());
+        verify(() => mockAuthDatasource.verifyCode(verifyCodeRequest)).called(1);
+        verify(() => mockProofTokenStorage.saveProofToken(proofToken)).called(1);
+        verifyNoMoreInteractions(mockProofTokenStorage);
+      });
+
+      test('should return correctly when success', () async {
+        when(() => mockAuthDatasource.verifyCode(any()))
+            .thenAnswer((_) async => Success('message'));
+        // Add mock for the new dependency call
+        when(() => mockProofTokenStorage.saveProofToken(any()))
+            .thenAnswer((_) async => Future.value());
+
+        final result = await authRepository.verifyCode(verifyCodeInfo);
+
+        verify(() => mockAuthDatasource.verifyCode(verifyCodeRequest)).called(1);
 
         expect(result, isA<Success>());
       });
 
       test('should return correctly when failure', () async {
-        when(
-          () => mockAuthDatasource.verifyCode(any()),
-        ).thenAnswer((_) async => Failure('error'));
+        when(() => mockAuthDatasource.verifyCode(any()))
+            .thenAnswer((_) async => Failure('error'));
 
         final result = await authRepository.verifyCode(verifyCodeInfo);
 
-        verify(
-          () => mockAuthDatasource.verifyCode(verifyCodeRequest),
-        ).called(1);
+        verify(() => mockAuthDatasource.verifyCode(verifyCodeRequest)).called(1);
 
         expect(result, isA<Failure>());
+      });
+    });
+
+    group('when called register', () {
+      final userAgreement = UserAgreement(
+        isOver14: true,
+        isAgreedToTerms: true,
+        isAgreedToMarketing: false,
+        isConsentedToAds: false,
+      );
+      final registerInfo = RegisterInfo(
+        email: 'test@test.com',
+        password: 'password',
+        userAgreement: userAgreement,
+      );
+      const proofToken = 'test_proof_token';
+      final registerRequest = RegisterRequest(
+        email: registerInfo.email,
+        password: registerInfo.password,
+        userAgreement: registerInfo.userAgreement,
+        proofToken: proofToken,
+      );
+      final jwt = Jwt(
+        grantType: 'Bearer',
+        accessToken: 'access-token',
+        refreshToken: 'refresh-token',
+      );
+
+      test('should delete proof token when registration is successful', () async {
+        // Arrange
+        when(() => mockProofTokenStorage.readProofToken()).thenAnswer((_) async => proofToken);
+        when(() => mockAuthDatasource.register(registerRequest)).thenAnswer((_) async => Success('회원가입 성공'));
+        when(() => mockProofTokenStorage.deleteProofToken()).thenAnswer((_) async => Future.value());
+
+        // Act
+        final result = await authRepository.register(registerInfo);
+
+        // Assert
+        expect(result, isA<Success>());
+        verify(() => mockProofTokenStorage.readProofToken()).called(1);
+        verify(() => mockAuthDatasource.register(registerRequest)).called(1);
+        verify(() => mockProofTokenStorage.deleteProofToken()).called(1);
+        verifyNever(() => mockJwtStorage.saveAccessToken(any()));
+        verifyNever(() => mockJwtStorage.saveRefreshToken(any()));
+      });
+
+      test('should return Failure when proof token is null', () async {
+        // Arrange
+        when(() => mockProofTokenStorage.readProofToken()).thenAnswer((_) async => null);
+
+        // Act
+        final result = await authRepository.register(registerInfo);
+
+        // Assert
+        expect(result, isA<Failure>());
+        expect((result as Failure).message, '본인인증이 완료되지 않았습니다.');
+        verify(() => mockProofTokenStorage.readProofToken()).called(1);
+        verifyNever(() => mockAuthDatasource.register(any()));
+      });
+
+      test('should return Failure when datasource fails', () async {
+        // Arrange
+        when(() => mockProofTokenStorage.readProofToken()).thenAnswer((_) async => proofToken);
+        when(() => mockAuthDatasource.register(registerRequest))
+            .thenAnswer((_) async => Failure('이미 가입된 이메일입니다.'));
+
+        // Act
+        final result = await authRepository.register(registerInfo);
+
+        // Assert
+        expect(result, isA<Failure>());
+        expect((result as Failure).message, '이미 가입된 이메일입니다.');
+        verify(() => mockProofTokenStorage.readProofToken()).called(1);
+        verify(() => mockAuthDatasource.register(registerRequest)).called(1);
+        verifyNever(() => mockProofTokenStorage.deleteProofToken());
+      });
+    });
+
+    group('when called logout', () {
+      test('should call deleteAccessToken and deleteRefreshToken on jwtStorage', () async {
+        // Arrange
+        when(() => mockJwtStorage.deleteAccessToken()).thenAnswer((_) async => Future.value());
+        when(() => mockJwtStorage.deleteRefreshToken()).thenAnswer((_) async => Future.value());
+
+        // Act
+        await authRepository.logout();
+
+        // Assert
+        verify(() => mockJwtStorage.deleteAccessToken()).called(1);
+        verify(() => mockJwtStorage.deleteRefreshToken()).called(1);
       });
     });
   });

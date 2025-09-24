@@ -12,7 +12,7 @@ _RegisterRequest _$RegisterRequestFromJson(Map<String, dynamic> json) =>
           UserAgreement.fromJson(json['userAgreement'] as Map<String, dynamic>),
       email: json['email'] as String,
       password: json['password'] as String,
-      code: json['code'] as String,
+      proofToken: json['proofToken'] as String,
     );
 
 Map<String, dynamic> _$RegisterRequestToJson(_RegisterRequest instance) =>
@@ -20,5 +20,5 @@ Map<String, dynamic> _$RegisterRequestToJson(_RegisterRequest instance) =>
       'userAgreement': instance.userAgreement.toJson(),
       'email': instance.email,
       'password': instance.password,
-      'code': instance.code,
+      'proofToken': instance.proofToken,
     };

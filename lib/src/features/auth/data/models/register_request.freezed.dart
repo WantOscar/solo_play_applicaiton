@@ -18,7 +18,7 @@ mixin _$RegisterRequest {
   UserAgreement get userAgreement;
   String get email;
   String get password;
-  String get code;
+  String get proofToken;
 
   /// Create a copy of RegisterRequest
   /// with the given fields replaced by the non-null parameter values.
@@ -41,17 +41,18 @@ mixin _$RegisterRequest {
             (identical(other.email, email) || other.email == email) &&
             (identical(other.password, password) ||
                 other.password == password) &&
-            (identical(other.code, code) || other.code == code));
+            (identical(other.proofToken, proofToken) ||
+                other.proofToken == proofToken));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, userAgreement, email, password, code);
+      Object.hash(runtimeType, userAgreement, email, password, proofToken);
 
   @override
   String toString() {
-    return 'RegisterRequest(userAgreement: $userAgreement, email: $email, password: $password, code: $code)';
+    return 'RegisterRequest(userAgreement: $userAgreement, email: $email, password: $password, proofToken: $proofToken)';
   }
 }
 
@@ -65,7 +66,7 @@ abstract mixin class $RegisterRequestCopyWith<$Res> {
       {UserAgreement userAgreement,
       String email,
       String password,
-      String code});
+      String proofToken});
 
   $UserAgreementCopyWith<$Res> get userAgreement;
 }
@@ -86,7 +87,7 @@ class _$RegisterRequestCopyWithImpl<$Res>
     Object? userAgreement = null,
     Object? email = null,
     Object? password = null,
-    Object? code = null,
+    Object? proofToken = null,
   }) {
     return _then(_self.copyWith(
       userAgreement: null == userAgreement
@@ -101,9 +102,9 @@ class _$RegisterRequestCopyWithImpl<$Res>
           ? _self.password
           : password // ignore: cast_nullable_to_non_nullable
               as String,
-      code: null == code
-          ? _self.code
-          : code // ignore: cast_nullable_to_non_nullable
+      proofToken: null == proofToken
+          ? _self.proofToken
+          : proofToken // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -127,7 +128,7 @@ class _RegisterRequest implements RegisterRequest {
       {required this.userAgreement,
       required this.email,
       required this.password,
-      required this.code});
+      required this.proofToken});
   factory _RegisterRequest.fromJson(Map<String, dynamic> json) =>
       _$RegisterRequestFromJson(json);
 
@@ -138,7 +139,7 @@ class _RegisterRequest implements RegisterRequest {
   @override
   final String password;
   @override
-  final String code;
+  final String proofToken;
 
   /// Create a copy of RegisterRequest
   /// with the given fields replaced by the non-null parameter values.
@@ -165,17 +166,18 @@ class _RegisterRequest implements RegisterRequest {
             (identical(other.email, email) || other.email == email) &&
             (identical(other.password, password) ||
                 other.password == password) &&
-            (identical(other.code, code) || other.code == code));
+            (identical(other.proofToken, proofToken) ||
+                other.proofToken == proofToken));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, userAgreement, email, password, code);
+      Object.hash(runtimeType, userAgreement, email, password, proofToken);
 
   @override
   String toString() {
-    return 'RegisterRequest(userAgreement: $userAgreement, email: $email, password: $password, code: $code)';
+    return 'RegisterRequest(userAgreement: $userAgreement, email: $email, password: $password, proofToken: $proofToken)';
   }
 }
 
@@ -191,7 +193,7 @@ abstract mixin class _$RegisterRequestCopyWith<$Res>
       {UserAgreement userAgreement,
       String email,
       String password,
-      String code});
+      String proofToken});
 
   @override
   $UserAgreementCopyWith<$Res> get userAgreement;
@@ -213,7 +215,7 @@ class __$RegisterRequestCopyWithImpl<$Res>
     Object? userAgreement = null,
     Object? email = null,
     Object? password = null,
-    Object? code = null,
+    Object? proofToken = null,
   }) {
     return _then(_RegisterRequest(
       userAgreement: null == userAgreement
@@ -228,9 +230,9 @@ class __$RegisterRequestCopyWithImpl<$Res>
           ? _self.password
           : password // ignore: cast_nullable_to_non_nullable
               as String,
-      code: null == code
-          ? _self.code
-          : code // ignore: cast_nullable_to_non_nullable
+      proofToken: null == proofToken
+          ? _self.proofToken
+          : proofToken // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }

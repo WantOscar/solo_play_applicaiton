@@ -6,12 +6,12 @@ void main() {
   group('RegisterRequest', () {
     const String tEmail = 'test@example.com';
     const String tPassword = 'password123';
-    const String tCode = '123456';
+    const String tProofToken = 't-proof-token';
 
     final RegisterRequest tRegisterRequest = RegisterRequest(
         email: tEmail,
         password: tPassword,
-        code: tCode,
+        proofToken: tProofToken,
         userAgreement: UserAgreement(
             isOver14: true,
             isAgreedToTerms: true,
@@ -21,7 +21,7 @@ void main() {
     final Map<String, dynamic> tRegisterRequestJson = {
       'email': tEmail,
       'password': tPassword,
-      'code': tCode,
+      'proofToken': tProofToken,
       'userAgreement': {
         'isOver14': true,
         'isAgreedToTerms': true,
