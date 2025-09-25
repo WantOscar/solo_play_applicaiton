@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:solo_play_application/src/features/auth/domain/repositories/auth_repository.dart';
+import 'package:solo_play_application/src/features/auth/domain/usecases/user_register_usecase.dart';
 import 'package:solo_play_application/src/features/auth/presentation/register/bloc/register_bloc.dart';
 
 class RegisterFlow extends StatelessWidget {
@@ -8,8 +10,17 @@ class RegisterFlow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<RegisterBloc>(
-      create: (context) => RegisterBloc(),
+    return MultiBlocProvider(
+      providers: [
+        RepositoryProvider<UserRegisterUsecase>(
+          create: (context) => UserRegisterUsecaseImpl(
+              authRepository: context.read<AuthRepository>()),
+        ),
+        BlocProvider<RegisterBloc>(
+          create: (context) => RegisterBloc(
+              userRegisterUsecase: context.read<UserRegisterUsecase>()),
+        ),
+      ],
       child: PopScope(
         onPopInvokedWithResult: (didPop, result) {},
         child: GestureDetector(
