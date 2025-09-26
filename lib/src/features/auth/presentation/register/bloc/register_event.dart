@@ -14,8 +14,5 @@ sealed class RegisterEvent with _$RegisterEvent {
   const factory RegisterEvent.updatePassword({
     required String password,
   }) = UpdatePassword;
-  const factory RegisterEvent.registerSubmitted({
-    required String email,
-    required String password,
-  }) = RegisterSubmitted;
+  const factory RegisterEvent.registerSubmitted() = RegisterSubmitted;
 }

@@ -9,7 +9,7 @@ class RegisterCompleteButtonSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return PrimaryButton(
       onTap: () {
-        // 회원가입 API
+        /// 뒤로가기로 다시 로그인 화면으로 돌아감
         context.pop();
       },
       child: Text(

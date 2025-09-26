@@ -29,8 +29,7 @@ void main() {
       registerFallbackValue(VerificationEvent.verificationSubmitted('', ''));
       registerFallbackValue(RegisterState());
       registerFallbackValue(Uri.parse('/'));
-      registerFallbackValue(
-          RegisterEvent.registerSubmitted(email: '', password: ''));
+      registerFallbackValue(RegisterSubmitted());
     });
 
     setUp(() {

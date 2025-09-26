@@ -3,7 +3,8 @@ import 'package:solo_play_application/src/features/auth/domain/entities/register
 
 part 'register_state.freezed.dart';
 
-enum RegisterStep { terms, email, password }
+enum RegisterStep { terms, email, password, verification }
+
 enum RegisterStatus { initial, loading, success, error }
 
 @freezed

@@ -31,7 +31,7 @@ void main() {
     });
 
     blocTest<RegisterBloc, RegisterState>(
-      'emits [RegisterState] with updated terms agreement when UpdateTermsAgreement is added.',
+      'emits [RegisterState] with updated terms agreement and step when UpdateTermsAgreement is added.',
       build: () => RegisterBloc(userRegisterUsecase: mockUserRegisterUsecase),
       act: (bloc) =>
           bloc.add(const UpdateTermsAgreement(userAgreement: userAgreement)),
@@ -41,28 +41,31 @@ void main() {
             termsAgreed: true,
             userAgreement: userAgreement,
           ),
+          step: RegisterStep.email,
         ),
       ],
     );
 
     blocTest<RegisterBloc, RegisterState>(
-      'emits [RegisterState] with updated email when UpdateEmail is added.',
+      'emits [RegisterState] with updated email and step when UpdateEmail is added.',
       build: () => RegisterBloc(userRegisterUsecase: mockUserRegisterUsecase),
       act: (bloc) => bloc.add(const UpdateEmail(email: 'test@example.com')),
       expect: () => [
         const RegisterState(
           register: Register(email: 'test@example.com'),
+          step: RegisterStep.password,
         ),
       ],
     );
 
     blocTest<RegisterBloc, RegisterState>(
-      'emits [RegisterState] with updated password when UpdatePassword is added.',
+      'emits [RegisterState] with updated password and step when UpdatePassword is added.',
       build: () => RegisterBloc(userRegisterUsecase: mockUserRegisterUsecase),
       act: (bloc) => bloc.add(const UpdatePassword(password: 'password')),
       expect: () => [
         const RegisterState(
           register: Register(password: 'password'),
+          step: RegisterStep.verification,
         ),
       ],
     );
@@ -77,20 +80,25 @@ void main() {
       act: (bloc) {
         bloc.add(const UpdateEmail(email: 'test@example.com'));
         bloc.add(const UpdatePassword(password: 'password'));
-        bloc.add(const RegisterSubmitted(
-            email: 'test@example.com', password: 'password'));
+        bloc.add(const RegisterSubmitted());
       },
       expect: () => [
-        const RegisterState(register: Register(email: 'test@example.com')),
         const RegisterState(
-            register:
-                Register(email: 'test@example.com', password: 'password')),
+          register: Register(email: 'test@example.com'),
+          step: RegisterStep.password,
+        ),
         const RegisterState(
           register: Register(email: 'test@example.com', password: 'password'),
+          step: RegisterStep.verification,
+        ),
+        const RegisterState(
+          register: Register(email: 'test@example.com', password: 'password'),
+          step: RegisterStep.verification,
           status: RegisterStatus.loading,
         ),
         const RegisterState(
           register: Register(email: 'test@example.com', password: 'password'),
+          step: RegisterStep.verification,
           status: RegisterStatus.success,
         ),
       ],
@@ -111,20 +119,25 @@ void main() {
       act: (bloc) {
         bloc.add(const UpdateEmail(email: 'test@example.com'));
         bloc.add(const UpdatePassword(password: 'password'));
-        bloc.add(const RegisterSubmitted(
-            email: 'test@example.com', password: 'password'));
+        bloc.add(const RegisterSubmitted());
       },
       expect: () => [
-        const RegisterState(register: Register(email: 'test@example.com')),
         const RegisterState(
-            register:
-                Register(email: 'test@example.com', password: 'password')),
+          register: Register(email: 'test@example.com'),
+          step: RegisterStep.password,
+        ),
         const RegisterState(
           register: Register(email: 'test@example.com', password: 'password'),
+          step: RegisterStep.verification,
+        ),
+        const RegisterState(
+          register: Register(email: 'test@example.com', password: 'password'),
+          step: RegisterStep.verification,
           status: RegisterStatus.loading,
         ),
         const RegisterState(
           register: Register(email: 'test@example.com', password: 'password'),
+          step: RegisterStep.verification,
           status: RegisterStatus.error,
           errorMessage: 'Registration failed',
         ),

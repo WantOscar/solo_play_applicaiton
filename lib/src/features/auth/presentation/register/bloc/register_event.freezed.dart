@@ -244,72 +244,20 @@ class _$UpdatePasswordCopyWithImpl<$Res>
 /// @nodoc
 
 class RegisterSubmitted implements RegisterEvent {
-  const RegisterSubmitted({required this.email, required this.password});
-
-  final String email;
-  final String password;
-
-  /// Create a copy of RegisterEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  $RegisterSubmittedCopyWith<RegisterSubmitted> get copyWith =>
-      _$RegisterSubmittedCopyWithImpl<RegisterSubmitted>(this, _$identity);
+  const RegisterSubmitted();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is RegisterSubmitted &&
-            (identical(other.email, email) || other.email == email) &&
-            (identical(other.password, password) ||
-                other.password == password));
+        (other.runtimeType == runtimeType && other is RegisterSubmitted);
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, email, password);
+  int get hashCode => runtimeType.hashCode;
 
   @override
   String toString() {
-    return 'RegisterEvent.registerSubmitted(email: $email, password: $password)';
-  }
-}
-
-/// @nodoc
-abstract mixin class $RegisterSubmittedCopyWith<$Res>
-    implements $RegisterEventCopyWith<$Res> {
-  factory $RegisterSubmittedCopyWith(
-          RegisterSubmitted value, $Res Function(RegisterSubmitted) _then) =
-      _$RegisterSubmittedCopyWithImpl;
-  @useResult
-  $Res call({String email, String password});
-}
-
-/// @nodoc
-class _$RegisterSubmittedCopyWithImpl<$Res>
-    implements $RegisterSubmittedCopyWith<$Res> {
-  _$RegisterSubmittedCopyWithImpl(this._self, this._then);
-
-  final RegisterSubmitted _self;
-  final $Res Function(RegisterSubmitted) _then;
-
-  /// Create a copy of RegisterEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  $Res call({
-    Object? email = null,
-    Object? password = null,
-  }) {
-    return _then(RegisterSubmitted(
-      email: null == email
-          ? _self.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String,
-      password: null == password
-          ? _self.password
-          : password // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
+    return 'RegisterEvent.registerSubmitted()';
   }
 }
 

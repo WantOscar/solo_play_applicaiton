@@ -22,10 +22,8 @@ class VerificationConfirmButtonSection extends StatelessWidget {
           listener: (context, state) {
             if (state.status == VerificationStatus.verified) {
               log('Verification successful. Triggering user registration.');
-              final email = context.read<RegisterBloc>().state.register.email;
-              final password = context.read<RegisterBloc>().state.register.password;
               context.read<RegisterBloc>().add(
-                    RegisterEvent.registerSubmitted(email: email, password: password),
+                    RegisterSubmitted(),
                   );
             } else if (state.status == VerificationStatus.error) {
               log('Error verifying code: ${state.errorMessage}');
@@ -49,7 +47,8 @@ class VerificationConfirmButtonSection extends StatelessWidget {
           return PrimaryButton(
             onTap: isButtonEnabled
                 ? () {
-                    final email = context.read<RegisterBloc>().state.register.email;
+                    final email =
+                        context.read<RegisterBloc>().state.register.email;
                     final code = state.code;
                     context.read<VerificationBloc>().add(
                           VerificationEvent.verificationSubmitted(email, code),

@@ -43,11 +43,11 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     Emitter<RegisterState> emit,
   ) {
     emit(state.copyWith(
-      register: state.register.copyWith(
-        termsAgreed: event.userAgreement.isUserAgree,
-        userAgreement: event.userAgreement,
-      ),
-    ));
+        register: state.register.copyWith(
+          termsAgreed: event.userAgreement.isUserAgree,
+          userAgreement: event.userAgreement,
+        ),
+        step: RegisterStep.email));
   }
 
   void _onUpdateEmail(
@@ -55,10 +55,10 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     Emitter<RegisterState> emit,
   ) {
     emit(state.copyWith(
-      register: state.register.copyWith(
-        email: event.email,
-      ),
-    ));
+        register: state.register.copyWith(
+          email: event.email,
+        ),
+        step: RegisterStep.password));
   }
 
   void _onUpdatePassword(
@@ -69,6 +69,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       register: state.register.copyWith(
         password: event.password,
       ),
+      step: RegisterStep.verification,
     ));
   }
 }
