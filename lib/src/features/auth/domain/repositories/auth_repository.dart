@@ -15,7 +15,7 @@ abstract class AuthRepository {
 
   Future<Result<String>> sendVerificationEmail(String email);
 
-  Future<Result<String>> verifyCode(VerifyCodeInfo request);
+  Future<Result<void>> verifyCode(VerifyCodeInfo request);
 
   Future<void> logout();
 

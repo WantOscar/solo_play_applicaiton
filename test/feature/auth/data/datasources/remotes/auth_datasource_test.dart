@@ -7,7 +7,7 @@ import 'package:solo_play_application/src/features/auth/data/models/email_verifi
 import 'package:solo_play_application/src/features/auth/data/models/jwt.dart';
 import 'package:solo_play_application/src/features/auth/data/models/login.dart';
 import 'package:solo_play_application/src/features/auth/data/models/register_request.dart';
-import 'package:solo_play_application/src/features/auth/data/models/verify_code_request.dart';
+import 'package:solo_play_application/src/features/auth/data/models/verify_code.dart';
 import 'package:solo_play_application/src/features/auth/data/utils/api_path.dart';
 import 'package:test/test.dart';
 
@@ -502,10 +502,15 @@ void main() {
         authDatasourceImpl = AuthDatasourceImpl(dio: mockDio);
       });
 
-      test('should return success with message when statusCode == 200',
+      test('should return success with VerifyCodeResponse when statusCode == 200',
           () async {
         final request =
             VerifyCodeRequest(email: 'test@test.com', code: '123456');
+        final responsePayload = {
+          "isVerified": true,
+          "proofToken": "some_proof_token"
+        };
+
         when(() => mockDio
                 .post(AuthApiPath.checkVerifyCode, data: request.toJson()))
             .thenAnswer((_) async => Response(
@@ -513,7 +518,7 @@ void main() {
                   data: {
                     "status": "SUCCESS",
                     "message": "인증에 성공했습니다.",
-                    "data": "some_proof_token",
+                    "data": responsePayload,
                   },
                   statusCode: 200,
                 ));
@@ -524,7 +529,9 @@ void main() {
             data: request.toJson())).called(1);
 
         expect(result, isA<Success>());
-        expect((result as Success<String>).value, "인증에 성공했습니다.");
+        final successResult = result as Success<VerifyCodeResponse>;
+        expect(successResult.value.isVerified, true);
+        expect(successResult.value.proofToken, "some_proof_token");
       });
 
       test('should return failure with message for DioException', () async {

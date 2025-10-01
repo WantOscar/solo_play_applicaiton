@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'verify_code_request.dart';
+part of 'verify_code.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -16,4 +16,16 @@ Map<String, dynamic> _$VerifyCodeRequestToJson(_VerifyCodeRequest instance) =>
     <String, dynamic>{
       'email': instance.email,
       'code': instance.code,
+    };
+
+_VerifyCodeResponse _$VerifyCodeResponseFromJson(Map<String, dynamic> json) =>
+    _VerifyCodeResponse(
+      isVerified: json['isVerified'] as bool,
+      proofToken: json['proofToken'] as String,
+    );
+
+Map<String, dynamic> _$VerifyCodeResponseToJson(_VerifyCodeResponse instance) =>
+    <String, dynamic>{
+      'isVerified': instance.isVerified,
+      'proofToken': instance.proofToken,
     };

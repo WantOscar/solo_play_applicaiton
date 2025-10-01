@@ -8,7 +8,7 @@ import 'package:solo_play_application/src/features/auth/data/utils/api_path.dart
 import 'package:solo_play_application/src/features/auth/data/datasources/remotes/auth_datasource.dart';
 import 'package:solo_play_application/src/features/auth/data/models/check_email_duplicate.dart';
 import 'package:solo_play_application/src/features/auth/data/models/login.dart';
-import 'package:solo_play_application/src/features/auth/data/models/verify_code_request.dart';
+import 'package:solo_play_application/src/features/auth/data/models/verify_code.dart';
 
 /// [AuthDatasource]의 구현체
 ///
@@ -178,7 +178,8 @@ class AuthDatasourceImpl extends AuthDatasource {
   /// - [Failure]<String> : 예외 발생 시
   ///   → 에러 메시지를 담아 반환
   @override
-  Future<Result<String>> sendVerificationEmail(EmailVerificationRequest request) async {
+  Future<Result<String>> sendVerificationEmail(
+      EmailVerificationRequest request) async {
     try {
       final response = await _dio.post(
         AuthApiPath.sendVerificationEmail,
@@ -187,7 +188,8 @@ class AuthDatasourceImpl extends AuthDatasource {
       if (response.statusCode == 200) {
         return Success(response.data["message"] as String);
       } else {
-        return Failure(response.data['message'] as String? ?? "알 수 없는 오류가 발생했습니다.");
+        return Failure(
+            response.data['message'] as String? ?? "알 수 없는 오류가 발생했습니다.");
       }
     } on DioException catch (e) {
       if (e.response != null) {
@@ -221,17 +223,14 @@ class AuthDatasourceImpl extends AuthDatasource {
   /// - [Failure]<String> : 예외 발생 시
   ///   → 에러 메시지를 담아 반환
   @override
-  Future<Result<String>> verifyCode(VerifyCodeRequest request) async {
+  Future<Result<VerifyCodeResponse>> verifyCode(VerifyCodeRequest request) async {
     try {
       final response = await _dio.post(
         AuthApiPath.checkVerifyCode,
         data: request.toJson(),
       );
-      if (response.statusCode == 200) {
-        return Success(response.data["message"] as String);
-      } else {
-        return Failure(response.data['message'] as String? ?? "알 수 없는 오류가 발생했습니다.");
-      }
+      return Success(
+          VerifyCodeResponse.fromJson(response.data['data'] as JsonMap));
     } on DioException catch (e) {
       if (e.response != null) {
         final dynamic errorData = e.response!.data;

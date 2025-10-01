@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:solo_play_application/src/features/auth/data/models/verify_code_request.dart';
+import 'package:solo_play_application/src/features/auth/data/models/verify_code.dart';
 
 void main() {
   group('VerifyCodeRequest', () {
@@ -25,7 +25,8 @@ void main() {
     test('should support value equality', () {
       final instance1 = VerifyCodeRequest(email: tEmail, code: tCode);
       final instance2 = VerifyCodeRequest(email: tEmail, code: tCode);
-      final instance3 = VerifyCodeRequest(email: 'another@example.com', code: '654321');
+      final instance3 =
+          VerifyCodeRequest(email: 'another@example.com', code: '654321');
 
       expect(instance1, equals(instance2));
       expect(instance1, isNot(equals(instance3)));

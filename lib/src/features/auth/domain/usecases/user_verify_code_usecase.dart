@@ -3,7 +3,7 @@ import 'package:solo_play_application/src/features/auth/domain/entities/verify_c
 import 'package:solo_play_application/src/features/auth/domain/repositories/auth_repository.dart';
 
 abstract class UserVerifyCodeUsecase {
-  Future<Result<String>> call(String email, String code);
+  Future<Result<void>> call(String email, String code);
 }
 
 class UserVerifyCodeUsecaseImpl extends UserVerifyCodeUsecase {
@@ -13,7 +13,7 @@ class UserVerifyCodeUsecaseImpl extends UserVerifyCodeUsecase {
       : _authRepository = authRepository;
 
   @override
-  Future<Result<String>> call(String email, String code) async {
+  Future<Result<void>> call(String email, String code) async {
     final verifyCodeInfo = VerifyCodeInfo(email: email, code: code);
     return await _authRepository.verifyCode(verifyCodeInfo);
   }

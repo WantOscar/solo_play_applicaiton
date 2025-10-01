@@ -7,7 +7,7 @@ import 'package:solo_play_application/src/features/auth/data/models/email_verifi
 import 'package:solo_play_application/src/features/auth/data/models/jwt.dart';
 import 'package:solo_play_application/src/features/auth/data/models/login.dart';
 import 'package:solo_play_application/src/features/auth/data/models/register_request.dart';
-import 'package:solo_play_application/src/features/auth/data/models/verify_code_request.dart';
+import 'package:solo_play_application/src/features/auth/data/models/verify_code.dart';
 import 'package:solo_play_application/src/features/auth/domain/entities/login_info.dart';
 import 'package:solo_play_application/src/features/auth/domain/entities/register.dart';
 import 'package:solo_play_application/src/features/auth/domain/entities/verify_code_info.dart';
@@ -76,15 +76,16 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<Result<String>> verifyCode(VerifyCodeInfo request) async {
+  Future<Result<void>> verifyCode(VerifyCodeInfo request) async {
     final result = await _authDatasource.verifyCode(
         VerifyCodeRequest(email: request.email, code: request.code));
 
-    if (result is Success<String>) {
-      await _proofTokenStorage.saveProofToken(result.value);
+    if (result is Success<VerifyCodeResponse>) {
+      await _proofTokenStorage.saveProofToken(result.value.proofToken);
+      return Success(null);
     }
 
-    return result;
+    return Failure((result as Failure).message);
   }
 
   /// 로그인을 수행합니다.

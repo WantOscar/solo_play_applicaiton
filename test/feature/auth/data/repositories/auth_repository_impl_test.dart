@@ -10,7 +10,7 @@ import 'package:solo_play_application/src/features/auth/data/models/email_verifi
 import 'package:solo_play_application/src/features/auth/data/models/jwt.dart';
 import 'package:solo_play_application/src/features/auth/data/models/login.dart';
 import 'package:solo_play_application/src/features/auth/data/models/register_request.dart';
-import 'package:solo_play_application/src/features/auth/data/models/verify_code_request.dart';
+import 'package:solo_play_application/src/features/auth/data/models/verify_code.dart';
 import 'package:solo_play_application/src/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:solo_play_application/src/features/auth/domain/entities/login_info.dart';
 import 'package:solo_play_application/src/features/auth/domain/entities/register.dart';
@@ -266,49 +266,38 @@ void main() {
           VerifyCodeInfo(email: 'test@test.com', code: '123456');
       final verifyCodeRequest =
           VerifyCodeRequest(email: 'test@test.com', code: '123456');
+      final verifyCodeResponse = VerifyCodeResponse(
+        isVerified: true,
+        proofToken: 'test_proof_token',
+      );
 
-      test('should save proof token when verification is successful', () async {
-        const proofToken = 'test_proof_token';
+      test('should save proof token and return success when verification is successful', () async {
         when(() => mockAuthDatasource.verifyCode(any()))
-            .thenAnswer((_) async => Success(proofToken));
-        when(() => mockProofTokenStorage.saveProofToken(proofToken))
+            .thenAnswer((_) async => Success(verifyCodeResponse));
+        when(() => mockProofTokenStorage.saveProofToken(verifyCodeResponse.proofToken))
             .thenAnswer((_) async => Future.value());
 
         final result = await authRepository.verifyCode(verifyCodeInfo);
 
         expect(result, isA<Success>());
+        expect((result as Success).value, isNull);
         verify(() => mockAuthDatasource.verifyCode(verifyCodeRequest))
             .called(1);
-        verify(() => mockProofTokenStorage.saveProofToken(proofToken))
+        verify(() => mockProofTokenStorage.saveProofToken(verifyCodeResponse.proofToken))
             .called(1);
         verifyNoMoreInteractions(mockProofTokenStorage);
       });
 
-      test('should return correctly when success', () async {
-        when(() => mockAuthDatasource.verifyCode(any()))
-            .thenAnswer((_) async => Success('message'));
-        // Add mock for the new dependency call
-        when(() => mockProofTokenStorage.saveProofToken(any()))
-            .thenAnswer((_) async => Future.value());
-
-        final result = await authRepository.verifyCode(verifyCodeInfo);
-
-        verify(() => mockAuthDatasource.verifyCode(verifyCodeRequest))
-            .called(1);
-
-        expect(result, isA<Success>());
-      });
-
-      test('should return correctly when failure', () async {
+      test('should return failure when verification fails', () async {
         when(() => mockAuthDatasource.verifyCode(any()))
             .thenAnswer((_) async => Failure('error'));
 
         final result = await authRepository.verifyCode(verifyCodeInfo);
 
+        expect(result, isA<Failure>());
         verify(() => mockAuthDatasource.verifyCode(verifyCodeRequest))
             .called(1);
-
-        expect(result, isA<Failure>());
+        verifyNever(() => mockProofTokenStorage.saveProofToken(any()));
       });
     });
 

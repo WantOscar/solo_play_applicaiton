@@ -4,7 +4,7 @@ import 'package:solo_play_application/src/features/auth/data/models/email_verifi
 import 'package:solo_play_application/src/features/auth/data/models/jwt.dart';
 import 'package:solo_play_application/src/features/auth/data/models/login.dart';
 import 'package:solo_play_application/src/features/auth/data/models/register_request.dart';
-import 'package:solo_play_application/src/features/auth/data/models/verify_code_request.dart';
+import 'package:solo_play_application/src/features/auth/data/models/verify_code.dart';
 
 /// 인증 관련 원격 데이터 소스의 추상 클래스입니다.
 ///
@@ -48,5 +48,5 @@ abstract class AuthDatasource {
   Future<Result<String>> sendVerificationEmail(
       EmailVerificationRequest request);
 
-  Future<Result<String>> verifyCode(VerifyCodeRequest request);
+  Future<Result<VerifyCodeResponse>> verifyCode(VerifyCodeRequest request);
 }
