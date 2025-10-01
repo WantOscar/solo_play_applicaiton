@@ -151,5 +151,99 @@ void main() {
       // Assert: The text field should have lost focus
       expect(focusNode?.hasFocus, isFalse);
     });
+
+    testWidgets(
+        'should show error message and activate isError when state is error',
+        (WidgetTester tester) async {
+      const errorMessage = 'Invalid code';
+      whenListen(
+        mockVerificationBloc,
+        Stream.fromIterable([
+          const VerificationState(
+              status: VerificationStatus.error, errorMessage: errorMessage)
+        ]),
+        initialState: const VerificationState(
+            status: VerificationStatus.error, errorMessage: errorMessage),
+      );
+      whenListen(mockTimerBloc, Stream.fromIterable([const TimerInitial(600)]),
+          initialState: const TimerInitial(600));
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: MultiBlocProvider(
+              providers: [
+                BlocProvider<VerificationBloc>.value(
+                  value: mockVerificationBloc,
+                ),
+                BlocProvider<TimerBloc>.value(
+                  value: mockTimerBloc,
+                ),
+              ],
+              child: const VerificationCodeInputSection(),
+            ),
+          ),
+        ),
+      );
+
+      await tester.pump(); // Rebuild the widget with the new state
+
+      // Check for error message
+      expect(find.text(errorMessage), findsOneWidget);
+
+      // Check if PrimaryTextField has isError set to true
+      final textField =
+          tester.widget<PrimaryTextField>(find.byType(PrimaryTextField));
+      expect(textField.isError, isTrue);
+    });
+
+    testWidgets('should clear error when typing starts',
+        (WidgetTester tester) async {
+      const errorMessage = 'Invalid code';
+      whenListen(
+        mockVerificationBloc,
+        Stream.fromIterable([
+          const VerificationState(
+              status: VerificationStatus.error, errorMessage: errorMessage),
+          const VerificationState(status: VerificationStatus.initial)
+        ]),
+        initialState: const VerificationState(
+            status: VerificationStatus.error, errorMessage: errorMessage),
+      );
+      whenListen(mockTimerBloc, Stream.fromIterable([const TimerInitial(600)]),
+          initialState: const TimerInitial(600));
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: MultiBlocProvider(
+              providers: [
+                BlocProvider<VerificationBloc>.value(
+                  value: mockVerificationBloc,
+                ),
+                BlocProvider<TimerBloc>.value(
+                  value: mockTimerBloc,
+                ),
+              ],
+              child: const VerificationCodeInputSection(),
+            ),
+          ),
+        ),
+      );
+
+      // Initially, error is shown
+      expect(find.text(errorMessage), findsOneWidget);
+      final initialTextField =
+          tester.widget<PrimaryTextField>(find.byType(PrimaryTextField));
+      expect(initialTextField.isError, isTrue);
+
+      // Simulate typing
+      await tester.enterText(find.byType(PrimaryTextField), '1');
+      await tester.pumpAndSettle();
+
+      // Verify that the error clear event was dispatched
+      verify(() => mockVerificationBloc.add(const VerificationCodeChanged('1')))
+          .called(1);
+    });
   });
 }

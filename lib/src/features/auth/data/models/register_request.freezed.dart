@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$RegisterRequest {
-  UserAgreementDto get userAgreement;
+  UserAgreementDto get agreement;
   String get email;
   String get password;
   String get proofToken;
@@ -36,8 +36,8 @@ mixin _$RegisterRequest {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is RegisterRequest &&
-            (identical(other.userAgreement, userAgreement) ||
-                other.userAgreement == userAgreement) &&
+            (identical(other.agreement, agreement) ||
+                other.agreement == agreement) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.password, password) ||
                 other.password == password) &&
@@ -48,11 +48,11 @@ mixin _$RegisterRequest {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, userAgreement, email, password, proofToken);
+      Object.hash(runtimeType, agreement, email, password, proofToken);
 
   @override
   String toString() {
-    return 'RegisterRequest(userAgreement: $userAgreement, email: $email, password: $password, proofToken: $proofToken)';
+    return 'RegisterRequest(agreement: $agreement, email: $email, password: $password, proofToken: $proofToken)';
   }
 }
 
@@ -63,12 +63,12 @@ abstract mixin class $RegisterRequestCopyWith<$Res> {
       _$RegisterRequestCopyWithImpl;
   @useResult
   $Res call(
-      {UserAgreementDto userAgreement,
+      {UserAgreementDto agreement,
       String email,
       String password,
       String proofToken});
 
-  $UserAgreementDtoCopyWith<$Res> get userAgreement;
+  $UserAgreementDtoCopyWith<$Res> get agreement;
 }
 
 /// @nodoc
@@ -84,15 +84,15 @@ class _$RegisterRequestCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? userAgreement = null,
+    Object? agreement = null,
     Object? email = null,
     Object? password = null,
     Object? proofToken = null,
   }) {
     return _then(_self.copyWith(
-      userAgreement: null == userAgreement
-          ? _self.userAgreement
-          : userAgreement // ignore: cast_nullable_to_non_nullable
+      agreement: null == agreement
+          ? _self.agreement
+          : agreement // ignore: cast_nullable_to_non_nullable
               as UserAgreementDto,
       email: null == email
           ? _self.email
@@ -113,9 +113,9 @@ class _$RegisterRequestCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $UserAgreementDtoCopyWith<$Res> get userAgreement {
-    return $UserAgreementDtoCopyWith<$Res>(_self.userAgreement, (value) {
-      return _then(_self.copyWith(userAgreement: value));
+  $UserAgreementDtoCopyWith<$Res> get agreement {
+    return $UserAgreementDtoCopyWith<$Res>(_self.agreement, (value) {
+      return _then(_self.copyWith(agreement: value));
     });
   }
 }
@@ -125,7 +125,7 @@ class _$RegisterRequestCopyWithImpl<$Res>
 @JsonSerializable(explicitToJson: true)
 class _RegisterRequest implements RegisterRequest {
   const _RegisterRequest(
-      {required this.userAgreement,
+      {required this.agreement,
       required this.email,
       required this.password,
       required this.proofToken});
@@ -133,7 +133,7 @@ class _RegisterRequest implements RegisterRequest {
       _$RegisterRequestFromJson(json);
 
   @override
-  final UserAgreementDto userAgreement;
+  final UserAgreementDto agreement;
   @override
   final String email;
   @override
@@ -161,8 +161,8 @@ class _RegisterRequest implements RegisterRequest {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _RegisterRequest &&
-            (identical(other.userAgreement, userAgreement) ||
-                other.userAgreement == userAgreement) &&
+            (identical(other.agreement, agreement) ||
+                other.agreement == agreement) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.password, password) ||
                 other.password == password) &&
@@ -173,11 +173,11 @@ class _RegisterRequest implements RegisterRequest {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, userAgreement, email, password, proofToken);
+      Object.hash(runtimeType, agreement, email, password, proofToken);
 
   @override
   String toString() {
-    return 'RegisterRequest(userAgreement: $userAgreement, email: $email, password: $password, proofToken: $proofToken)';
+    return 'RegisterRequest(agreement: $agreement, email: $email, password: $password, proofToken: $proofToken)';
   }
 }
 
@@ -190,13 +190,13 @@ abstract mixin class _$RegisterRequestCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {UserAgreementDto userAgreement,
+      {UserAgreementDto agreement,
       String email,
       String password,
       String proofToken});
 
   @override
-  $UserAgreementDtoCopyWith<$Res> get userAgreement;
+  $UserAgreementDtoCopyWith<$Res> get agreement;
 }
 
 /// @nodoc
@@ -212,15 +212,15 @@ class __$RegisterRequestCopyWithImpl<$Res>
   @override
   @pragma('vm:prefer-inline')
   $Res call({
-    Object? userAgreement = null,
+    Object? agreement = null,
     Object? email = null,
     Object? password = null,
     Object? proofToken = null,
   }) {
     return _then(_RegisterRequest(
-      userAgreement: null == userAgreement
-          ? _self.userAgreement
-          : userAgreement // ignore: cast_nullable_to_non_nullable
+      agreement: null == agreement
+          ? _self.agreement
+          : agreement // ignore: cast_nullable_to_non_nullable
               as UserAgreementDto,
       email: null == email
           ? _self.email
@@ -241,9 +241,9 @@ class __$RegisterRequestCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $UserAgreementDtoCopyWith<$Res> get userAgreement {
-    return $UserAgreementDtoCopyWith<$Res>(_self.userAgreement, (value) {
-      return _then(_self.copyWith(userAgreement: value));
+  $UserAgreementDtoCopyWith<$Res> get agreement {
+    return $UserAgreementDtoCopyWith<$Res>(_self.agreement, (value) {
+      return _then(_self.copyWith(agreement: value));
     });
   }
 }

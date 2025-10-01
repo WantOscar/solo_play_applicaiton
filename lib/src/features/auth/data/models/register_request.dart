@@ -9,7 +9,7 @@ part 'register_request.g.dart';
 abstract class RegisterRequest with _$RegisterRequest {
   @JsonSerializable(explicitToJson: true)
   const factory RegisterRequest({
-    required UserAgreementDto userAgreement,
+    required UserAgreementDto agreement,
     required String email,
     required String password,
     required String proofToken,

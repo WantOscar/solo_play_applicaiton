@@ -284,7 +284,7 @@ void main() {
       test('should return success with message when statusCode == 200',
           () async {
         final request = RegisterRequest(
-            userAgreement: defaultUserAgreement,
+            agreement: defaultUserAgreement,
             email: 'test@test.com',
             password: 'test-password',
             proofToken: 'test-proof-token');
@@ -311,7 +311,7 @@ void main() {
 
       test('should return failure when status code is not 200', () async {
         final request = RegisterRequest(
-            userAgreement: defaultUserAgreement,
+            agreement: defaultUserAgreement,
             email: 'test@test.com',
             password: 'test-password',
             proofToken: 'test-proof-token');
@@ -329,7 +329,7 @@ void main() {
 
       test('should return failure for non-400 DioException', () async {
         final request = RegisterRequest(
-            userAgreement: defaultUserAgreement,
+            agreement: defaultUserAgreement,
             email: 'test@test.com',
             password: 'test-password',
             proofToken: 'test-proof-token');
@@ -351,7 +351,7 @@ void main() {
           'should return failure with message when DioException with no response (network error) occurs',
           () async {
         final request = RegisterRequest(
-            userAgreement: defaultUserAgreement,
+            agreement: defaultUserAgreement,
             email: 'test@test.com',
             password: 'test-password',
             proofToken: 'test-proof-token');
@@ -374,7 +374,7 @@ void main() {
       test('should return failure with message when an unexpected error occurs',
           () async {
         final request = RegisterRequest(
-            userAgreement: defaultUserAgreement,
+            agreement: defaultUserAgreement,
             email: 'test@test.com',
             password: 'test-password',
             proofToken: 'test-proof-token');
@@ -502,7 +502,8 @@ void main() {
         authDatasourceImpl = AuthDatasourceImpl(dio: mockDio);
       });
 
-      test('should return success with VerifyCodeResponse when statusCode == 200',
+      test(
+          'should return success with VerifyCodeResponse when statusCode == 200',
           () async {
         final request =
             VerifyCodeRequest(email: 'test@test.com', code: '123456');
@@ -530,7 +531,6 @@ void main() {
 
         expect(result, isA<Success>());
         final successResult = result as Success<VerifyCodeResponse>;
-        expect(successResult.value.isVerified, true);
         expect(successResult.value.proofToken, "some_proof_token");
       });
 

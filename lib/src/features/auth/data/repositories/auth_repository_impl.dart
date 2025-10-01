@@ -131,7 +131,7 @@ class AuthRepositoryImpl extends AuthRepository {
     final request = RegisterRequest(
       email: register.email,
       password: register.password,
-      userAgreement: UserAgreementDto.fromEntity(register.userAgreement),
+      agreement: UserAgreementDto.fromEntity(register.userAgreement),
       proofToken: proofToken,
     );
 

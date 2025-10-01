@@ -40,7 +40,7 @@ void main() {
       tokenController = StreamController<String?>.broadcast();
       registerFallbackValue(VerifyCodeRequest(email: '', code: ''));
       registerFallbackValue(RegisterRequest(
-          userAgreement: UserAgreementDto(
+          agreement: UserAgreementDto(
               isOver14: false,
               isAgreedToTerms: false,
               isAgreedToMarketing: false,
@@ -267,14 +267,16 @@ void main() {
       final verifyCodeRequest =
           VerifyCodeRequest(email: 'test@test.com', code: '123456');
       final verifyCodeResponse = VerifyCodeResponse(
-        isVerified: true,
         proofToken: 'test_proof_token',
       );
 
-      test('should save proof token and return success when verification is successful', () async {
+      test(
+          'should save proof token and return success when verification is successful',
+          () async {
         when(() => mockAuthDatasource.verifyCode(any()))
             .thenAnswer((_) async => Success(verifyCodeResponse));
-        when(() => mockProofTokenStorage.saveProofToken(verifyCodeResponse.proofToken))
+        when(() => mockProofTokenStorage
+                .saveProofToken(verifyCodeResponse.proofToken))
             .thenAnswer((_) async => Future.value());
 
         final result = await authRepository.verifyCode(verifyCodeInfo);
@@ -283,8 +285,8 @@ void main() {
         expect((result as Success).value, isNull);
         verify(() => mockAuthDatasource.verifyCode(verifyCodeRequest))
             .called(1);
-        verify(() => mockProofTokenStorage.saveProofToken(verifyCodeResponse.proofToken))
-            .called(1);
+        verify(() => mockProofTokenStorage
+            .saveProofToken(verifyCodeResponse.proofToken)).called(1);
         verifyNoMoreInteractions(mockProofTokenStorage);
       });
 
@@ -317,7 +319,7 @@ void main() {
       final registerRequest = RegisterRequest(
         email: registerInfo.email,
         password: registerInfo.password,
-        userAgreement: UserAgreementDto.fromEntity(registerInfo.userAgreement),
+        agreement: UserAgreementDto.fromEntity(registerInfo.userAgreement),
         proofToken: proofToken,
       );
 

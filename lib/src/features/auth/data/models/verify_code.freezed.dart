@@ -174,7 +174,6 @@ class __$VerifyCodeRequestCopyWithImpl<$Res>
 
 /// @nodoc
 mixin _$VerifyCodeResponse {
-  bool get isVerified;
   String get proofToken;
 
   /// Create a copy of VerifyCodeResponse
@@ -193,19 +192,17 @@ mixin _$VerifyCodeResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is VerifyCodeResponse &&
-            (identical(other.isVerified, isVerified) ||
-                other.isVerified == isVerified) &&
             (identical(other.proofToken, proofToken) ||
                 other.proofToken == proofToken));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, isVerified, proofToken);
+  int get hashCode => Object.hash(runtimeType, proofToken);
 
   @override
   String toString() {
-    return 'VerifyCodeResponse(isVerified: $isVerified, proofToken: $proofToken)';
+    return 'VerifyCodeResponse(proofToken: $proofToken)';
   }
 }
 
@@ -215,7 +212,7 @@ abstract mixin class $VerifyCodeResponseCopyWith<$Res> {
           VerifyCodeResponse value, $Res Function(VerifyCodeResponse) _then) =
       _$VerifyCodeResponseCopyWithImpl;
   @useResult
-  $Res call({bool isVerified, String proofToken});
+  $Res call({String proofToken});
 }
 
 /// @nodoc
@@ -231,14 +228,9 @@ class _$VerifyCodeResponseCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? isVerified = null,
     Object? proofToken = null,
   }) {
     return _then(_self.copyWith(
-      isVerified: null == isVerified
-          ? _self.isVerified
-          : isVerified // ignore: cast_nullable_to_non_nullable
-              as bool,
       proofToken: null == proofToken
           ? _self.proofToken
           : proofToken // ignore: cast_nullable_to_non_nullable
@@ -250,13 +242,10 @@ class _$VerifyCodeResponseCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _VerifyCodeResponse implements VerifyCodeResponse {
-  const _VerifyCodeResponse(
-      {required this.isVerified, required this.proofToken});
+  const _VerifyCodeResponse({required this.proofToken});
   factory _VerifyCodeResponse.fromJson(Map<String, dynamic> json) =>
       _$VerifyCodeResponseFromJson(json);
 
-  @override
-  final bool isVerified;
   @override
   final String proofToken;
 
@@ -280,19 +269,17 @@ class _VerifyCodeResponse implements VerifyCodeResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _VerifyCodeResponse &&
-            (identical(other.isVerified, isVerified) ||
-                other.isVerified == isVerified) &&
             (identical(other.proofToken, proofToken) ||
                 other.proofToken == proofToken));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, isVerified, proofToken);
+  int get hashCode => Object.hash(runtimeType, proofToken);
 
   @override
   String toString() {
-    return 'VerifyCodeResponse(isVerified: $isVerified, proofToken: $proofToken)';
+    return 'VerifyCodeResponse(proofToken: $proofToken)';
   }
 }
 
@@ -304,7 +291,7 @@ abstract mixin class _$VerifyCodeResponseCopyWith<$Res>
       __$VerifyCodeResponseCopyWithImpl;
   @override
   @useResult
-  $Res call({bool isVerified, String proofToken});
+  $Res call({String proofToken});
 }
 
 /// @nodoc
@@ -320,14 +307,9 @@ class __$VerifyCodeResponseCopyWithImpl<$Res>
   @override
   @pragma('vm:prefer-inline')
   $Res call({
-    Object? isVerified = null,
     Object? proofToken = null,
   }) {
     return _then(_VerifyCodeResponse(
-      isVerified: null == isVerified
-          ? _self.isVerified
-          : isVerified // ignore: cast_nullable_to_non_nullable
-              as bool,
       proofToken: null == proofToken
           ? _self.proofToken
           : proofToken // ignore: cast_nullable_to_non_nullable

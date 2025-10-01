@@ -20,12 +20,10 @@ Map<String, dynamic> _$VerifyCodeRequestToJson(_VerifyCodeRequest instance) =>
 
 _VerifyCodeResponse _$VerifyCodeResponseFromJson(Map<String, dynamic> json) =>
     _VerifyCodeResponse(
-      isVerified: json['isVerified'] as bool,
       proofToken: json['proofToken'] as String,
     );
 
 Map<String, dynamic> _$VerifyCodeResponseToJson(_VerifyCodeResponse instance) =>
     <String, dynamic>{
-      'isVerified': instance.isVerified,
       'proofToken': instance.proofToken,
     };

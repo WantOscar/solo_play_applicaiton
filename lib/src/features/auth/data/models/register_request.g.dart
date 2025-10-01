@@ -8,8 +8,8 @@ part of 'register_request.dart';
 
 _RegisterRequest _$RegisterRequestFromJson(Map<String, dynamic> json) =>
     _RegisterRequest(
-      userAgreement: UserAgreementDto.fromJson(
-          json['userAgreement'] as Map<String, dynamic>),
+      agreement:
+          UserAgreementDto.fromJson(json['agreement'] as Map<String, dynamic>),
       email: json['email'] as String,
       password: json['password'] as String,
       proofToken: json['proofToken'] as String,
@@ -17,7 +17,7 @@ _RegisterRequest _$RegisterRequestFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$RegisterRequestToJson(_RegisterRequest instance) =>
     <String, dynamic>{
-      'userAgreement': instance.userAgreement.toJson(),
+      'agreement': instance.agreement.toJson(),
       'email': instance.email,
       'password': instance.password,
       'proofToken': instance.proofToken,

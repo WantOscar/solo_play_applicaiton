@@ -17,7 +17,6 @@ abstract class VerifyCodeRequest with _$VerifyCodeRequest {
 @freezed
 abstract class VerifyCodeResponse with _$VerifyCodeResponse {
   const factory VerifyCodeResponse({
-    required bool isVerified,
     required String proofToken,
   }) = _VerifyCodeResponse;
 
