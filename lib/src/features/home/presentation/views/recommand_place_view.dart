@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:solo_play_application/src/features/home/presentation/widgets/place_card_widget.dart';
+import 'package:solo_play_application/src/features/rank/presentation/widget/primary_tag_widget.dart';
 
 class RecommandPlaceView extends StatelessWidget {
   const RecommandPlaceView({super.key});
@@ -18,6 +19,7 @@ class RecommandPlaceView extends StatelessWidget {
             color: const Color(0xFF0070F0),
           ),
         ),
+        SizedBox(height: 4),
         Text(
           "오늘은 이런 공간 어때요?",
           style: TextStyle(
@@ -27,6 +29,7 @@ class RecommandPlaceView extends StatelessWidget {
             color: const Color(0xFF000000),
           ),
         ),
+        SizedBox(height: 4),
         Text(
           "오늘은 이런 공간 어때요?",
           style: TextStyle(
@@ -36,6 +39,9 @@ class RecommandPlaceView extends StatelessWidget {
             color: const Color(0xFF000000),
           ),
         ),
+        SizedBox(height: 4),
+        PrimaryTagWidget(text: "LV. 1 혼자는 아직 힘들어"),
+        SizedBox(height: 8),
         PlaceCardWidget(
           thumNail: Image.network(
               "https://img.freepik.com/free-photo/interior-shot-cafe-with-chairs-near-bar-with-wooden-tables_181624-1669.jpg?semt=ais_incoming&w=740&q=80"),
