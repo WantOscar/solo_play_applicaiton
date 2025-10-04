@@ -4,11 +4,13 @@ class PrimaryBadgeWidget extends StatelessWidget {
   final String text;
   final double? horizontal;
   final double? vertical;
+  final double? fontSize;
   const PrimaryBadgeWidget({
     super.key,
     required this.text,
     this.horizontal,
     this.vertical,
+    this.fontSize,
   });
 
   @override
@@ -20,11 +22,11 @@ class PrimaryBadgeWidget extends StatelessWidget {
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(
-            horizontal: horizontal ?? 0.0, vertical: vertical ?? 0.0),
+            horizontal: horizontal ?? 4.0, vertical: vertical ?? 2.0),
         child: Text(
           text,
           style: TextStyle(
-            fontSize: 10,
+            fontSize: fontSize ?? 12.0,
             fontStyle: FontStyle.normal,
             fontWeight: FontWeight.w400,
             color: const Color(0xffFFFFFF),
