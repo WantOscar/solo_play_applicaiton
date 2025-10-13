@@ -4,7 +4,7 @@ import 'package:solo_play_application/src/features/auth/data/models/email_verifi
 import 'package:solo_play_application/src/features/auth/data/models/jwt.dart';
 import 'package:solo_play_application/src/features/auth/data/models/login.dart';
 import 'package:solo_play_application/src/features/auth/data/models/register_request.dart';
-import 'package:solo_play_application/src/features/auth/data/models/verify_code_request.dart';
+import 'package:solo_play_application/src/features/auth/data/models/verify_code.dart';
 
 /// 인증 관련 원격 데이터 소스의 추상 클래스입니다.
 ///
@@ -29,7 +29,14 @@ abstract class AuthDatasource {
   /// - [Failure]<String> : 로그인 실패(자격 증명 오류 등) 또는 서버 에러 발생 시 실패 메시지 반환
   Future<Result<Jwt>> login(LoginRequest request);
 
-  Future<Result<Jwt>> register(RegisterRequest request);
+  /// 회원가입을 요청합니다.
+  ///
+  /// - [request] : 회원가입 정보가 담긴 [RegisterRequest] DTO
+  ///
+  /// ### 반환
+  /// - [Success]<String> : 회원가입 성공 시 메시지 반환
+  /// - [Failure]<String> : 회원가입 실패 또는 서버 에러 발생 시 실패 메시지 반환
+  Future<Result<String>> register(RegisterRequest request);
 
   /// 본인인증 이메일 전송을 요청합니다.
   ///
@@ -41,5 +48,5 @@ abstract class AuthDatasource {
   Future<Result<String>> sendVerificationEmail(
       EmailVerificationRequest request);
 
-  Future<Result<String>> verifyCode(VerifyCodeRequest request);
+  Future<Result<VerifyCodeResponse>> verifyCode(VerifyCodeRequest request);
 }

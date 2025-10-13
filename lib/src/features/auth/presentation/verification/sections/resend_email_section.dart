@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:solo_play_application/src/core/widgets/primary_text_field.dart';
 import 'package:solo_play_application/src/core/widgets/primary_button.dart';
+import 'package:solo_play_application/src/features/auth/presentation/verification/bloc/verification_bloc.dart';
+import 'package:solo_play_application/src/features/auth/presentation/verification/bloc/verification_event.dart';
 
 class ResendEmailSection extends StatefulWidget {
   final String email;
@@ -41,7 +44,10 @@ class _ResendEmailSectionState extends State<ResendEmailSection> {
         PrimaryButton(
           height: 50,
           onTap: () {
-            // TODO: Implement resend email logic with _controller.text
+            /// 이메일 인증 재요청
+            context
+                .read<VerificationBloc>()
+                .add(VerificationEmailSent(_controller.text));
           },
           child: const Padding(
             padding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 19.0),

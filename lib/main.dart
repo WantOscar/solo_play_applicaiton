@@ -9,6 +9,8 @@ import 'package:solo_play_application/src/core/utils/networks/logging_intercepto
 import 'package:solo_play_application/src/core/utils/observers/bloc_observer.dart';
 import 'package:solo_play_application/src/features/auth/data/datasources/locals/jwt_storage.dart';
 import 'package:solo_play_application/src/features/auth/data/datasources/locals/jwt_storage_impl.dart';
+import 'package:solo_play_application/src/features/auth/data/datasources/locals/proof_token_storage.dart';
+import 'package:solo_play_application/src/features/auth/data/datasources/locals/proof_token_storage_impl.dart';
 import 'package:solo_play_application/src/features/auth/data/datasources/remotes/auth_datasource.dart';
 import 'package:solo_play_application/src/features/auth/data/datasources/remotes/auth_datasource_impl.dart';
 import 'package:solo_play_application/src/features/auth/data/repositories/auth_repository_impl.dart';
@@ -43,9 +45,13 @@ class MyApp extends StatelessWidget {
           RepositoryProvider<JwtStorage>(
               create: (context) => JwtStorageImpl(
                   storage: context.read<FlutterSecureStorage>())),
+          RepositoryProvider<ProofTokenStorage>(
+              create: (context) => ProofTokenStorageImpl(
+                  storage: context.read<FlutterSecureStorage>())),
           RepositoryProvider<AuthRepository>(
               create: (context) => AuthRepositoryImpl(
                   authDatasource: context.read<AuthDatasource>(),
+                  proofTokenStorage: context.read<ProofTokenStorage>(),
                   jwtStorage: context.read<JwtStorage>())),
           RepositoryProvider<WatchUserAccessTokenUseCase>(
             create: (context) => WatchUserAccessTokenUseCaseImpl(

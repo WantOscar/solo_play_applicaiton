@@ -15,10 +15,10 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$RegisterRequest {
-  UserAgreement get userAgreement;
+  UserAgreementDto get agreement;
   String get email;
   String get password;
-  String get code;
+  String get proofToken;
 
   /// Create a copy of RegisterRequest
   /// with the given fields replaced by the non-null parameter values.
@@ -36,22 +36,23 @@ mixin _$RegisterRequest {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is RegisterRequest &&
-            (identical(other.userAgreement, userAgreement) ||
-                other.userAgreement == userAgreement) &&
+            (identical(other.agreement, agreement) ||
+                other.agreement == agreement) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.password, password) ||
                 other.password == password) &&
-            (identical(other.code, code) || other.code == code));
+            (identical(other.proofToken, proofToken) ||
+                other.proofToken == proofToken));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, userAgreement, email, password, code);
+      Object.hash(runtimeType, agreement, email, password, proofToken);
 
   @override
   String toString() {
-    return 'RegisterRequest(userAgreement: $userAgreement, email: $email, password: $password, code: $code)';
+    return 'RegisterRequest(agreement: $agreement, email: $email, password: $password, proofToken: $proofToken)';
   }
 }
 
@@ -62,12 +63,12 @@ abstract mixin class $RegisterRequestCopyWith<$Res> {
       _$RegisterRequestCopyWithImpl;
   @useResult
   $Res call(
-      {UserAgreement userAgreement,
+      {UserAgreementDto agreement,
       String email,
       String password,
-      String code});
+      String proofToken});
 
-  $UserAgreementCopyWith<$Res> get userAgreement;
+  $UserAgreementDtoCopyWith<$Res> get agreement;
 }
 
 /// @nodoc
@@ -83,16 +84,16 @@ class _$RegisterRequestCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? userAgreement = null,
+    Object? agreement = null,
     Object? email = null,
     Object? password = null,
-    Object? code = null,
+    Object? proofToken = null,
   }) {
     return _then(_self.copyWith(
-      userAgreement: null == userAgreement
-          ? _self.userAgreement
-          : userAgreement // ignore: cast_nullable_to_non_nullable
-              as UserAgreement,
+      agreement: null == agreement
+          ? _self.agreement
+          : agreement // ignore: cast_nullable_to_non_nullable
+              as UserAgreementDto,
       email: null == email
           ? _self.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -101,9 +102,9 @@ class _$RegisterRequestCopyWithImpl<$Res>
           ? _self.password
           : password // ignore: cast_nullable_to_non_nullable
               as String,
-      code: null == code
-          ? _self.code
-          : code // ignore: cast_nullable_to_non_nullable
+      proofToken: null == proofToken
+          ? _self.proofToken
+          : proofToken // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -112,36 +113,33 @@ class _$RegisterRequestCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $UserAgreementCopyWith<$Res> get userAgreement {
-    return $UserAgreementCopyWith<$Res>(_self.userAgreement, (value) {
-      return _then(_self.copyWith(userAgreement: value));
+  $UserAgreementDtoCopyWith<$Res> get agreement {
+    return $UserAgreementDtoCopyWith<$Res>(_self.agreement, (value) {
+      return _then(_self.copyWith(agreement: value));
     });
   }
 }
 
 /// @nodoc
-@JsonSerializable()
+
+@JsonSerializable(explicitToJson: true)
 class _RegisterRequest implements RegisterRequest {
   const _RegisterRequest(
-      {required this.userAgreement,
+      {required this.agreement,
       required this.email,
       required this.password,
-      required this.code});
-  factory _RegisterRequest.fromJson(
-    Map<String, dynamic> json,
-  ) =>
-      _$RegisterRequestFromJson(
-        json,
-      );
+      required this.proofToken});
+  factory _RegisterRequest.fromJson(Map<String, dynamic> json) =>
+      _$RegisterRequestFromJson(json);
 
   @override
-  final UserAgreement userAgreement;
+  final UserAgreementDto agreement;
   @override
   final String email;
   @override
   final String password;
   @override
-  final String code;
+  final String proofToken;
 
   /// Create a copy of RegisterRequest
   /// with the given fields replaced by the non-null parameter values.
@@ -163,22 +161,23 @@ class _RegisterRequest implements RegisterRequest {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _RegisterRequest &&
-            (identical(other.userAgreement, userAgreement) ||
-                other.userAgreement == userAgreement) &&
+            (identical(other.agreement, agreement) ||
+                other.agreement == agreement) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.password, password) ||
                 other.password == password) &&
-            (identical(other.code, code) || other.code == code));
+            (identical(other.proofToken, proofToken) ||
+                other.proofToken == proofToken));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, userAgreement, email, password, code);
+      Object.hash(runtimeType, agreement, email, password, proofToken);
 
   @override
   String toString() {
-    return 'RegisterRequest(userAgreement: $userAgreement, email: $email, password: $password, code: $code)';
+    return 'RegisterRequest(agreement: $agreement, email: $email, password: $password, proofToken: $proofToken)';
   }
 }
 
@@ -191,13 +190,13 @@ abstract mixin class _$RegisterRequestCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {UserAgreement userAgreement,
+      {UserAgreementDto agreement,
       String email,
       String password,
-      String code});
+      String proofToken});
 
   @override
-  $UserAgreementCopyWith<$Res> get userAgreement;
+  $UserAgreementDtoCopyWith<$Res> get agreement;
 }
 
 /// @nodoc
@@ -213,16 +212,16 @@ class __$RegisterRequestCopyWithImpl<$Res>
   @override
   @pragma('vm:prefer-inline')
   $Res call({
-    Object? userAgreement = null,
+    Object? agreement = null,
     Object? email = null,
     Object? password = null,
-    Object? code = null,
+    Object? proofToken = null,
   }) {
     return _then(_RegisterRequest(
-      userAgreement: null == userAgreement
-          ? _self.userAgreement
-          : userAgreement // ignore: cast_nullable_to_non_nullable
-              as UserAgreement,
+      agreement: null == agreement
+          ? _self.agreement
+          : agreement // ignore: cast_nullable_to_non_nullable
+              as UserAgreementDto,
       email: null == email
           ? _self.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -231,9 +230,9 @@ class __$RegisterRequestCopyWithImpl<$Res>
           ? _self.password
           : password // ignore: cast_nullable_to_non_nullable
               as String,
-      code: null == code
-          ? _self.code
-          : code // ignore: cast_nullable_to_non_nullable
+      proofToken: null == proofToken
+          ? _self.proofToken
+          : proofToken // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -242,10 +241,222 @@ class __$RegisterRequestCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $UserAgreementCopyWith<$Res> get userAgreement {
-    return $UserAgreementCopyWith<$Res>(_self.userAgreement, (value) {
-      return _then(_self.copyWith(userAgreement: value));
+  $UserAgreementDtoCopyWith<$Res> get agreement {
+    return $UserAgreementDtoCopyWith<$Res>(_self.agreement, (value) {
+      return _then(_self.copyWith(agreement: value));
     });
+  }
+}
+
+/// @nodoc
+mixin _$UserAgreementDto {
+  bool get isOver14;
+  bool get isAgreedToTerms;
+  bool get isAgreedToMarketing;
+  bool get isConsentedToAds;
+
+  /// Create a copy of UserAgreementDto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $UserAgreementDtoCopyWith<UserAgreementDto> get copyWith =>
+      _$UserAgreementDtoCopyWithImpl<UserAgreementDto>(
+          this as UserAgreementDto, _$identity);
+
+  /// Serializes this UserAgreementDto to a JSON map.
+  Map<String, dynamic> toJson();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is UserAgreementDto &&
+            (identical(other.isOver14, isOver14) ||
+                other.isOver14 == isOver14) &&
+            (identical(other.isAgreedToTerms, isAgreedToTerms) ||
+                other.isAgreedToTerms == isAgreedToTerms) &&
+            (identical(other.isAgreedToMarketing, isAgreedToMarketing) ||
+                other.isAgreedToMarketing == isAgreedToMarketing) &&
+            (identical(other.isConsentedToAds, isConsentedToAds) ||
+                other.isConsentedToAds == isConsentedToAds));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, isOver14, isAgreedToTerms,
+      isAgreedToMarketing, isConsentedToAds);
+
+  @override
+  String toString() {
+    return 'UserAgreementDto(isOver14: $isOver14, isAgreedToTerms: $isAgreedToTerms, isAgreedToMarketing: $isAgreedToMarketing, isConsentedToAds: $isConsentedToAds)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $UserAgreementDtoCopyWith<$Res> {
+  factory $UserAgreementDtoCopyWith(
+          UserAgreementDto value, $Res Function(UserAgreementDto) _then) =
+      _$UserAgreementDtoCopyWithImpl;
+  @useResult
+  $Res call(
+      {bool isOver14,
+      bool isAgreedToTerms,
+      bool isAgreedToMarketing,
+      bool isConsentedToAds});
+}
+
+/// @nodoc
+class _$UserAgreementDtoCopyWithImpl<$Res>
+    implements $UserAgreementDtoCopyWith<$Res> {
+  _$UserAgreementDtoCopyWithImpl(this._self, this._then);
+
+  final UserAgreementDto _self;
+  final $Res Function(UserAgreementDto) _then;
+
+  /// Create a copy of UserAgreementDto
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? isOver14 = null,
+    Object? isAgreedToTerms = null,
+    Object? isAgreedToMarketing = null,
+    Object? isConsentedToAds = null,
+  }) {
+    return _then(_self.copyWith(
+      isOver14: null == isOver14
+          ? _self.isOver14
+          : isOver14 // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isAgreedToTerms: null == isAgreedToTerms
+          ? _self.isAgreedToTerms
+          : isAgreedToTerms // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isAgreedToMarketing: null == isAgreedToMarketing
+          ? _self.isAgreedToMarketing
+          : isAgreedToMarketing // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isConsentedToAds: null == isConsentedToAds
+          ? _self.isConsentedToAds
+          : isConsentedToAds // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _UserAgreementDto extends UserAgreementDto {
+  const _UserAgreementDto(
+      {required this.isOver14,
+      required this.isAgreedToTerms,
+      required this.isAgreedToMarketing,
+      required this.isConsentedToAds})
+      : super._();
+  factory _UserAgreementDto.fromJson(Map<String, dynamic> json) =>
+      _$UserAgreementDtoFromJson(json);
+
+  @override
+  final bool isOver14;
+  @override
+  final bool isAgreedToTerms;
+  @override
+  final bool isAgreedToMarketing;
+  @override
+  final bool isConsentedToAds;
+
+  /// Create a copy of UserAgreementDto
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$UserAgreementDtoCopyWith<_UserAgreementDto> get copyWith =>
+      __$UserAgreementDtoCopyWithImpl<_UserAgreementDto>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$UserAgreementDtoToJson(
+      this,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _UserAgreementDto &&
+            (identical(other.isOver14, isOver14) ||
+                other.isOver14 == isOver14) &&
+            (identical(other.isAgreedToTerms, isAgreedToTerms) ||
+                other.isAgreedToTerms == isAgreedToTerms) &&
+            (identical(other.isAgreedToMarketing, isAgreedToMarketing) ||
+                other.isAgreedToMarketing == isAgreedToMarketing) &&
+            (identical(other.isConsentedToAds, isConsentedToAds) ||
+                other.isConsentedToAds == isConsentedToAds));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, isOver14, isAgreedToTerms,
+      isAgreedToMarketing, isConsentedToAds);
+
+  @override
+  String toString() {
+    return 'UserAgreementDto(isOver14: $isOver14, isAgreedToTerms: $isAgreedToTerms, isAgreedToMarketing: $isAgreedToMarketing, isConsentedToAds: $isConsentedToAds)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$UserAgreementDtoCopyWith<$Res>
+    implements $UserAgreementDtoCopyWith<$Res> {
+  factory _$UserAgreementDtoCopyWith(
+          _UserAgreementDto value, $Res Function(_UserAgreementDto) _then) =
+      __$UserAgreementDtoCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {bool isOver14,
+      bool isAgreedToTerms,
+      bool isAgreedToMarketing,
+      bool isConsentedToAds});
+}
+
+/// @nodoc
+class __$UserAgreementDtoCopyWithImpl<$Res>
+    implements _$UserAgreementDtoCopyWith<$Res> {
+  __$UserAgreementDtoCopyWithImpl(this._self, this._then);
+
+  final _UserAgreementDto _self;
+  final $Res Function(_UserAgreementDto) _then;
+
+  /// Create a copy of UserAgreementDto
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? isOver14 = null,
+    Object? isAgreedToTerms = null,
+    Object? isAgreedToMarketing = null,
+    Object? isConsentedToAds = null,
+  }) {
+    return _then(_UserAgreementDto(
+      isOver14: null == isOver14
+          ? _self.isOver14
+          : isOver14 // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isAgreedToTerms: null == isAgreedToTerms
+          ? _self.isAgreedToTerms
+          : isAgreedToTerms // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isAgreedToMarketing: null == isAgreedToMarketing
+          ? _self.isAgreedToMarketing
+          : isAgreedToMarketing // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isConsentedToAds: null == isConsentedToAds
+          ? _self.isConsentedToAds
+          : isConsentedToAds // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
   }
 }
 

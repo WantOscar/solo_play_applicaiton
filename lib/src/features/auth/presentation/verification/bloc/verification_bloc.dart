@@ -26,7 +26,10 @@ class VerificationBloc extends Bloc<VerificationEvent, VerificationState> {
     VerificationCodeChanged event,
     Emitter<VerificationState> emit,
   ) {
-    emit(state.copyWith(code: event.code));
+    emit(state.copyWith(
+        code: event.code,
+        status: VerificationStatus.initial,
+        errorMessage: null));
   }
 
   FutureOr<void> _onVerificationEmailSent(

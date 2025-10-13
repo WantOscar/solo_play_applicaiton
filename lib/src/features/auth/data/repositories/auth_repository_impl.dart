@@ -1,12 +1,15 @@
 import 'package:solo_play_application/src/core/utils/networks/result.dart';
 import 'package:solo_play_application/src/features/auth/data/datasources/locals/jwt_storage.dart';
+import 'package:solo_play_application/src/features/auth/data/datasources/locals/proof_token_storage.dart';
 import 'package:solo_play_application/src/features/auth/data/datasources/remotes/auth_datasource.dart';
 import 'package:solo_play_application/src/features/auth/data/models/check_email_duplicate.dart';
 import 'package:solo_play_application/src/features/auth/data/models/email_verification_request.dart';
 import 'package:solo_play_application/src/features/auth/data/models/jwt.dart';
 import 'package:solo_play_application/src/features/auth/data/models/login.dart';
-import 'package:solo_play_application/src/features/auth/data/models/verify_code_request.dart';
+import 'package:solo_play_application/src/features/auth/data/models/register_request.dart';
+import 'package:solo_play_application/src/features/auth/data/models/verify_code.dart';
 import 'package:solo_play_application/src/features/auth/domain/entities/login_info.dart';
+import 'package:solo_play_application/src/features/auth/domain/entities/register.dart';
 import 'package:solo_play_application/src/features/auth/domain/entities/verify_code_info.dart';
 import 'package:solo_play_application/src/features/auth/domain/repositories/auth_repository.dart';
 
@@ -14,7 +17,7 @@ enum AuthenticateStatus { unknown, authenticated, unauthenticated }
 
 /// [AuthRepository]의 구현체입니다.
 ///
-/// 이 클래스는 원격 데이터 소스([AuthDatasource])와 로컬 데이터 소스([JwtStorage])를
+/// 이 클래스는 원격 데이터 소스([AuthDatasource])와 로컬 데이터 소스([JwtStorage], [ProofTokenStorage])를
 /// 조합하여 인증 관련 로직을 수행합니다.
 class AuthRepositoryImpl extends AuthRepository {
   /// 원격 인증 데이터 소스
@@ -23,15 +26,21 @@ class AuthRepositoryImpl extends AuthRepository {
   /// 로컬 JWT 토큰 저장소
   final JwtStorage _jwtStorage;
 
+  /// 본인인증 임시 토큰 저장소
+  final ProofTokenStorage _proofTokenStorage;
+
   /// [AuthRepositoryImpl] 생성자
   ///
   /// - [authDatasource] : 외부에서 주입받는 원격 데이터 소스
   /// - [jwtStorage] : 외부에서 주입받는 로컬 토큰 저장소
+  /// - [proofTokenStorage] : 외부에서 주입받는 본인인증 토큰 저장소
   AuthRepositoryImpl({
     required AuthDatasource authDatasource,
     required JwtStorage jwtStorage,
+    required ProofTokenStorage proofTokenStorage,
   })  : _authDatasource = authDatasource,
-        _jwtStorage = jwtStorage;
+        _jwtStorage = jwtStorage,
+        _proofTokenStorage = proofTokenStorage;
 
   /// 인증 상태 변경 감지 스트림
   ///
@@ -67,9 +76,16 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<Result<String>> verifyCode(VerifyCodeInfo request) {
-    return _authDatasource.verifyCode(
+  Future<Result<void>> verifyCode(VerifyCodeInfo request) async {
+    final result = await _authDatasource.verifyCode(
         VerifyCodeRequest(email: request.email, code: request.code));
+
+    if (result is Success<VerifyCodeResponse>) {
+      await _proofTokenStorage.saveProofToken(result.value.proofToken);
+      return Success(null);
+    }
+
+    return Failure((result as Failure).message);
   }
 
   /// 로그인을 수행합니다.
@@ -97,6 +113,37 @@ class AuthRepositoryImpl extends AuthRepository {
       return Success(null);
     } else {
       // 실패 시, 에러 메시지를 담아 실패 결과 반환
+      return Failure((result as Failure).message);
+    }
+  }
+
+  @override
+  Future<Result<void>> register(Register register) async {
+    // 1. Read proof token
+    final proofToken = await _proofTokenStorage.readProofToken();
+
+    // 2. Check if proof token exists
+    if (proofToken == null) {
+      return Failure('본인인증이 완료되지 않았습니다.');
+    }
+
+    // 3. Create request DTO
+    final request = RegisterRequest(
+      email: register.email,
+      password: register.password,
+      agreement: UserAgreementDto.fromEntity(register.userAgreement),
+      proofToken: proofToken,
+    );
+
+    // 4. Call datasource
+    final result = await _authDatasource.register(request);
+
+    // 5. Handle result
+    if (result is Success<String>) {
+      // Delete temporary proof token
+      await _proofTokenStorage.deleteProofToken();
+      return Success(null);
+    } else {
       return Failure((result as Failure).message);
     }
   }
