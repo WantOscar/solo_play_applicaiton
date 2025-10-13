@@ -1,0 +1,34 @@
+name: Create Pull Request
+
+on:
+  push:
+    branches-ignore:
+      - 'develop'
+      - 'main'
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  create_pull_request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create Pull Request
+        env:
+          GITHUB_TOKEN: ${{ secrets.UPSTREAM_REPO_PAT }}
+        run: |
+          # PR이 이미 존재하는지 확인합니다.
+          EXISTING_PR=$(gh pr list --repo WantOscar/solo_play_applicaiton --head "$(git rev-parse --abbrev-ref HEAD)" --json number -q 'map(.number) | .[]')
+
+          if [ -z "$EXISTING_PR" ]; then
+            echo "Creating a new pull request to upstream repository."
+            gh pr create --repo WantOscar/solo_play_applicaiton --base develop --title "$(git log -1 --pretty=%s)" --body-file .github/pull_request_template.md
+          else
+            echo "A pull request for this branch already exists in the upstream repository: #$EXISTING_PR"
+          fi

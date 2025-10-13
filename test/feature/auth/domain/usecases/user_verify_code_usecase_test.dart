@@ -24,13 +24,14 @@ void main() {
     test('should call repository.verifyCode and return success', () async {
       // Arrange
       when(() => mockAuthRepository.verifyCode(any()))
-          .thenAnswer((_) async => Success('message'));
+          .thenAnswer((_) async => Success(null));
 
       // Act
       final result = await usecase.call(email, code);
 
       // Assert
       expect(result, isA<Success>());
+      expect((result as Success).value, isNull);
       verify(() => mockAuthRepository.verifyCode(any())).called(1);
       verifyNoMoreInteractions(mockAuthRepository);
     });

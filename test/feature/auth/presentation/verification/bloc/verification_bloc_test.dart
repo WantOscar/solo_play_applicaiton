@@ -2,16 +2,12 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:solo_play_application/src/core/utils/networks/result.dart';
-import 'package:solo_play_application/src/features/auth/domain/usecases/send_verification_email_usecase.dart';
-import 'package:solo_play_application/src/features/auth/domain/usecases/user_verify_code_usecase.dart';
 import 'package:solo_play_application/src/features/auth/presentation/verification/bloc/verification_bloc.dart';
 import 'package:solo_play_application/src/features/auth/presentation/verification/bloc/verification_event.dart';
 import 'package:solo_play_application/src/features/auth/presentation/verification/bloc/verification_state.dart';
 
-class MockSendVerificationEmailUsecase extends Mock
-    implements SendVerificationEmailUsecase {}
-
-class MockUserVerifyCodeUsecase extends Mock implements UserVerifyCodeUsecase {}
+import '../mocks/mock_send_verification_email_usecase.dart';
+import '../mocks/mock_user_verify_code_usecase.dart';
 
 void main() {
   group(VerificationBloc, () {

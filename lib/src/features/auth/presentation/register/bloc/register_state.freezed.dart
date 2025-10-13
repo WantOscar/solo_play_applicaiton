@@ -17,6 +17,8 @@ T _$identity<T>(T value) => value;
 mixin _$RegisterState {
   RegisterStep get step;
   Register get register;
+  RegisterStatus get status;
+  String? get errorMessage;
 
   /// Create a copy of RegisterState
   /// with the given fields replaced by the non-null parameter values.
@@ -33,15 +35,19 @@ mixin _$RegisterState {
             other is RegisterState &&
             (identical(other.step, step) || other.step == step) &&
             (identical(other.register, register) ||
-                other.register == register));
+                other.register == register) &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.errorMessage, errorMessage) ||
+                other.errorMessage == errorMessage));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, step, register);
+  int get hashCode =>
+      Object.hash(runtimeType, step, register, status, errorMessage);
 
   @override
   String toString() {
-    return 'RegisterState(step: $step, register: $register)';
+    return 'RegisterState(step: $step, register: $register, status: $status, errorMessage: $errorMessage)';
   }
 }
 
@@ -51,7 +57,11 @@ abstract mixin class $RegisterStateCopyWith<$Res> {
           RegisterState value, $Res Function(RegisterState) _then) =
       _$RegisterStateCopyWithImpl;
   @useResult
-  $Res call({RegisterStep step, Register register});
+  $Res call(
+      {RegisterStep step,
+      Register register,
+      RegisterStatus status,
+      String? errorMessage});
 
   $RegisterCopyWith<$Res> get register;
 }
@@ -71,6 +81,8 @@ class _$RegisterStateCopyWithImpl<$Res>
   $Res call({
     Object? step = null,
     Object? register = null,
+    Object? status = null,
+    Object? errorMessage = freezed,
   }) {
     return _then(_self.copyWith(
       step: null == step
@@ -81,6 +93,14 @@ class _$RegisterStateCopyWithImpl<$Res>
           ? _self.register
           : register // ignore: cast_nullable_to_non_nullable
               as Register,
+      status: null == status
+          ? _self.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as RegisterStatus,
+      errorMessage: freezed == errorMessage
+          ? _self.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 
@@ -99,7 +119,10 @@ class _$RegisterStateCopyWithImpl<$Res>
 
 class _RegisterState implements RegisterState {
   const _RegisterState(
-      {this.step = RegisterStep.terms, this.register = const Register()});
+      {this.step = RegisterStep.terms,
+      this.register = const Register(),
+      this.status = RegisterStatus.initial,
+      this.errorMessage});
 
   @override
   @JsonKey()
@@ -107,6 +130,11 @@ class _RegisterState implements RegisterState {
   @override
   @JsonKey()
   final Register register;
+  @override
+  @JsonKey()
+  final RegisterStatus status;
+  @override
+  final String? errorMessage;
 
   /// Create a copy of RegisterState
   /// with the given fields replaced by the non-null parameter values.
@@ -123,15 +151,19 @@ class _RegisterState implements RegisterState {
             other is _RegisterState &&
             (identical(other.step, step) || other.step == step) &&
             (identical(other.register, register) ||
-                other.register == register));
+                other.register == register) &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.errorMessage, errorMessage) ||
+                other.errorMessage == errorMessage));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, step, register);
+  int get hashCode =>
+      Object.hash(runtimeType, step, register, status, errorMessage);
 
   @override
   String toString() {
-    return 'RegisterState(step: $step, register: $register)';
+    return 'RegisterState(step: $step, register: $register, status: $status, errorMessage: $errorMessage)';
   }
 }
 
@@ -143,7 +175,11 @@ abstract mixin class _$RegisterStateCopyWith<$Res>
       __$RegisterStateCopyWithImpl;
   @override
   @useResult
-  $Res call({RegisterStep step, Register register});
+  $Res call(
+      {RegisterStep step,
+      Register register,
+      RegisterStatus status,
+      String? errorMessage});
 
   @override
   $RegisterCopyWith<$Res> get register;
@@ -164,6 +200,8 @@ class __$RegisterStateCopyWithImpl<$Res>
   $Res call({
     Object? step = null,
     Object? register = null,
+    Object? status = null,
+    Object? errorMessage = freezed,
   }) {
     return _then(_RegisterState(
       step: null == step
@@ -174,6 +212,14 @@ class __$RegisterStateCopyWithImpl<$Res>
           ? _self.register
           : register // ignore: cast_nullable_to_non_nullable
               as Register,
+      status: null == status
+          ? _self.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as RegisterStatus,
+      errorMessage: freezed == errorMessage
+          ? _self.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 

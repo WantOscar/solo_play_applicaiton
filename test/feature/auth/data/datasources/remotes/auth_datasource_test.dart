@@ -7,7 +7,7 @@ import 'package:solo_play_application/src/features/auth/data/models/email_verifi
 import 'package:solo_play_application/src/features/auth/data/models/jwt.dart';
 import 'package:solo_play_application/src/features/auth/data/models/login.dart';
 import 'package:solo_play_application/src/features/auth/data/models/register_request.dart';
-import 'package:solo_play_application/src/features/auth/data/models/user_agreement.dart'; // Import UserAgreement
+import 'package:solo_play_application/src/features/auth/data/models/verify_code.dart';
 import 'package:solo_play_application/src/features/auth/data/utils/api_path.dart';
 import 'package:test/test.dart';
 
@@ -23,8 +23,10 @@ class FakeRegisterRequest extends Fake implements RegisterRequest {}
 class FakeEmailVerificationRequest extends Fake
     implements EmailVerificationRequest {}
 
+class FakeVerifyCodeRequest extends Fake implements VerifyCodeRequest {}
+
 void main() {
-  final defaultUserAgreement = UserAgreement(
+  final defaultUserAgreement = UserAgreementDto(
     isOver14: true,
     isAgreedToTerms: true,
     isAgreedToMarketing: true,
@@ -35,6 +37,7 @@ void main() {
     registerFallbackValue(FakeLoginRequest());
     registerFallbackValue(FakeRegisterRequest());
     registerFallbackValue(FakeEmailVerificationRequest());
+    registerFallbackValue(FakeVerifyCodeRequest());
   });
   group(AuthDatasourceImpl, () {
     late MockDio mockDio;
@@ -278,12 +281,13 @@ void main() {
         authDatasourceImpl = AuthDatasourceImpl(dio: mockDio);
       });
 
-      test('should returns success with Jwt when statusCode == 200', () async {
+      test('should return success with message when statusCode == 200',
+          () async {
         final request = RegisterRequest(
-            userAgreement: defaultUserAgreement,
+            agreement: defaultUserAgreement,
             email: 'test@test.com',
             password: 'test-password',
-            code: '123456');
+            proofToken: 'test-proof-token');
         when(
           () => mockDio.post(AuthApiPath.signup, data: request.toJson()),
         ).thenAnswer((_) async => Response(
@@ -291,11 +295,7 @@ void main() {
               data: {
                 "status": "SUCCESS",
                 "message": "회원가입에 성공했습니다.",
-                "data": {
-                  "grantType": "Bearer",
-                  "accessToken": "new-access-key",
-                  "refreshToken": "new-refresh-key"
-                }
+                "data": null
               },
               statusCode: 200,
             ));
@@ -305,18 +305,16 @@ void main() {
         verify(() => mockDio.post(AuthApiPath.signup, data: request.toJson()))
             .called(1);
 
-        expect(result is Success, true);
-        final success = result as Success<Jwt>;
-        expect(success.value.accessToken, "new-access-key");
-        expect(success.value.refreshToken, "new-refresh-key");
+        expect(result, isA<Success>());
+        expect((result as Success<String>).value, "회원가입에 성공했습니다.");
       });
 
       test('should return failure when status code is not 200', () async {
         final request = RegisterRequest(
-            userAgreement: defaultUserAgreement,
+            agreement: defaultUserAgreement,
             email: 'test@test.com',
             password: 'test-password',
-            code: '123456');
+            proofToken: 'test-proof-token');
         when(() => mockDio.post(AuthApiPath.signup, data: request.toJson()))
             .thenAnswer((_) async => Response(
                   requestOptions: RequestOptions(path: ''),
@@ -331,10 +329,10 @@ void main() {
 
       test('should return failure for non-400 DioException', () async {
         final request = RegisterRequest(
-            userAgreement: defaultUserAgreement,
+            agreement: defaultUserAgreement,
             email: 'test@test.com',
             password: 'test-password',
-            code: '123456');
+            proofToken: 'test-proof-token');
         when(() => mockDio.post(AuthApiPath.signup, data: request.toJson()))
             .thenThrow(DioException(
           requestOptions: RequestOptions(path: ''),
@@ -353,10 +351,10 @@ void main() {
           'should return failure with message when DioException with no response (network error) occurs',
           () async {
         final request = RegisterRequest(
-            userAgreement: defaultUserAgreement,
+            agreement: defaultUserAgreement,
             email: 'test@test.com',
             password: 'test-password',
-            code: '123456');
+            proofToken: 'test-proof-token');
         final dioException = DioException(
           requestOptions: RequestOptions(path: ""),
           type: DioExceptionType.connectionError,
@@ -376,10 +374,10 @@ void main() {
       test('should return failure with message when an unexpected error occurs',
           () async {
         final request = RegisterRequest(
-            userAgreement: defaultUserAgreement,
+            agreement: defaultUserAgreement,
             email: 'test@test.com',
             password: 'test-password',
-            code: '123456');
+            proofToken: 'test-proof-token');
         final unexpectedException = Exception("Something went wrong");
         when(() => mockDio.post(AuthApiPath.signup, data: request.toJson()))
             .thenThrow(unexpectedException);
@@ -401,7 +399,8 @@ void main() {
         authDatasourceImpl = AuthDatasourceImpl(dio: mockDio);
       });
 
-      test('should return success with message when statusCode == 200', () async {
+      test('should return success with message when statusCode == 200',
+          () async {
         final request = EmailVerificationRequest(email: 'test@test.com');
         when(
           () => mockDio.post(AuthApiPath.sendVerificationEmail,
@@ -427,8 +426,9 @@ void main() {
 
       test('should return failure when status code is not 200', () async {
         final request = EmailVerificationRequest(email: 'test@test.com');
-        when(() => mockDio.post(AuthApiPath.sendVerificationEmail,
-            data: request.toJson())).thenAnswer((_) async => Response(
+        when(() =>
+            mockDio.post(AuthApiPath.sendVerificationEmail,
+                data: request.toJson())).thenAnswer((_) async => Response(
               requestOptions: RequestOptions(path: ''),
               data: {'message': 'Accepted'},
               statusCode: 202,
@@ -493,6 +493,92 @@ void main() {
         expect(result is Failure, true);
         expect((result as Failure).message,
             "예상치 못한 오류가 발생했습니다: Exception: Something went wrong");
+      });
+    });
+
+    group('when call /api/auth/verify-code', () {
+      setUp(() {
+        mockDio = MockDio();
+        authDatasourceImpl = AuthDatasourceImpl(dio: mockDio);
+      });
+
+      test(
+          'should return success with VerifyCodeResponse when statusCode == 200',
+          () async {
+        final request =
+            VerifyCodeRequest(email: 'test@test.com', code: '123456');
+        final responsePayload = {
+          "isVerified": true,
+          "proofToken": "some_proof_token"
+        };
+
+        when(() => mockDio
+                .post(AuthApiPath.checkVerifyCode, data: request.toJson()))
+            .thenAnswer((_) async => Response(
+                  requestOptions: RequestOptions(path: ""),
+                  data: {
+                    "status": "SUCCESS",
+                    "message": "인증에 성공했습니다.",
+                    "data": responsePayload,
+                  },
+                  statusCode: 200,
+                ));
+
+        final result = await authDatasourceImpl.verifyCode(request);
+
+        verify(() => mockDio.post(AuthApiPath.checkVerifyCode,
+            data: request.toJson())).called(1);
+
+        expect(result, isA<Success>());
+        final successResult = result as Success<VerifyCodeResponse>;
+        expect(successResult.value.proofToken, "some_proof_token");
+      });
+
+      test('should return failure with message for DioException', () async {
+        final request =
+            VerifyCodeRequest(email: 'test@test.com', code: '123456');
+        when(() => mockDio.post(AuthApiPath.checkVerifyCode,
+            data: request.toJson())).thenThrow(DioException(
+          requestOptions: RequestOptions(path: ''),
+          response: Response(
+            requestOptions: RequestOptions(path: ''),
+            data: {'message': 'Invalid code'},
+            statusCode: 400,
+          ),
+        ));
+
+        final result = await authDatasourceImpl.verifyCode(request);
+
+        expect(result, isA<Failure>());
+        expect((result as Failure).message, 'Invalid code');
+      });
+
+      test('should return failure for network error', () async {
+        final request =
+            VerifyCodeRequest(email: 'test@test.com', code: '123456');
+        when(() => mockDio.post(AuthApiPath.checkVerifyCode,
+                data: request.toJson()))
+            .thenThrow(DioException(
+                requestOptions: RequestOptions(path: ''),
+                type: DioExceptionType.connectionError));
+
+        final result = await authDatasourceImpl.verifyCode(request);
+
+        expect(result, isA<Failure>());
+        expect((result as Failure).message, '네트워크 연결을 확인해주세요.');
+      });
+
+      test('should return failure for unexpected error', () async {
+        final request =
+            VerifyCodeRequest(email: 'test@test.com', code: '123456');
+        when(() => mockDio.post(AuthApiPath.checkVerifyCode,
+            data: request.toJson())).thenThrow(Exception('Unexpected error'));
+
+        final result = await authDatasourceImpl.verifyCode(request);
+
+        expect(result, isA<Failure>());
+        expect((result as Failure).message,
+            '예상치 못한 오류가 발생했습니다: Exception: Unexpected error');
       });
     });
   });

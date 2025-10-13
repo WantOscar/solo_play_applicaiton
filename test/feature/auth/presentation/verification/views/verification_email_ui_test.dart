@@ -3,10 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:solo_play_application/src/features/auth/presentation/register/bloc/register_bloc.dart';
-import 'package:solo_play_application/src/features/auth/presentation/register/bloc/register_event.dart';
 import 'package:solo_play_application/src/features/auth/presentation/register/bloc/register_state.dart';
 import 'package:solo_play_application/src/features/auth/presentation/verification/bloc/verification_bloc.dart';
-import 'package:solo_play_application/src/features/auth/presentation/verification/bloc/verification_event.dart';
 import 'package:solo_play_application/src/features/auth/presentation/verification/bloc/verification_state.dart';
 
 import 'package:solo_play_application/src/features/auth/presentation/verification/views/verification_email_ui.dart';
@@ -15,17 +13,11 @@ import 'package:solo_play_application/src/features/auth/presentation/verificatio
 import 'package:solo_play_application/src/features/auth/presentation/verification/sections/resend_email_section.dart';
 import 'package:solo_play_application/src/features/auth/presentation/verification/sections/verification_confirm_button_section.dart';
 import 'package:solo_play_application/src/features/timer/bloc/timer_bloc.dart';
-import 'package:solo_play_application/src/features/timer/bloc/timer_event.dart';
 import 'package:solo_play_application/src/features/timer/bloc/timer_state.dart';
 
-class MockVerificationBloc extends MockBloc<VerificationEvent, VerificationState>
-    implements VerificationBloc {}
-
-class MockTimerBloc extends MockBloc<TimerEvent, TimerState>
-    implements TimerBloc {}
-
-class MockRegisterBloc extends MockBloc<RegisterEvent, RegisterState>
-    implements RegisterBloc {}
+import '../mocks/mock_verification_bloc.dart';
+import '../mocks/mock_timer_bloc.dart';
+import '../mocks/mock_register_bloc.dart';
 
 void main() {
   group(VerificationEmailUi, () {
@@ -41,7 +33,8 @@ void main() {
 
     testWidgets('displays all sections with correct layout and padding',
         (WidgetTester tester) async {
-      whenListen(mockVerificationBloc, Stream.fromIterable([const VerificationState()]),
+      whenListen(mockVerificationBloc,
+          Stream.fromIterable([const VerificationState()]),
           initialState: const VerificationState());
       whenListen(mockTimerBloc, Stream.fromIterable([const TimerInitial(600)]),
           initialState: const TimerInitial(600));

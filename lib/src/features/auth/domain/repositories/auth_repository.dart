@@ -1,6 +1,7 @@
 import 'package:solo_play_application/src/core/utils/networks/result.dart';
 import 'package:solo_play_application/src/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:solo_play_application/src/features/auth/domain/entities/login_info.dart';
+import 'package:solo_play_application/src/features/auth/domain/entities/register.dart';
 import 'package:solo_play_application/src/features/auth/domain/entities/verify_code_info.dart';
 
 abstract class AuthRepository {
@@ -10,9 +11,11 @@ abstract class AuthRepository {
 
   Future<Result<void>> login(LoginInfo login);
 
+  Future<Result<void>> register(Register registerInfo);
+
   Future<Result<String>> sendVerificationEmail(String email);
 
-  Future<Result<String>> verifyCode(VerifyCodeInfo request);
+  Future<Result<void>> verifyCode(VerifyCodeInfo request);
 
   Future<void> logout();
 
