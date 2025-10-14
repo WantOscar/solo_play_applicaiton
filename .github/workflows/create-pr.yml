@@ -3,8 +3,8 @@ name: Create Pull Request
 on:
   push:
     branches-ignore:
-      - 'develop'
-      - 'main'
+    - 'develop'
+    - 'main'
 
 permissions:
   pull-requests: write
@@ -13,6 +13,10 @@ permissions:
 jobs:
   create_pull_request:
     runs-on: ubuntu-latest
+
+    # ✅ 특정 사용자(push한 사람)가 'kdw'일 경우는 실행하지 않음
+    if: github.actor != WantOscar'  # ← 여기에 본인 GitHub ID 넣기
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

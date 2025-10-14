@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:solo_play_application/src/features/course/data/models/course_model.dart';
-import 'package:solo_play_application/src/features/course/cubit/course_cubit.dart';
-import 'package:solo_play_application/src/features/course/widgets/best_course_card_widget.dart';
+import 'package:solo_play_application/src/features/course/presentation/cubit/course_cubit.dart';
+import 'package:solo_play_application/src/features/course/presentation/widgets/best_course_card_widget.dart';
 
 class BestCourseCardWidgetPage extends StatelessWidget {
   final CourseModel course;

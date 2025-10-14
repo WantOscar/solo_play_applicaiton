@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:solo_play_application/src/features/place/data/models/place_model.dart';
 
-import 'package:solo_play_application/src/features/place/cubit/place_cubit.dart';
-import 'package:solo_play_application/src/features/place/view/detail_place_ui.dart';
+import 'package:solo_play_application/src/features/place/presentation/cubit/place_cubit.dart';
+import 'package:solo_play_application/src/features/place/presentation/view/detail_place_ui.dart';
 
 class DetailPlaceUiPage extends StatelessWidget {
   final int rank;

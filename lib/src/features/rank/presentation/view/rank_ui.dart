@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:solo_play_application/src/features/course/pages/course_ranking_page.dart';
+import 'package:solo_play_application/src/features/course/presentation/pages/course_ranking_page.dart';
 import 'package:solo_play_application/src/features/place/pages/place_ranking_page.dart';
 
 class RankUI extends HookWidget {

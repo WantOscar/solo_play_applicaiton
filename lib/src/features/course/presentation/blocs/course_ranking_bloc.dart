@@ -4,8 +4,8 @@ import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:solo_play_application/src/features/course/data/models/course_model.dart';
 import 'package:solo_play_application/src/features/course/domain/repositories/course_repository.dart';
-import 'package:solo_play_application/src/features/course/blocs/courses_ranking_event.dart';
-import 'package:solo_play_application/src/features/course/blocs/courses_ranking_state.dart';
+import 'package:solo_play_application/src/features/course/presentation/blocs/courses_ranking_event.dart';
+import 'package:solo_play_application/src/features/course/presentation/blocs/courses_ranking_state.dart';
 
 class CourseRankingBloc extends Bloc<CoursesRankingEvent, CoursesRankingState> {
   CourseRankingBloc({

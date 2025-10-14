@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:solo_play_application/src/features/course/widgets/course_map_widget.dart';
+import 'package:solo_play_application/src/features/course/presentation/widgets/course_map_widget.dart';
 
 class CourseMapView extends StatelessWidget {
   const CourseMapView({super.key});

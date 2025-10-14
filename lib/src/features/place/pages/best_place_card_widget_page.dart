@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:solo_play_application/src/features/place/data/models/place_model.dart';
-import 'package:solo_play_application/src/features/place/widgets/best_place_card_widget.dart';
-import 'package:solo_play_application/src/features/place/cubit/place_cubit.dart';
+import 'package:solo_play_application/src/features/place/presentation/widgets/best_place_card_widget.dart';
+import 'package:solo_play_application/src/features/place/presentation/cubit/place_cubit.dart';
 
 class BestPlaceCardWidgetPage extends StatelessWidget {
   final PlaceModel place;

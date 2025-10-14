@@ -9,12 +9,7 @@ class PrimaryTagWidget extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
-        color: const Color.fromRGBO(0, 0, 0, 0.05),
-        border: Border.all(
-          width: 0.5,
-          style: BorderStyle.solid,
-          color: const Color.fromRGBO(0, 0, 0, 0.10),
-        ),
+        color: const Color(0xffEEEEEE),
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0),
@@ -25,7 +20,7 @@ class PrimaryTagWidget extends StatelessWidget {
               fontSize: 12,
               fontStyle: FontStyle.normal,
               fontWeight: FontWeight.w400,
-              color: Color(0xff000000),
+              color: const Color(0xff8E8E8E),
             ),
           ),
         ),

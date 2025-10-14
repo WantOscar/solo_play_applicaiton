@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:solo_play_application/src/features/course/blocs/course_ranking_bloc.dart';
-import 'package:solo_play_application/src/features/course/blocs/courses_ranking_event.dart';
-import 'package:solo_play_application/src/features/course/blocs/courses_ranking_state.dart';
-import 'package:solo_play_application/src/features/course/widgets/best_course_card_widget.dart';
-import 'package:solo_play_application/src/features/course/widgets/show_tip_course_widget.dart';
+import 'package:solo_play_application/src/features/course/presentation/blocs/course_ranking_bloc.dart';
+import 'package:solo_play_application/src/features/course/presentation/blocs/courses_ranking_event.dart';
+import 'package:solo_play_application/src/features/course/presentation/blocs/courses_ranking_state.dart';
+import 'package:solo_play_application/src/features/course/presentation/widgets/best_course_card_widget.dart';
+import 'package:solo_play_application/src/features/course/presentation/widgets/show_tip_course_widget.dart';
 
 class CourseRankingView extends HookWidget {
   const CourseRankingView({super.key});

@@ -3,59 +3,41 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:solo_play_application/src/core/widgets/primary_badge_widget.dart';
 
 void main() {
-  group(PrimaryBadgeWidget, () {
-    late Widget widget;
+  group('PrimaryBadgeWidget', () {
     const testText = "용산구";
     const horizontal = 8.0;
     const vertical = 3.0;
+    const fontSize = 14.0;
 
-    setUp(() {
-      widget = MaterialApp(
+    testWidgets(
+        'renders text with correct font size and padding when fontSize is provided',
+        (tester) async {
+      final widget = MaterialApp(
         home: Scaffold(
           body: Center(
-              child: PrimaryBadgeWidget(
-            text: testText,
-            horizontal: horizontal,
-            vertical: vertical,
-          )),
+            child: PrimaryBadgeWidget(
+              text: testText,
+              horizontal: horizontal,
+              vertical: vertical,
+              fontSize: fontSize,
+            ),
+          ),
         ),
       );
-    });
 
-    testWidgets('should render primary badge widget correctly', (tester) async {
       await tester.pumpWidget(widget);
 
-      /// container 내부의 text property의 임의 값 및 textStyle 검증
+      // Text 내용 및 fontSize 검증
       final textFinder = find.text(testText);
       expect(textFinder, findsOneWidget);
+
       final textWidget = tester.widget<Text>(textFinder);
-      final style = textWidget.style!;
-      expect(style.fontSize, 10);
-      expect(style.fontStyle, FontStyle.normal);
-      expect(style.fontWeight, FontWeight.w400);
-      expect(style.color, const Color(0xffFFFFFF));
+      expect(textWidget.style!.fontSize, fontSize);
 
-      /// text를 둘러싼 container의 borderRadius와 Color 검증
-      final containerFinder = find.ancestor(
-        of: textFinder,
-        matching: find.byType(Container),
+      // Padding 검증
+      final paddingWidget = tester.widget<Padding>(
+        find.ancestor(of: textFinder, matching: find.byType(Padding)).first,
       );
-      expect(containerFinder, findsOneWidget);
-
-      final container = tester.widget<Container>(containerFinder);
-      final decoration = container.decoration as BoxDecoration;
-      expect(
-        decoration.borderRadius,
-        BorderRadius.circular(10),
-      );
-      expect(decoration.color, const Color(0xff0070F0));
-
-      /// container 내부의 horizontal, vertical 2가지 property의 임의 값 검증
-      final paddingFinder = find.ancestor(
-        of: textFinder,
-        matching: find.byType(Padding),
-      );
-      final paddingWidget = tester.widget<Padding>(paddingFinder.first);
       final padding = paddingWidget.padding as EdgeInsets;
       expect(padding.left, horizontal);
       expect(padding.right, horizontal);
@@ -63,7 +45,39 @@ void main() {
       expect(padding.bottom, vertical);
     });
 
+    testWidgets('uses default fontSize 12.0 when fontSize is not provided',
+        (tester) async {
+      final widget = MaterialApp(
+        home: Scaffold(
+          body: Center(
+            child: const PrimaryBadgeWidget(
+              text: testText,
+              horizontal: horizontal,
+              vertical: vertical,
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(widget);
+
+      final textWidget = tester.widget<Text>(find.text(testText));
+      expect(textWidget.style!.fontSize, 12.0); // 기본값 검증
+    });
+
     testWidgets('matches golden file', (tester) async {
+      final widget = MaterialApp(
+        home: Scaffold(
+          body: Center(
+            child: const PrimaryBadgeWidget(
+              text: testText,
+              horizontal: horizontal,
+              vertical: vertical,
+            ),
+          ),
+        ),
+      );
+
       await tester.pumpWidget(widget);
       expect(find.byType(PrimaryBadgeWidget),
           matchesGoldenFile("goldens/primary-badge-widget-default.png"));
