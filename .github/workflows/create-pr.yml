@@ -2,8 +2,13 @@ name: Create Pull Request
 
 on:
   push:
-    branches:
-      - feature/**  # feature 브랜치에 push 될 때 PR 자동 생성
+    branches-ignore:
+    - 'develop'
+    - 'main'
+
+permissions:
+  pull-requests: write
+  contents: write
 
 jobs:
   create_pull_request:
@@ -13,28 +18,21 @@ jobs:
     if: github.actor != WantOscar'  # ← 여기에 본인 GitHub ID 넣기
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Set up GitHub CLI
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gh
+        with:
+          fetch-depth: 0
 
       - name: Create Pull Request
         env:
-          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.UPSTREAM_REPO_PAT }}
         run: |
-          echo "🔍 Checking if PR already exists..."
-          PR_EXISTS=$(gh pr list --base main --head ${{ github.ref_name }} --json number --jq '.[0].number')
+          # PR이 이미 존재하는지 확인합니다.
+          EXISTING_PR=$(gh pr list --repo WantOscar/solo_play_applicaiton --head "$(git rev-parse --abbrev-ref HEAD)" --json number -q 'map(.number) | .[]')
 
-          if [ -z "$PR_EXISTS" ]; then
-            echo "🚀 Creating new PR..."
-            gh pr create \
-              --title "✨ 자동 PR 생성: ${{ github.ref_name }}" \
-              --body "자동으로 생성된 Pull Request입니다." \
-              --base main \
-              --head ${{ github.ref_name }}
+          if [ -z "$EXISTING_PR" ]; then
+            echo "Creating a new pull request to upstream repository."
+            gh pr create --repo WantOscar/solo_play_applicaiton --base develop --title "$(git log -1 --pretty=%s)" --body-file .github/pull_request_template.md
           else
-            echo "⚠️ PR already exists (#$PR_EXISTS). Skipping creation."
+            echo "A pull request for this branch already exists in the upstream repository: #$EXISTING_PR"
           fi
